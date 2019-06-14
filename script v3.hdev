@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="13.0.2.2">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Tube inspection'</l>
+<l>InfoString := 'This script inspects tube'</l>
+<c></c>
+<l>PathWidth_Int := 10</l>
+<l>WidthTolerance_Int := 6</l>
+<l>PositionTolerance_Int := 7</l>
+<l>Polarity_Enum_Values := ['light', 'dark']</l>
+<l>Polarity_Enum := 'light'</l>
+<c></c>
+<l>Left_Contour_Color := [0, 255, 0, 255]</l>
+<l>Right_Contour_Color := [0, 255, 0, 255]</l>
+<l>Error_Contour_Color := [255, 0, 0, 255]</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+<par name="Mask" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Left_Contour" base_type="iconic" dimension="0"/>
+<par name="Right_Contour" base_type="iconic" dimension="0"/>
+<par name="Error_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="PathWidth_Int" base_type="ctrl" dimension="0"/>
+<par name="WidthTolerance_Int" base_type="ctrl" dimension="0"/>
+<par name="PositionTolerance_Int" base_type="ctrl" dimension="0"/>
+<par name="Polarity_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="BeadInspectionModel_Tuple" base_type="ctrl" dimension="0"/>
+<par name="ToolResult" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>skeleton(Mask, Skeleton)</l>
+<l>gen_contour_region_xld (Skeleton, ContourRef, 'center')</l>
+<l>create_bead_inspection_model (ContourRef, PathWidth_Int, WidthTolerance_Int, PositionTolerance_Int, Polarity_Enum[1], [], [], BeadInspectionModel_Tuple)</l>
+<l>apply_bead_inspection_model (Image_Img, Left_Contour, Right_Contour, Error_Contour, BeadInspectionModel_Tuple, ErrorType)</l>
+<c></c>
+<l>if (|ErrorType| == 0)</l>
+<l>    ToolResult := ['ok', 'Everything is ok']</l>
+<l>else</l>
+<l>    ToolResult := ['warn', 'Something is wrong']</l>
+<l>endif</l>
+<c></c>
+<l>clear_bead_inspection_model (BeadInspectionModel_Tuple)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="BeadInspectionModel_Tuple"/>
+<parameter id="Error_Contour"/>
+<parameter id="Image_Img"/>
+<parameter id="Left_Contour"/>
+<parameter id="Mask"/>
+<parameter id="PathWidth_Int"/>
+<parameter id="Polarity_Enum"/>
+<parameter id="PositionTolerance_Int"/>
+<parameter id="Right_Contour"/>
+<parameter id="ToolResult"/>
+<parameter id="WidthTolerance_Int"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
