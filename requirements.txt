@@ -1,0 +1,5 @@
+Requiremebts
+The scripts are designed for the following Balluff products:
+BVS SC-M1280Z00-30-020
+BAE PD-VS-014-05
+BAI BVS-CA-EPC-001
