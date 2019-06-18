@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="13.0.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<c>* example: one integer input and one integer output</c>
+<c>* output = input + 1</c>
+<c>* default value for input is 5</c>
+<c></c>
+<c></c>
+<c>* this sets the default value</c>
+<l>example_input_Int := 5</l>
+<c></c>
+<c>* no need to call HalconRun()</c>
+<l>* HalconRun (example_image_Img, example_input_Int, example_output_Int)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="example_image_Img" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="example_input_Int" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="example_output_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c></c>
+<c>* set output value</c>
+<l>example_output_Int := example_input_Int + 1</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="example_image_Img"/>
+<parameter id="example_input_Int"/>
+<parameter id="example_output_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

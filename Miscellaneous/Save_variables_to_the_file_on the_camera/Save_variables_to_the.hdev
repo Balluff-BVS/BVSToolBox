@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="13.0.2.2">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Write to file'</l>
+<l>InfoString := 'This script writes variables to file'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="variable_1_Int" base_type="ctrl" dimension="0"/>
+<par name="variable_2_Int" base_type="ctrl" dimension="0"/>
+<par name="variable_3_Int" base_type="ctrl" dimension="0"/>
+<par name="FileHandle_Tuple" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>fwrite_string (FileHandle_Tuple, [variable_1_Int, ' ', variable_2_Int, ' ',variable_3_Int, '    '])</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="FileHandle_Tuple"/>
+<parameter id="input_Img"/>
+<parameter id="variable_1_Int"/>
+<parameter id="variable_2_Int"/>
+<parameter id="variable_3_Int"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface>
+<oc>
+<par name="FileHandle_Tuple_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>* open_file ('../images/plik.txt', 'append', FileHandle_Tuple_)</l>
+<l>open_file ('/data/icsServer/share/images/plik.txt', 'append', FileHandle_Tuple_)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters>
+<parameter id="FileHandle_Tuple_"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface>
+<ic>
+<par name="FileHandle_Tuple" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>close_file (FileHandle_Tuple)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters>
+<parameter id="FileHandle_Tuple"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

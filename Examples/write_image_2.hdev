@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="13.0.2.1">
+<procedure name="main">
+<interface/>
+<body>
+<c>* this example gets an input image and returns this image inverted</c>
+<c></c>
+<l>* HalconRun (example_input_Img, image_name_String, image_format_String, image_compression_type_String)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="image_name_String" base_type="ctrl" dimension="0"/>
+<par name="image_format_String" base_type="ctrl" dimension="0"/>
+<par name="image_compression_type_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TODO: check image sizes</c>
+<c></c>
+<c>* calculate output image as difference of input image and reference image</c>
+<l>    get_system_time(MSecond, Second, Minute, Hour, Day, YDay, Month, Year)</l>
+<l>    tuple_string(MSecond, '2.0f', MSecondS)</l>
+<l>    tuple_string(Hour, '2.0f', HourS)</l>
+<l>    tuple_string(Minute, '2.0f', MinuteS)</l>
+<l>    tuple_string(Second, '2.0f', SecondS)</l>
+<c>   </c>
+<l>    nazwa:=image_name_String+'_'+HourS+'_'+MinuteS+'_'+SecondS+'_'+MSecondS+'.'+image_format_String</l>
+<l>    image_type:=image_format_String</l>
+<c>    </c>
+<l>    image_name:='../images/'+nazwa</l>
+<l>    write_image (input_Img, image_compression_type_String, 0, image_name)</l>
+<c></c>
+<c>*alternative</c>
+<l>* sub_image (input_Img, example_ref_example_input_RImg, example_output_Img, 1, 128)</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="image_compression_type_String"/>
+<parameter id="image_format_String"/>
+<parameter id="image_name_String"/>
+<parameter id="input_Img"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface>
+<oc>
+<par name="image_name_String_" base_type="ctrl" dimension="0"/>
+<par name="image_format_String_" base_type="ctrl" dimension="0"/>
+<par name="image_compression_type_String_" base_type="ctrl" dimension="0"/>
+<par name="image_buffer_Int_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>image_name_String_:='image'</l>
+<l>image_format_String_:='bmp'</l>
+<l>image_compression_type_String_:='bmp'</l>
+<l>image_buffer_Int_:=100</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters>
+<parameter id="image_buffer_Int_"/>
+<parameter id="image_compression_type_String_"/>
+<parameter id="image_format_String_"/>
+<parameter id="image_name_String_"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

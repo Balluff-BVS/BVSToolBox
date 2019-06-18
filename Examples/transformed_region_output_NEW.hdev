@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="13.0.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>* HalconRun (Image, example_output_Region, example_output_Trafo)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="example_input_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="example_output_Region" base_type="iconic" dimension="0"/>
+</oo>
+<oc>
+<par name="example_output_Region_Trafo" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* generate region</c>
+<l>gen_rectangle1 (example_output_Region, 300, 200, 500, 700)</l>
+<c></c>
+<c>* set transformation as rotation around the center of our region</c>
+<l>hom_mat2d_identity (HomMat2DIdentity)</l>
+<l>hom_mat2d_rotate (HomMat2DIdentity, 0.78, 300 + 100, 200 + 250, example_output_Region_Trafo)</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="example_input_Img"/>
+<parameter id="example_output_Region"/>
+<parameter id="example_output_Region_Trafo"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

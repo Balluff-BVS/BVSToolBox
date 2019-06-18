@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="13.0.2.2">
+<procedure name="main">
+<interface/>
+<body>
+<l>height_Int := 152</l>
+<c></c>
+<l>width_Int := 64</l>
+<c></c>
+<l>stroke_width_Int := 16</l>
+<c></c>
+<l>base_line_tolerance_Real := 0.15</l>
+<c></c>
+<l>polarity_Enum_Values := ['dark_on_light', 'light_on_dark']</l>
+<l>polarity_Enum := 'dark_on_light'</l>
+<c></c>
+<l>uppercase_only_Enum_Values := ['false', 'true']</l>
+<l>uppercase_only_Enum := 'true'</l>
+<c></c>
+<l>is_dotprint_Enum_Values := ['false', 'true']</l>
+<l>is_dotprint_Enum := 'true'</l>
+<c></c>
+<l>is_imprinted_Enum_Values := ['false', 'true']</l>
+<l>is_imprinted_Enum := 'false'</l>
+<c></c>
+<l>eliminate_horizontal_lines_Enum_Values := ['false', 'true']</l>
+<l>eliminate_horizontal_lines_Enum := 'false'</l>
+<c></c>
+<l>eliminate_border_blobs_Enum_Values := ['false', 'true']</l>
+<l>eliminate_border_blobs_Enum := 'true'</l>
+<c></c>
+<l>max_line_num_Int := 2</l>
+<c></c>
+<l>return_punctuation_Enum_Values := ['false', 'true']</l>
+<l>return_punctuation_Enum := 'false'</l>
+<c></c>
+<l>return_separators_Enum_Values := ['false', 'true']</l>
+<l>return_separators_Enum := 'false'</l>
+<c></c>
+<l>add_fragments_Enum_Values := ['false', 'true']</l>
+<l>add_fragments_Enum := 'true'</l>
+<c></c>
+<l>fragment_size_min_Int := 1</l>
+<c></c>
+<l>use_orientation_Mbool := false</l>
+<c></c>
+<l>use_slant_MBool := false</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="inImage_Img" base_type="iconic" dimension="0"/>
+<par name="inAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="outRegion_Region" base_type="iconic" dimension="0"/>
+<par name="outImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="height_Int" base_type="ctrl" dimension="0"/>
+<par name="width_Int" base_type="ctrl" dimension="0"/>
+<par name="stroke_width_Int" base_type="ctrl" dimension="0"/>
+<par name="base_line_tolerance_Real" base_type="ctrl" dimension="0"/>
+<par name="polarity_Enum" base_type="ctrl" dimension="0"/>
+<par name="uppercase_only_Enum" base_type="ctrl" dimension="0"/>
+<par name="is_dotprint_Enum" base_type="ctrl" dimension="0"/>
+<par name="is_imprinted_Enum" base_type="ctrl" dimension="0"/>
+<par name="eliminate_horizontal_lines_Enum" base_type="ctrl" dimension="0"/>
+<par name="eliminate_border_blobs_Enum" base_type="ctrl" dimension="0"/>
+<par name="max_line_num_Int" base_type="ctrl" dimension="0"/>
+<par name="return_punctuation_Enum" base_type="ctrl" dimension="0"/>
+<par name="return_separators_Enum" base_type="ctrl" dimension="0"/>
+<par name="add_fragments_Enum" base_type="ctrl" dimension="0"/>
+<par name="fragment_size_min_Int" base_type="ctrl" dimension="0"/>
+<par name="use_orientation_MBool" base_type="ctrl" dimension="0"/>
+<par name="use_slant_MBool" base_type="ctrl" dimension="0"/>
+<par name="TextModel_Tuple" base_type="ctrl" dimension="0"/>
+<par name="OCRHandle_Tuple" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="outString_String" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>set_text_model_param (TextModel_Tuple, 'manual_char_height', height_Int)</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_char_width', width_Int)</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_stroke_width', stroke_width_Int)</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_base_line_tolerance', base_line_tolerance_Real)</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_polarity', polarity_Enum[1])</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_uppercase_only', uppercase_only_Enum[1])</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_is_dotprint', is_dotprint_Enum[1])</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_is_imprinted', is_imprinted_Enum[1])</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_eliminate_horizontal_lines', eliminate_horizontal_lines_Enum[1])</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_eliminate_border_blobs', eliminate_border_blobs_Enum[1])</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_max_line_num', max_line_num_Int)</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_return_punctuation', return_punctuation_Enum[1])</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_return_separators', return_separators_Enum[1])</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_add_fragments', add_fragments_Enum[1])</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_fragment_size_min', fragment_size_min_Int)</l>
+<c></c>
+<l>tekst := ''</l>
+<l>gen_empty_obj (Line)</l>
+<l>gen_empty_obj(RegionUnion)</l>
+<c></c>
+<l>reduce_domain (inImage_Img, inAOI_Aoi, ImageReduced)</l>
+<c></c>
+<l>if (use_orientation_MBool == true)</l>
+<l>    text_line_orientation (ImageReduced, ImageReduced, height_Int, rad(-45), rad(45), OrientationAngle)</l>
+<l>    rotate_image (ImageReduced, ImageReduced, -OrientationAngle / rad(180) * 180, 'constant')</l>
+<l>endif</l>
+<c></c>
+<l>if (use_slant_MBool == true)</l>
+<l>    text_line_slant (ImageReduced, ImageReduced, height_Int, rad(-45), rad(45), SlantAngle)</l>
+<l>    hom_mat2d_identity (HomMat2DIdentity)</l>
+<l>    hom_mat2d_slant (HomMat2DIdentity, -SlantAngle, 'x', 0, 0, HomMat2DSlant)</l>
+<l>    affine_trans_image (ImageReduced, ImageReduced, HomMat2DSlant, 'constant', 'true')</l>
+<l>endif</l>
+<c></c>
+<l>find_text (ImageReduced, TextModel_Tuple, TextResult)</l>
+<l>get_text_result (TextResult, 'manual_num_lines', NumLines)</l>
+<c></c>
+<l>for LineIndex := 0 to NumLines - 1 by 1</l>
+<l>    get_text_object (Line, TextResult, ['manual_line', LineIndex])</l>
+<l>        union2 (Line, RegionUnion, RegionUnion)</l>
+<c></c>
+<l>    do_ocr_multi_class_cnn (Line, ImageReduced, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    count_obj (Line, NumberOfCharacters)</l>
+<c>    </c>
+<l>    for CharacterIndex := 1 to NumberOfCharacters by 1</l>
+<l>        select_obj (Line, Character, CharacterIndex)</l>
+<l>        tekst := tekst + Class[CharacterIndex - 1]</l>
+<l>    endfor</l>
+<l>endfor</l>
+<c></c>
+<l>outString_String := tekst</l>
+<l>union1 (RegionUnion, RegionUnion1)</l>
+<l>copy_obj (RegionUnion1, outRegion_Region, 1, 1)</l>
+<l>copy_obj (ImageReduced, outImage_Img, 1, 1)</l>
+<l>clear_text_result (TextResult)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="OCRHandle_Tuple"/>
+<parameter id="TextModel_Tuple"/>
+<parameter id="add_fragments_Enum"/>
+<parameter id="base_line_tolerance_Real"/>
+<parameter id="eliminate_border_blobs_Enum"/>
+<parameter id="eliminate_horizontal_lines_Enum"/>
+<parameter id="fragment_size_min_Int"/>
+<parameter id="height_Int"/>
+<parameter id="inAOI_Aoi"/>
+<parameter id="inImage_Img"/>
+<parameter id="is_dotprint_Enum"/>
+<parameter id="is_imprinted_Enum"/>
+<parameter id="max_line_num_Int"/>
+<parameter id="outImage_Img"/>
+<parameter id="outRegion_Region"/>
+<parameter id="outString_String"/>
+<parameter id="polarity_Enum"/>
+<parameter id="return_punctuation_Enum"/>
+<parameter id="return_separators_Enum"/>
+<parameter id="stroke_width_Int"/>
+<parameter id="uppercase_only_Enum"/>
+<parameter id="use_orientation_MBool"/>
+<parameter id="use_slant_MBool"/>
+<parameter id="width_Int"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface>
+<oc>
+<par name="TextModel_Tuple_" base_type="ctrl" dimension="0"/>
+<par name="OCRHandle_Tuple_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>create_text_model_reader ('manual', [], TextModel_Tuple_)</l>
+<l>read_ocr_class_cnn ('../images/plik.occ', OCRHandle_Tuple_)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters>
+<parameter id="OCRHandle_Tuple_"/>
+<parameter id="TextModel_Tuple_"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface>
+<ic>
+<par name="TextModel_Tuple" base_type="ctrl" dimension="0"/>
+<par name="OCRHandle_Tuple" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>clear_text_model (TextModel_Tuple)</l>
+<l>clear_ocr_class_mlp (OCRHandle_Tuple)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters>
+<parameter id="OCRHandle_Tuple"/>
+<parameter id="TextModel_Tuple"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

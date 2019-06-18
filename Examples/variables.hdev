@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="13.0.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<c></c>
+<l>* HalconRun (inImage_Img, inAOI_Aoi, outImage_Img, outRegion_Region, inInt_Int, inReal_Real, inString_String, inInt_MInt, inBool_Bool, outInt_Int, outReal_Real, outString_String, outBool_Bool)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="inImage_Img" base_type="iconic" dimension="0"/>
+<par name="inAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="outImage_Img" base_type="iconic" dimension="0"/>
+<par name="outRegion_Region" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="inInt_Int" base_type="ctrl" dimension="0"/>
+<par name="inReal_Real" base_type="ctrl" dimension="0"/>
+<par name="inString_String" base_type="ctrl" dimension="0"/>
+<par name="inInt_MInt" base_type="ctrl" dimension="0"/>
+<par name="inBool_Bool" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="outInt_Int" base_type="ctrl" dimension="0"/>
+<par name="outReal_Real" base_type="ctrl" dimension="0"/>
+<par name="outString_String" base_type="ctrl" dimension="0"/>
+<par name="outBool_Bool" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c></c>
+<l>outBool_Bool := false</l>
+<l>outImage_Img := inImage_Img</l>
+<l>outInt_Int := inInt_Int</l>
+<l>outReal_Real := inReal_Real</l>
+<l>outString_String := inString_String</l>
+<l>outRegion_Region := inAOI_Aoi</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="inAOI_Aoi"/>
+<parameter id="inBool_Bool"/>
+<parameter id="inImage_Img"/>
+<parameter id="inInt_Int"/>
+<parameter id="inInt_MInt"/>
+<parameter id="inReal_Real"/>
+<parameter id="inString_String"/>
+<parameter id="outBool_Bool"/>
+<parameter id="outImage_Img"/>
+<parameter id="outInt_Int"/>
+<parameter id="outReal_Real"/>
+<parameter id="outRegion_Region"/>
+<parameter id="outString_String"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

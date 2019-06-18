@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="13.0.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>Mask_TrafoLink := 'input_image_Img'</l>
+<l>Mask_Color := [0, 255, 0, 64]</l>
+<c></c>
+<l>* HalconRun (input_image_Img, input_aoi_Aoi, output_image_Img, input_aoi_Aoi_Trafo, output_image_Img_Trafo)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_image_Img" base_type="iconic" dimension="0"/>
+<par name="Mask" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="output_image_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="input_image_Img_Trafo" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="output_image_Img_Trafo" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c></c>
+<l>hom_mat2d_invert (input_image_Img_Trafo, input_aoi_Aoi_TrafoInverse)</l>
+<c></c>
+<l>affine_trans_region (Mask, output_region_Region, input_aoi_Aoi_TrafoInverse, 'nearest_neighbor')</l>
+<c></c>
+<l>reduce_domain (input_image_Img, output_region_Region, output_image_Img)</l>
+<l>invert_image (output_image_Img, output_image_Img)</l>
+<l>paint_gray (output_image_Img, input_image_Img, output_image_Img)</l>
+<c></c>
+<l>output_image_Img_Trafo := input_image_Img_Trafo</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Mask"/>
+<parameter id="input_image_Img"/>
+<parameter id="input_image_Img_Trafo"/>
+<parameter id="output_image_Img"/>
+<parameter id="output_image_Img_Trafo"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="13.0.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<c></c>
+<l>* HalconRun ()</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface/>
+<body>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

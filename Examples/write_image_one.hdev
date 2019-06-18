@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="13.0.2.1">
+<procedure name="main">
+<interface/>
+<body>
+<c>* this example gets an input image and returns this image inverted</c>
+<c></c>
+<l>* HalconRun (example_input_Img, example_ref_RImg)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+<par name="example_ref_example_input_RImg" base_type="iconic" dimension="0"/>
+</io>
+</interface>
+<body>
+<c>* TODO: check image sizes</c>
+<c></c>
+<c>* calculate output image as difference of input image and reference image</c>
+<l>    get_system_time(MSecond, Second, Minute, Hour, Day, YDay, Month, Year)</l>
+<l>    tuple_string(MSecond, '2.0f', MSecondS)</l>
+<l>    tuple_string(Hour, '2.0f', HourS)</l>
+<l>    tuple_string(Minute, '2.0f', MinuteS)</l>
+<l>    tuple_string(Second, '2.0f', SecondS)</l>
+<l>    nazwa:='image_'+HourS+'_'+MinuteS+'_'+SecondS+'_'+MSecondS+'.bmp'</l>
+<l>    image_name:='../images/'+nazwa</l>
+<l>    write_image (input_Img, 'bmp', 0, image_name)</l>
+<c></c>
+<c>*alternative</c>
+<l>* sub_image (input_Img, example_ref_example_input_RImg, example_output_Img, 1, 128)</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="example_ref_example_input_RImg"/>
+<parameter id="input_Img"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

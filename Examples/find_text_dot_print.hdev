@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="13.0.2.1">
+<procedure name="main">
+<interface/>
+<body>
+<c>* This example uses the Automatic Text Reader to read</c>
+<c>* dot print characters in different images.</c>
+<c>* </c>
+<c>* It also shows how to set the parameters in case</c>
+<c>* the default parameters do not lead to the desired result.</c>
+<c>* </c>
+<l>dev_update_off ()</l>
+<l>dev_open_window (0, 0, 800, 600, 'white', WindowHandle)</l>
+<l>set_display_font (WindowHandle, 16, 'mono', 'true', 'false')</l>
+<c>* </c>
+<c>* Create text model for dot print extraction *</c>
+<l>dev_set_window (WindowHandle)</l>
+<l>Message := 'This example shows how to read dot print characters'</l>
+<l>Message[1] := 'with the Automatic Text Reader.'</l>
+<l>Message[2] := ' '</l>
+<l>Message[3] := 'The first example images can be read with default settings.'</l>
+<l>Message[4] := ' '</l>
+<l>Message[5] := 'After that, the example shows how to set different'</l>
+<l>Message[6] := 'parameters to read more difficult images successfully.'</l>
+<l>dev_disp_text (Message, 'window', 12, 12, 'black', 'box', 'false')</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Create Automatic Text Reader with a pretrained dot print classifier.</c>
+<l>create_text_model_reader ('auto', 'DotPrint_Rej.omc', TextModel)</l>
+<c>* Switch on dot print mode.</c>
+<l>set_text_model_param (TextModel, 'dot_print', 'true')</l>
+<c>* </c>
+<c>* ************************************************************************************************</c>
+<c>*                           Examples without further parameter settings                         *</c>
+<c>* ************************************************************************************************</c>
+<c>* </c>
+<c>* Image 1</c>
+<l>TextModelParamName := 'dot_print'</l>
+<l>TextModelParamValue := 'true'</l>
+<l>read_image (Image, 'ocr/dot_print_01')</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 1, Class)</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Image 2</c>
+<l>TextModelParamName := 'dot_print'</l>
+<l>TextModelParamValue := 'true'</l>
+<l>read_image (Image, 'ocr/dot_print_02')</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 2, Class)</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Image 3</c>
+<l>TextModelParamName := 'dot_print'</l>
+<l>TextModelParamValue := 'true'</l>
+<l>read_image (Image, 'ocr/dot_print_03')</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 3, Class)</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Image 4</c>
+<l>TextModelParamName := 'dot_print'</l>
+<l>TextModelParamValue := 'true'</l>
+<l>read_image (Image, 'ocr/dot_print_04')</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 4, Class)</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Image 5</c>
+<l>TextModelParamName := 'dot_print'</l>
+<l>TextModelParamValue := 'true'</l>
+<l>read_image (Image, 'ocr/dot_print_05')</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 5, Class)</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* ************************************************************************************************</c>
+<c>*                           Examples with dot print and "normal" text                           *</c>
+<c>* ************************************************************************************************</c>
+<c>* </c>
+<c>* Image 6 (non-dot-print text is partially extracted)</c>
+<l>TextModelParamName := 'dot_print'</l>
+<l>TextModelParamValue := 'true'</l>
+<l>read_image (Image, 'ocr/dot_print_06')</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 6, Class)</l>
+<l>Message := 'In general, it might happen that not only dot print but arbitrary'</l>
+<l>Message[1] := 'kinds of text are returned.'</l>
+<l>Message[2] := 'However, because we used a dot print classifier, the recognition rate'</l>
+<l>Message[3] := 'for non-dot-print characters is bad.'</l>
+<l>Message[4] := 'In order to separate the dot-printed text from other segmented text,'</l>
+<l>Message[5] := 'common text model parameters can be used.'</l>
+<l>dev_disp_text (Message, 'window', 102, 12, 'black', [], [])</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Set minimal character height to remove non-dot print text.</c>
+<l>TextModelParamName := ['dot_print','min_char_height']</l>
+<l>TextModelParamValue := ['true',25]</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 6, Class)</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Image 7 (non-dot-print text is partially extracted)</c>
+<l>TextModelParamName := 'dot_print'</l>
+<l>TextModelParamValue := 'true'</l>
+<l>read_image (Image, 'ocr/dot_print_07')</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 7, Class)</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Set minimal contrast to remove non-dot print text *</c>
+<l>TextModelParamName := ['dot_print','min_contrast']</l>
+<l>TextModelParamValue := ['true',40]</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 7, Class)</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* ************************************************************************************************</c>
+<c>*                           Examples with dot print specific parameters                         *</c>
+<c>* ************************************************************************************************</c>
+<c>* </c>
+<c>* Image 8 (dots are not fully connected)</c>
+<l>TextModelParamName := 'dot_print'</l>
+<l>TextModelParamValue := 'true'</l>
+<l>read_image (Image, 'ocr/dot_print_08')</l>
+<l>dev_display (Image)</l>
+<c>* </c>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 8, Class)</l>
+<l>Message := 'If find_text fails to connect all dots and characters are split into parts,'</l>
+<l>Message[1] := 'the parameter \'dot_print_max_dot_gap\' should be adapted accordingly.'</l>
+<l>Message[2] := 'Specifying \'dot_print_max_dot_gap\' will also reduce the runtime.'</l>
+<c>* </c>
+<l>dev_disp_text (Message, 'window', 102, 12, 'black', [], [])</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Set maximal character gap to connect dots.</c>
+<l>dev_set_part (235, 307, 295, 387)</l>
+<l>dev_display (Image)</l>
+<l>dev_display (Characters)</l>
+<l>Message := 'Measure the size of the maximal gap between dots within'</l>
+<l>Message[1] := 'a character.'</l>
+<l>dev_disp_text (Message, 'window', 12, 12, 'black', [], [])</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<l>gen_region_line (MeasureGap, 266, 347, 268, 349)</l>
+<l>dev_set_color ('black')</l>
+<l>dev_display (MeasureGap)</l>
+<l>dev_set_colored (12)</l>
+<l>dev_disp_text ('3 px', 'image', 265, 350, 'black', 'box', 'false')</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<l>get_image_size (Image, Width, Height)</l>
+<l>dev_set_part (0, 0, Height - 1, Width - 1)</l>
+<c>* </c>
+<l>TextModelParamName := ['dot_print','dot_print_max_dot_gap','min_char_height']</l>
+<l>TextModelParamValue := ['true',3,30]</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 8, Class)</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Image 9 (characters are erroneously merged)</c>
+<c>* </c>
+<l>TextModelParamName := ['dot_print','min_char_height','max_char_height','polarity']</l>
+<l>TextModelParamValue := ['true',15,50,'light_on_dark']</l>
+<l>read_image (Image, 'ocr/dot_print_09')</l>
+<c>* </c>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 9, Class)</l>
+<l>Message := 'If neighboring characters are merged erroneously,'</l>
+<l>Message[1] := '\'dot_print_tight_char_spacing\' can be set to \'true\'.'</l>
+<l>dev_disp_text (Message, 'window', 162, 12, 'black', [], [])</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Set 'dot_print_tight_char_spacing' to separate characters.</c>
+<l>TextModelParamName := ['dot_print','min_char_height','max_char_height','polarity','dot_print_tight_char_spacing']</l>
+<l>TextModelParamValue := ['true',15,50,'light_on_dark','true']</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 9, Class)</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Image 10 (characters are erroneously merged)</c>
+<c>* </c>
+<l>TextModelParamName := 'dot_print'</l>
+<l>TextModelParamValue := 'true'</l>
+<l>read_image (Image, 'ocr/dot_print_10')</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 10, Class)</l>
+<l>Message := 'If neighboring characters are merged erroneously,'</l>
+<l>Message[1] := '\'dot_print_tight_char_spacing\' can be set to \'true\'.'</l>
+<l>dev_disp_text (Message, 'window', 102, 12, 'black', [], [])</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Set 'dot_print_tight_char_spacing' to separate characters.</c>
+<l>TextModelParamName := ['dot_print','dot_print_tight_char_spacing']</l>
+<l>TextModelParamValue := ['true','true']</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 10, Class)</l>
+<l>Message := 'If \'dot_print_tight_char_spacing\' does not yield the desired result,'</l>
+<l>Message[1] := 'use \'dot_print_min_char_gap\' to specify the minimal gap size between'</l>
+<l>Message[2] := 'adjacent characters more precisely.'</l>
+<l>dev_disp_text (Message, 'window', 116, 12, 'black', [], [])</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Set 'dot_print_min_char_gap' to connect remaining split characters.</c>
+<l>dev_set_part (166, 463, 225, 544)</l>
+<l>dev_display (Image)</l>
+<l>dev_display (Characters)</l>
+<l>MessageImage11Measure[0] := 'Measure the size of the minimal gap between adjacent'</l>
+<l>MessageImage11Measure[1] := 'characters.'</l>
+<l>dev_disp_text (MessageImage11Measure, 'window', 12, 12, 'black', [], [])</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<l>gen_region_line (MeasureGap, 199, 499, 199, 501)</l>
+<l>dev_set_color ('black')</l>
+<l>dev_display (MeasureGap)</l>
+<l>dev_set_colored (12)</l>
+<l>dev_disp_text ('3 px', 'image', 201, 498, 'black', 'box', 'false')</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<l>dev_set_part (0, 0, 479, 639)</l>
+<c>* </c>
+<l>TextModelParamName := ['dot_print','dot_print_min_char_gap']</l>
+<l>TextModelParamValue := ['true',3]</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 10, Class)</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Image 11 (dots are not fully connected)</c>
+<c>* </c>
+<l>TextModelParamName := 'dot_print'</l>
+<l>TextModelParamValue := 'true'</l>
+<l>read_image (Image, 'ocr/dot_print_11')</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 11, Class)</l>
+<l>Message := 'If find_text fails to connect all dots and characters are split into parts,'</l>
+<l>Message[1] := 'the parameter \'dot_print_max_dot_gap\' should be adapted accordingly.'</l>
+<l>Message[2] := 'Specifying \'dot_print_max_dot_gap\' will also reduce the runtime.'</l>
+<l>dev_disp_text (Message, 'window', 302, 12, 'black', [], [])</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Set maximal character gap to connect dots.</c>
+<l>TextModelParamName := ['dot_print','dot_print_max_dot_gap']</l>
+<l>TextModelParamValue := ['true',5]</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 11, Class)</l>
+<l>Message := 'If the value of \'dot_print_max_dot_gap\' exceeds the size of the minimal gap'</l>
+<l>Message[1] := 'between adjacent characters, \'dot_print_tight_char_spacing\' or '</l>
+<l>Message[2] := '\'dot_print_min_char_gap\' need to be adapted accordingly.'</l>
+<l>dev_disp_text (Message, 'window', 302, 12, 'black', [], [])</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>stop ()</l>
+<c>* </c>
+<c>* Set 'dot_print_tight_char_spacing' to separate characters.</c>
+<l>TextModelParamName := ['dot_print','dot_print_max_dot_gap','dot_print_min_char_gap']</l>
+<l>TextModelParamValue := ['true',5,4]</l>
+<l>find_text_and_disp_result (Image, Characters, TextModel, TextModelParamName, TextModelParamValue, WindowHandle, 11, Class)</l>
+<l>stop ()</l>
+<l>clear_text_model (TextModel)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="find_text_and_disp_result">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Characters" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="TextModel" base_type="ctrl" dimension="0"/>
+<par name="TextModelParamName" base_type="ctrl" dimension="0"/>
+<par name="TextModelParamValue" base_type="ctrl" dimension="0"/>
+<par name="WindowHandle" base_type="ctrl" dimension="0"/>
+<par name="ImageIndex" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Class" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* Save current text model parameter values in order to reset afterwards.</c>
+<l>get_text_model_param (TextModel, TextModelParamName, TextModelParamValueReset)</l>
+<c>* </c>
+<c>* Set text model parameters.</c>
+<l>set_text_model_param (TextModel, TextModelParamName, TextModelParamValue)</l>
+<c>* </c>
+<c>* Find text and display resulting regions (and classification results).</c>
+<l>find_text (Image, TextModel, TextResultID)</l>
+<l>get_text_object (Characters, TextResultID, 'all_lines')</l>
+<l>get_text_result (TextResultID, 'num_lines', NumLines)</l>
+<c>* </c>
+<c>* Display image and segmented characters.</c>
+<l>dev_set_window (WindowHandle)</l>
+<l>dev_display (Image)</l>
+<l>dev_display (Characters)</l>
+<l>disp_message (WindowHandle, 'Image ' + ImageIndex, 'window', 12, 12, 'black', 'true')</l>
+<c>* </c>
+<c>* Display read text.</c>
+<c>* Display classification result for each character.</c>
+<l>get_text_result (TextResultID, 'class', Class)</l>
+<l>smallest_rectangle1 (Characters, Row1, Column1, Row2, Column2)</l>
+<l>dev_disp_text (Class, 'image', Row2 - 1, Column1 - 1, 'black', 'box', 'false')</l>
+<l>dev_disp_text (Class, 'image', Row2 + 1, Column1 + 1, 'black', 'box', 'false')</l>
+<l>dev_disp_text (Class, 'image', Row2 - 1, Column1 + 1, 'black', 'box', 'false')</l>
+<l>dev_disp_text (Class, 'image', Row2 + 1, Column1 - 1, 'black', 'box', 'false')</l>
+<l>dev_disp_text (Class, 'image', Row2, Column1, 'white', 'box', 'false')</l>
+<c>* </c>
+<c>* Display used parameters.</c>
+<l>Message := 'Used Automatic Text Reader parameters:'</l>
+<l>Message := [Message,' - ' + TextModelParamName + ' = ' + TextModelParamValue]</l>
+<l>tuple_gen_const (|Message|, 'black', Color)</l>
+<c>* Highlight changed parameters.</c>
+<l>ParamValueDifferent := TextModelParamValue [!=] TextModelParamValueReset</l>
+<l>tuple_find (ParamValueDifferent, 1, Indices)</l>
+<l>if (Indices != -1)</l>
+<l>    Color[Indices + 1] := 'forest green'</l>
+<l>endif</l>
+<l>dev_disp_text (Message, 'window', 42, 12, Color, [], [])</l>
+<c>* </c>
+<c>* Reset to previous parameters.</c>
+<l>set_text_model_param (TextModel, TextModelParamName, TextModelParamValueReset)</l>
+<c>* Clean up memory.</c>
+<l>clear_text_result (TextResultID)</l>
+<l>return ()</l>
+</body>
+<docu id="find_text_and_disp_result">
+<parameters>
+<parameter id="Characters"/>
+<parameter id="Class"/>
+<parameter id="Image"/>
+<parameter id="ImageIndex"/>
+<parameter id="TextModel"/>
+<parameter id="TextModelParamName"/>
+<parameter id="TextModelParamValue"/>
+<parameter id="WindowHandle"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

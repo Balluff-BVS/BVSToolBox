@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="13.0.2.1">
+<procedure name="main">
+<interface/>
+<body>
+<c>* this example gets an input image and returns this image inverted</c>
+<l>ToolName := 'Save Image'</l>
+<l>image_num_Int:=0</l>
+<l>image_format_Enum_Values:=['bmp', 'png', 'jpeg']</l>
+<l>image_format_Enum:='bmp'</l>
+<l>image_buffer_Int:=10</l>
+<c></c>
+<l>* HalconRun (example_input_Img, image_name_String, MojeZmienna_Int1, Bufor_zdjec_Int, image_format_Enum1, Indeks_Int, MojeZmienna_Int2)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="image_prefix_String" base_type="ctrl" dimension="0"/>
+<par name="image_num_Int_" base_type="ctrl" dimension="0"/>
+<par name="image_buffer_Int" base_type="ctrl" dimension="0"/>
+<par name="image_format_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Index_Int" base_type="ctrl" dimension="0"/>
+<par name="image_num_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c></c>
+<l>tuple_string (image_num_Int_, '1.0f', imgIndex)</l>
+<c>   </c>
+<c> </c>
+<l>    image_type:=image_format_Enum[1]</l>
+<l>    nazwa := image_prefix_String+imgIndex+'.'+image_type</l>
+<c>    </c>
+<l>    if (image_type=='png')</l>
+<l>        image_type:='png fastest'</l>
+<l>    endif</l>
+<l>     if (image_type=='jpeg')</l>
+<l>        image_type:='jpeg 20'</l>
+<l>    endif</l>
+<c>    </c>
+<l>    image_name:='/data/icsServer/share/images/workspace0_images'+nazwa</l>
+<l>    write_image (input_Img, image_type, 0, image_name)</l>
+<c>    </c>
+<c>    </c>
+<l>if (image_buffer_Int&lt;image_num_Int_+1)</l>
+<l>    image_num_Int_ := -1</l>
+<c>        </c>
+<l>    endif</l>
+<l>image_num_Int := image_num_Int_+1</l>
+<l>Index_Int := image_num_Int</l>
+<c></c>
+<c>*alternative</c>
+<l>* sub_image (input_Img, example_ref_example_input_RImg, example_output_Img, 1, 128)</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Index_Int"/>
+<parameter id="image_buffer_Int"/>
+<parameter id="image_format_Enum"/>
+<parameter id="image_num_Int"/>
+<parameter id="image_num_Int_"/>
+<parameter id="image_prefix_String"/>
+<parameter id="input_Img"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface>
+<oc>
+<par name="image_num_Int" base_type="ctrl" dimension="0"/>
+<par name="image_buffer_Int_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>image_num_Int_:= 0</l>
+<l>image_buffer_Int_:=0</l>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters>
+<parameter id="image_buffer_Int_"/>
+<parameter id="image_num_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

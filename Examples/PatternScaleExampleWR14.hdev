@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="13.0.2.1">
+<procedure name="main">
+<interface/>
+<body>
+<c></c>
+<l>HalconCallbacks := ['MyCallback']</l>
+<c></c>
+<l>* HalconRun (input_Img, inAOI_Aoi, example_output_Region, ModelContours_Contour, number_Int, inReal_Real, Greediness_0_1_Real, Scale_Pattern_Min_0_1_Real, Scale_Pattern_Max_0_1_Real, number_Int_, iloscFiolekKor_Real, Result_Real)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="inputImage_Img" base_type="iconic" dimension="0"/>
+<par name="inAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="example_output_Region" base_type="iconic" dimension="0"/>
+<par name="ModelContours_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Model_Tuple" base_type="ctrl" dimension="0"/>
+<par name="MinScore_Percent_Real" base_type="ctrl" dimension="0"/>
+<par name="Greediness_0_1_Real" base_type="ctrl" dimension="0"/>
+<par name="Scale_Pattern_Min_0_1_Real" base_type="ctrl" dimension="0"/>
+<par name="Scale_Pattern_Max_0_1_Real" base_type="ctrl" dimension="0"/>
+<par name="number_Int" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Count_Real" base_type="ctrl" dimension="0"/>
+<par name="Result_Real" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>MinScore := MinScore_Percent_Real</l>
+<c></c>
+<l>if (|Model_Tuple|)</l>
+<l>    iloscFiolek:=0</l>
+<l>    Count_Real := 0</l>
+<l>    reduce_domain(inputImage_Img, inAOI_Aoi,ImageReduced)</l>
+<l>    find_scaled_shape_models (ImageReduced, Model_Tuple, -3.14, 3.14, Scale_Pattern_Min_0_1_Real, Scale_Pattern_Max_0_1_Real, (MinScore/100), number_Int, 0.5, 'least_squares', 0, Greediness_0_1_Real, Row, Column, Angle, Scale, Score, Model)</l>
+<l>    Result_Real:=Score</l>
+<l>    Count_Real := |Score|</l>
+<l>    if (Score&gt;0.2)</l>
+<l>       gen_rectangle1 (example_output_Region, Row, Column, Row+20, Column+20) </l>
+<l>       get_shape_model_contours(ModelContours_Contour,Model_Tuple, 3)</l>
+<l>    else</l>
+<l>        gen_rectangle1 (example_output_Region, 0, 0, 2, 2)</l>
+<l>    endif</l>
+<c>    </c>
+<c>        </c>
+<c>    </c>
+<l>else</l>
+<l>    iloscFiolek:=0</l>
+<l>    Count_Real := 0</l>
+<c>     </c>
+<l>    Result_Real:=0</l>
+<l>endif</l>
+<c>  </c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Count_Real"/>
+<parameter id="Greediness_0_1_Real"/>
+<parameter id="MinScore_Percent_Real"/>
+<parameter id="ModelContours_Contour"/>
+<parameter id="Model_Tuple"/>
+<parameter id="Result_Real"/>
+<parameter id="Scale_Pattern_Max_0_1_Real"/>
+<parameter id="Scale_Pattern_Min_0_1_Real"/>
+<parameter id="example_output_Region"/>
+<parameter id="inAOI_Aoi"/>
+<parameter id="inputImage_Img"/>
+<parameter id="number_Int"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface>
+<oc>
+<par name="number_Int_" base_type="ctrl" dimension="0"/>
+<par name="scaleMin_Real" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>scaleMin_Real := 1</l>
+<l>number_Int_:=1</l>
+<l>MinRotationTechIn_Real := 10</l>
+<l>MaxRotationTechIn_Real := 50</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters>
+<parameter id="number_Int_"/>
+<parameter id="scaleMin_Real"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface>
+<ic>
+<par name="Model_Tuple" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>clear_shape_model(Model_Tuple)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters>
+<parameter id="Model_Tuple"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="MyCallback">
+<interface>
+<io>
+<par name="inputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="callbackImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="TeachIn_Rect" base_type="ctrl" dimension="0"/>
+<par name="MinRotationTechIn_Real" base_type="ctrl" dimension="0"/>
+<par name="MaxRotationTechIn_Real" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Model_Tuple_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c></c>
+<l>crop_rectangle1 (inputImage_Img, callbackImage_Img, TeachIn_Rect[1], TeachIn_Rect[0], TeachIn_Rect[1] + TeachIn_Rect[3], TeachIn_Rect[0] + TeachIn_Rect[2])</l>
+<l>create_scaled_shape_model (callbackImage_Img, 'auto', deg(MinRotationTechIn_Real), deg(MaxRotationTechIn_Real), 'auto', 1.0, 1.1, 'auto', 'auto', 'use_polarity', 'auto', 'auto', Model_Tuple_)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="MyCallback">
+<parameters>
+<parameter id="MaxRotationTechIn_Real"/>
+<parameter id="MinRotationTechIn_Real"/>
+<parameter id="Model_Tuple_"/>
+<parameter id="TeachIn_Rect"/>
+<parameter id="callbackImage_Img"/>
+<parameter id="inputImage_Img"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

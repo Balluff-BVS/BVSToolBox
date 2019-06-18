@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="13.0.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<c>* this example gets an input image and outputs a calculated region</c>
+<c></c>
+<l>* HalconRun (example_input_Img, example_output_Region)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="example_input_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="example_output_Region" base_type="iconic" dimension="0"/>
+</oo>
+</interface>
+<body>
+<c></c>
+<c>* calculate output region from input image</c>
+<l>threshold (example_input_Img, example_output_Region, 0, 127)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="example_input_Img"/>
+<parameter id="example_output_Region"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

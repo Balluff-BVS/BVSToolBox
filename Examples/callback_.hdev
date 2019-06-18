@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="13.0.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<c></c>
+<l>HalconCallbacks := ['MyCallback']</l>
+<c></c>
+<l>* HalconExecute (input_Img)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconExecute">
+<interface>
+<io>
+<par name="inputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+</interface>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconExecute">
+<parameters>
+<parameter id="inputImage_Img"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="MyCallback">
+<interface>
+<io>
+<par name="inputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="callbackImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="callbackRect_Rect" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c></c>
+<l>crop_rectangle1 (inputImage_Img, callbackImage_Img, callbackRect_Rect[1], callbackRect_Rect[0], callbackRect_Rect[1] + callbackRect_Rect[3], callbackRect_Rect[0] + callbackRect_Rect[2])</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="MyCallback">
+<parameters>
+<parameter id="callbackImage_Img"/>
+<parameter id="callbackRect_Rect"/>
+<parameter id="inputImage_Img"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

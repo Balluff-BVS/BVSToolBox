@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="13.0.2.2">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'UR frame'</l>
+<c></c>
+<l>Nx_Int := 100</l>
+<l>Ny_Int := 100</l>
+<l>Nrot_Int := 100</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<ic>
+<par name="Xpos_Real" base_type="ctrl" dimension="0"/>
+<par name="Ypos_Real" base_type="ctrl" dimension="0"/>
+<par name="Rot_Real" base_type="ctrl" dimension="0"/>
+<par name="Nx_Int" base_type="ctrl" dimension="0"/>
+<par name="Ny_Int" base_type="ctrl" dimension="0"/>
+<par name="Nrot_Int" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Xposp_String" base_type="ctrl" dimension="0"/>
+<par name="Yposp_String" base_type="ctrl" dimension="0"/>
+<par name="Rotp_String" base_type="ctrl" dimension="0"/>
+<par name="frame_String" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>pomX := Xpos_Real * Nx_Int</l>
+<l>pomY := Ypos_Real * Ny_Int</l>
+<l>pomR := Rot_Real * Nrot_Int</l>
+<c></c>
+<l>tuple_string (pomX, '.0f', Xposp_String)</l>
+<l>tuple_string (pomY, '.0f', Yposp_String)</l>
+<l>tuple_string (pomR, '.0f', Rotp_String)</l>
+<c></c>
+<l>frame_String := '(' + Xposp_String + ',' + Yposp_String + ',' + Rotp_String + ')'</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Nrot_Int"/>
+<parameter id="Nx_Int"/>
+<parameter id="Ny_Int"/>
+<parameter id="Rot_Real"/>
+<parameter id="Rotp_String"/>
+<parameter id="Xpos_Real"/>
+<parameter id="Xposp_String"/>
+<parameter id="Ypos_Real"/>
+<parameter id="Yposp_String"/>
+<parameter id="frame_String"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

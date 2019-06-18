@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="13.0.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<c></c>
+<l>* HalconRun (input_Img, output_Img)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="output_Img" base_type="iconic" dimension="0"/>
+</oo>
+</interface>
+<body>
+<l>output_Img := input_Img</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="input_Img"/>
+<parameter id="output_Img"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

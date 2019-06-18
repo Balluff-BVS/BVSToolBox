@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="13.0.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<c>* this example gets an input image and returns a transformation which is applied to this image in bvs cockpit</c>
+<c>* if the input image already had a transformation, the transformations are combined </c>
+<c></c>
+<l>* HalconRun (example_input_Img, example_output_example_input_VImg)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="example_input_Img" base_type="iconic" dimension="0"/>
+</io>
+<oc>
+<par name="example_output_example_input_VImg" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c></c>
+<c>* generate a fixed transformation (fixed rotation of 1.234 rad)</c>
+<l>hom_mat2d_identity (HomMat2DIdentity)</l>
+<l>hom_mat2d_rotate_local (HomMat2DIdentity, 1.234, example_output_example_input_VImg)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="example_input_Img"/>
+<parameter id="example_output_example_input_VImg"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
