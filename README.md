@@ -2,7 +2,7 @@
 ## Still under the construction:(
 
 ## myLib docs
-see documentation [here](Manual_HALCON Script-v60-20180129.pdf)
+see documentation [here](Manual_HALCON Script-v60-20180129.md)
 
 
 ## myLib docs
