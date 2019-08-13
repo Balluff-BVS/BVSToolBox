@@ -1,3 +1,3 @@
-** Description **
+**Description**
 
 This is a description
