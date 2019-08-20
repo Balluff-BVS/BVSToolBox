@@ -1,4 +1,4 @@
-# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/TestScripts/blob/master/Filters/Enhacement/ShockFilter/shock_filter.zip" data-icon="octicon-cloud-download">Download</a></p>
+# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/TestScripts/raw/master/Filters/Enhacement/ShockFilter/shock_filter.zip" data-icon="octicon-cloud-download">Download</a></p>
 
 SHOCK FILTER 
 ==========
