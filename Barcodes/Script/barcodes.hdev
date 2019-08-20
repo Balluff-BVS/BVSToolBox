@@ -5,7 +5,7 @@
 <body>
 <l>ToolName := 'Read barcode'</l>
 <l>InfoString := 'Advanced barcode reading'</l>
-<c>*input parameters are described in barcodes_ReadMe.txt</c>
+<c></c>
 <l>check_char_Enum_Values:=['absent', 'present', 'preserved']</l>
 <l>check_char_Enum:='absent'</l>
 <c></c>
@@ -43,9 +43,6 @@
 <l>orientation_MReal_MinMax:=[-90.0, 90.0]</l>
 <l>orientation_MReal:=0.0</l>
 <c></c>
-<l>orientation_tol_MReal_MinMax:=[0.0, 90.0]</l>
-<l>orientation_tol_MReal:=90.0</l>
-<c></c>
 <l>contrast_min_Int:=0</l>
 <l>min_identical_scanlines_Int:=0</l>
 <l>num_scanlines_Int:=0</l>
@@ -53,10 +50,10 @@
 <l>min_code_length_Int:=0</l>
 <l>barcode_width_min_Int:=-1</l>
 <c></c>
-<l>code_to_print_Int:=0</l>
-<l>code_to_check_String:='-'</l>
-<c></c>
 <l>pointers_Region_Color:=[255,0,0]</l>
+<l>code_to_print_Int:=0</l>
+<l>code_to_compare_String:='-'</l>
+<c></c>
 <c></c>
 </body>
 <docu id="main">
@@ -92,7 +89,7 @@
 <par name="min_code_length_Int" base_type="ctrl" dimension="0"/>
 <par name="merge_scanlines_Enum" base_type="ctrl" dimension="0"/>
 <par name="code_to_print_Int" base_type="ctrl" dimension="0"/>
-<par name="code_to_check_String" base_type="ctrl" dimension="0"/>
+<par name="code_to_compare_String" base_type="ctrl" dimension="0"/>
 </ic>
 <oc>
 <par name="number_of_codes_found_Int" base_type="ctrl" dimension="0"/>
@@ -108,40 +105,40 @@
 <par name="majority_voting_toPrint_String" base_type="ctrl" dimension="0"/>
 <par name="num_scanlines_toPrint_Int" base_type="ctrl" dimension="0"/>
 <par name="orientation_toPrint_Real" base_type="ctrl" dimension="0"/>
+<par name="orientation_tol_toPrint_Real" base_type="ctrl" dimension="0"/>
 <par name="start_stop_tolerance_toPrint_String" base_type="ctrl" dimension="0"/>
 <par name="stop_after_result_num_toPrint_Int" base_type="ctrl" dimension="0"/>
 <par name="upce_encodation_toPrint_String" base_type="ctrl" dimension="0"/>
 <par name="merge_scanlines_toPrint_String" base_type="ctrl" dimension="0"/>
 <par name="min_code_length_toPrint_Int" base_type="ctrl" dimension="0"/>
 <par name="decoded_data_String" base_type="ctrl" dimension="0"/>
-<par name="equal_Int" base_type="ctrl" dimension="0"/>
-<par name="code_to_compare_String" base_type="ctrl" dimension="0"/>
+<par name="correctness_String" base_type="ctrl" dimension="0"/>
 </oc>
 </interface>
 <body>
 <c></c>
-<l>create_bar_code_model ([], [], BarCodeHandle)</l>
+<l>create_bar_code_model ([], [], BarCodeHandle_Object)</l>
 <c></c>
-<l>set_bar_code_param (BarCodeHandle, 'check_char', check_char_Enum[1])</l>
-<l>set_bar_code_param (BarCodeHandle, 'composite_code', composite_code_Enum[1])</l>
-<l>set_bar_code_param (BarCodeHandle, 'barcode_height_min', barcode_height_min_MInt)</l>
-<l>set_bar_code_param (BarCodeHandle, 'barcode_width_min', barcode_width_min_Int)</l>
-<l>set_bar_code_param (BarCodeHandle, 'element_size_max', element_size_max_MReal)</l>
-<l>set_bar_code_param (BarCodeHandle, 'element_size_min', element_size_min_MReal)</l>
-<l>set_bar_code_param (BarCodeHandle, 'contrast_min', contrast_min_Int)</l>
-<l>set_bar_code_param (BarCodeHandle, 'meas_thresh', meas_thresh_MReal)</l>
-<l>set_bar_code_param (BarCodeHandle, 'meas_thresh_abs', meas_thresh_abs_MReal)</l>
-<l>set_bar_code_param (BarCodeHandle, 'min_identical_scanlines', min_identical_scanlines_Int)</l>
-<l>set_bar_code_param (BarCodeHandle, 'majority_voting', majority_voting_Enum[1])</l>
-<l>set_bar_code_param (BarCodeHandle, 'num_scanlines', num_scanlines_Int)</l>
-<l>set_bar_code_param (BarCodeHandle, 'orientation', orientation_MReal)</l>
-<l>set_bar_code_param (BarCodeHandle, 'start_stop_tolerance', start_stop_tolerance_Enum[1])</l>
-<l>set_bar_code_param (BarCodeHandle, 'stop_after_result_num', stop_after_result_num_Int)</l>
-<l>set_bar_code_param (BarCodeHandle, 'upce_encodation', upce_encodation_Enum[1])</l>
-<l>set_bar_code_param (BarCodeHandle, 'min_code_length', min_code_length_Int)</l>
-<l>set_bar_code_param (BarCodeHandle, 'merge_scanlines', merge_scanlines_Enum[1])</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'check_char', check_char_Enum[1])</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'composite_code', composite_code_Enum[1])</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'barcode_height_min', barcode_height_min_MInt)</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'barcode_width_min', barcode_width_min_Int)</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'element_size_max', element_size_max_MReal)</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'element_size_min', element_size_min_MReal)</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'contrast_min', contrast_min_Int)</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'meas_thresh', meas_thresh_MReal)</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'meas_thresh_abs', meas_thresh_abs_MReal)</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'min_identical_scanlines', min_identical_scanlines_Int)</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'majority_voting', majority_voting_Enum[1])</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'num_scanlines', num_scanlines_Int)</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'orientation', orientation_MReal)</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'start_stop_tolerance', start_stop_tolerance_Enum[1])</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'stop_after_result_num', stop_after_result_num_Int)</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'upce_encodation', upce_encodation_Enum[1])</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'min_code_length', min_code_length_Int)</l>
+<l>set_bar_code_param (BarCodeHandle_Object, 'merge_scanlines', merge_scanlines_Enum[1])</l>
 <c></c>
-<l>find_bar_code (input_Img, output_Region, BarCodeHandle, 'auto', decoded)</l>
+<l>find_bar_code (input_Img, output_Region, BarCodeHandle_Object, 'auto', decoded)</l>
 <l>count_obj (output_Region, number_of_codes_found_Int)</l>
 <c>*the barcode with index 'code_to_print' is pointed with red dot</c>
 <l>gen_empty_region (pointers_Region)</l>
@@ -155,29 +152,30 @@
 <l>    correctness_String:='Code is correct'</l>
 <l>else</l>
 <l>    correctness_String:='Wrong code'</l>
-<l>endif</l>
+<l> endif</l>
 <c></c>
-<l>get_bar_code_param (BarCodeHandle, 'check_char', check_char_toPrint_String)</l>
-<l>get_bar_code_param (BarCodeHandle, 'composite_code', composite_code_toPrint_String)</l>
-<l>get_bar_code_param (BarCodeHandle, 'barcode_height_min', barcode_height_min_toPrint_Int)</l>
-<l>get_bar_code_param (BarCodeHandle, 'barcode_width_min', barcode_width_min_toPrint_Int)</l>
-<l>get_bar_code_param (BarCodeHandle, 'element_size_max', element_size_max_toPrint_Real)</l>
-<l>get_bar_code_param (BarCodeHandle, 'contrast_min', contrast_min_toPrint_Int)</l>
-<l>get_bar_code_param (BarCodeHandle, 'meas_thresh', meas_thresh_toPrint_Real)</l>
-<l>get_bar_code_param (BarCodeHandle, 'meas_thresh_abs', meas_thresh_abs_toPrint_Real)</l>
-<l>get_bar_code_param (BarCodeHandle, 'min_identical_scanlines', min_identical_scanlines_toPrint_Int)</l>
-<l>get_bar_code_param (BarCodeHandle, 'majority_voting', majority_voting_toPrint_String)</l>
-<l>get_bar_code_param (BarCodeHandle, 'num_scanlines', num_scanlines_toPrint_Int)</l>
-<l>get_bar_code_param (BarCodeHandle, 'orientation', orientation_toPrint_Real)</l>
-<l>get_bar_code_param (BarCodeHandle, 'orientation_tol', orientation_tol_toPrint_Real)</l>
-<l>get_bar_code_param (BarCodeHandle, 'start_stop_tolerance', start_stop_tolerance_toPrint_String)</l>
-<l>get_bar_code_param (BarCodeHandle, 'stop_after_result_num', stop_after_result_num_toPrint_Int)</l>
-<l>get_bar_code_param (BarCodeHandle, 'upce_encodation', upce_encodation_toPrint_String)</l>
-<l>get_bar_code_param (BarCodeHandle, 'timeout', timeout_toPrint_String)</l>
-<l>get_bar_code_param (BarCodeHandle, 'merge_scanlines', merge_scanlines_toPrint_String)</l>
-<l>get_bar_code_param (BarCodeHandle, 'min_code_length', min_code_length_toPrint_Int)</l>
 <c></c>
-<l>clear_bar_code_model (BarCodeHandle)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'check_char', check_char_toPrint_String)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'composite_code', composite_code_toPrint_String)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'barcode_height_min', barcode_height_min_toPrint_Int)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'barcode_width_min', barcode_width_min_toPrint_Int)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'element_size_max', element_size_max_toPrint_Real)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'contrast_min', contrast_min_toPrint_Int)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'meas_thresh', meas_thresh_toPrint_Real)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'meas_thresh_abs', meas_thresh_abs_toPrint_Real)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'min_identical_scanlines', min_identical_scanlines_toPrint_Int)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'majority_voting', majority_voting_toPrint_String)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'num_scanlines', num_scanlines_toPrint_Int)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'orientation', orientation_toPrint_Real)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'orientation_tol', orientation_tol_toPrint_Real)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'start_stop_tolerance', start_stop_tolerance_toPrint_String)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'stop_after_result_num', stop_after_result_num_toPrint_Int)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'upce_encodation', upce_encodation_toPrint_String)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'timeout', timeout_toPrint_String)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'merge_scanlines', merge_scanlines_toPrint_String)</l>
+<l>get_bar_code_param (BarCodeHandle_Object, 'min_code_length', min_code_length_toPrint_Int)</l>
+<c></c>
+<l>clear_bar_code_model (BarCodeHandle_Object)</l>
 <c></c>
 <l>return ()</l>
 </body>
@@ -189,18 +187,17 @@
 <parameter id="barcode_width_min_toPrint_Int"/>
 <parameter id="check_char_Enum"/>
 <parameter id="check_char_toPrint_String"/>
-<parameter id="code_to_check_String"/>
 <parameter id="code_to_compare_String"/>
 <parameter id="code_to_print_Int"/>
 <parameter id="composite_code_Enum"/>
 <parameter id="composite_code_toPrint_String"/>
 <parameter id="contrast_min_Int"/>
 <parameter id="contrast_min_toPrint_Int"/>
+<parameter id="correctness_String"/>
 <parameter id="decoded_data_String"/>
 <parameter id="element_size_max_MReal"/>
 <parameter id="element_size_max_toPrint_Real"/>
 <parameter id="element_size_min_MReal"/>
-<parameter id="equal_Int"/>
 <parameter id="input_Img"/>
 <parameter id="majority_voting_Enum"/>
 <parameter id="majority_voting_toPrint_String"/>
@@ -219,6 +216,7 @@
 <parameter id="number_of_codes_found_Int"/>
 <parameter id="orientation_MReal"/>
 <parameter id="orientation_toPrint_Real"/>
+<parameter id="orientation_tol_toPrint_Real"/>
 <parameter id="output_Region"/>
 <parameter id="pointers_Region"/>
 <parameter id="start_stop_tolerance_Enum"/>
@@ -228,6 +226,26 @@
 <parameter id="upce_encodation_Enum"/>
 <parameter id="upce_encodation_toPrint_String"/>
 </parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
 </docu>
 </procedure>
 </hdevelop>
