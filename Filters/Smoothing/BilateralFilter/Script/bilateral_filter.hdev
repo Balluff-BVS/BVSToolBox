@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Bilateral filter'</l>
+<l>InfoString := 'Bilateral filtering of an image.'</l>
+<c></c>
+<l>sigmaSpatial_Real:=5</l>
+<l>sigmaRange_Real:=20</l>
+<l>loops_Int:=10</l>
+<l>grayval_of_constant_image_Int:=0</l>
+<l>sampling_method_Enum_Values:=['grid', 'poisson_disk', 'exact']</l>
+<l>sampling_method_Enum:='grid'</l>
+<l>sampling_ratio_Real:=0.5</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="output_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="sigmaSpatial_Real" base_type="ctrl" dimension="0"/>
+<par name="sigmaRange_Real" base_type="ctrl" dimension="0"/>
+<par name="loops_Int" base_type="ctrl" dimension="0"/>
+<par name="sampling_ratio_Real" base_type="ctrl" dimension="0"/>
+<par name="sampling_method_Enum" base_type="ctrl" dimension="0"/>
+<par name="grayval_of_constant_image_Int" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c></c>
+<l>genParamName:=['sampling_method', 'sampling_ratio']</l>
+<l>genParamValue:=[sampling_method_Enum[1], sampling_ratio_Real]</l>
+<c></c>
+<l>gen_image_proto (input_Img, ImageJoint, grayval_of_constant_image_Int)</l>
+<l>for Index := 1 to loops_Int by 1</l>
+<l>     bilateral_filter (input_Img, ImageJoint, output_Img, sigmaSpatial_Real, sigmaRange_Real, genParamName, genParamValue)</l>
+<l>endfor</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="grayval_of_constant_image_Int"/>
+<parameter id="input_Img"/>
+<parameter id="loops_Int"/>
+<parameter id="output_Img"/>
+<parameter id="sampling_method_Enum"/>
+<parameter id="sampling_ratio_Real"/>
+<parameter id="sigmaRange_Real"/>
+<parameter id="sigmaSpatial_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
