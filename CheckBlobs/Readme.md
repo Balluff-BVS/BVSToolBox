@@ -1,11 +1,11 @@
-# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/TestScripts/raw/master/CheckBlobs/check_blobs.zip" data-icon="octicon-cloud-download">Download</a></p>
+# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/halconscripts/raw/master/CheckBlobs/check_blobs.zip" data-icon="octicon-cloud-download">Download</a></p>
 
 CHECK BLOBS
 ===========
 Example
 ---------
 <p align="center">
-  <img src="https://github.com/Balluff-BVS/TestScripts/blob/master/CheckBlobs/check_blobs.png?raw=true" alt="Picture error">
+  <img src="https://github.com/Balluff-BVS/halconscripts/blob/master/CheckBlobs/check_blobs.png?raw=true" alt="Picture error">
 </p>
 
 Description
