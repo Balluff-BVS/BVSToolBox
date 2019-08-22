@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'MSER Segmentation'</l>
+<l>InfoString := 'Segment image using Maximally Stable Extremal Regions (MSER).'</l>
+<c></c>
+<l>polarity_Enum_Values:=['both', 'dark', 'light']</l>
+<l>polarity_Enum:='both'</l>
+<c></c>
+<l>minArea_Int:=10</l>
+<l>maxArea_Int:=10000</l>
+<l>channel_Int:=1</l>
+<l>delta_Int:=15</l>
+<c></c>
+<l>max_variation_Real:=0.2</l>
+<l>min_diversity_Real:=0.8</l>
+<c></c>
+<l>may_touch_border_Enum_Values:=['false','true']</l>
+<l>may_touch_border_Enum:='false'</l>
+<c></c>
+<l>MSERDark_Region_Color:=[255,0,0]</l>
+<l>MSERLight_Region:=[0,0,255]</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="MSERDark_Region" base_type="iconic" dimension="0"/>
+<par name="MSERLight_Region" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="polarity_Enum" base_type="ctrl" dimension="0"/>
+<par name="minArea_Int" base_type="ctrl" dimension="0"/>
+<par name="maxArea_Int" base_type="ctrl" dimension="0"/>
+<par name="channel_Int" base_type="ctrl" dimension="0"/>
+<par name="delta_Int" base_type="ctrl" dimension="0"/>
+<par name="max_variation_Real" base_type="ctrl" dimension="0"/>
+<par name="min_diversity_Real" base_type="ctrl" dimension="0"/>
+<par name="may_touch_border_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c></c>
+<l>may_touch_border_val:='false'</l>
+<c></c>
+<l>if(may_touch_border_Enum[1]=='false')</l>
+<l>    may_touch_border_val:='false'</l>
+<l>elseif(may_touch_border_Enum[1]=='true')</l>
+<l>    may_touch_border_val:='true'</l>
+<l>endif</l>
+<c></c>
+<l>genParamName:=['max_variation', 'may_touch_border', 'min_diversity']</l>
+<l>genParamValue:=[max_variation_Real, may_touch_border_val, min_diversity_Real]</l>
+<c></c>
+<l>count_channels (input_Img, Channels)</l>
+<l>channel_Int:=Channels</l>
+<l>access_channel (input_Img, ImageToSegment, channel_Int)</l>
+<l>segment_image_mser (ImageToSegment, MSERDark_Region, MSERLight_Region, polarity_Enum[1], \
+                    minArea_Int, maxArea_Int, delta_Int, genParamName, genParamValue)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="MSERDark_Region"/>
+<parameter id="MSERLight_Region"/>
+<parameter id="channel_Int"/>
+<parameter id="delta_Int"/>
+<parameter id="input_Img"/>
+<parameter id="maxArea_Int"/>
+<parameter id="max_variation_Real"/>
+<parameter id="may_touch_border_Enum"/>
+<parameter id="minArea_Int"/>
+<parameter id="min_diversity_Real"/>
+<parameter id="polarity_Enum"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
