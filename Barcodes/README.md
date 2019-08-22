@@ -1,11 +1,11 @@
-# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/TestScripts/raw/master/Barcodes/barcodes.zip" data-icon="octicon-cloud-download">Download</a></p>
+# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/halconscripts/raw/master/Barcodes/barcodes.zip" data-icon="octicon-cloud-download">Download</a></p>
 
 READ BARCODE
 ===========
 Example
 ---------
 <p align="center">
-  <img src="https://github.com/Balluff-BVS/TestScripts/blob/master/Barcodes/barcodes_img.PNG?raw=true" alt="Picture error">
+  <img src="https://github.com/Balluff-BVS/halconscripts/blob/master/Barcodes/barcodes_img.PNG?raw=true" alt="Picture error">
 </p>
 
 Description
