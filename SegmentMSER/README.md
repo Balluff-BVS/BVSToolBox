@@ -1,11 +1,11 @@
-# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/TestScripts/raw/master/SegmentMSER/segment_mser.zip" data-icon="octicon-cloud-download">Download</a></p>
+# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/halconscripts/raw/master/SegmentMSER/segment_mser.zip" data-icon="octicon-cloud-download">Download</a></p>
 
 SEGMENT MSER
 ===========
 Example
 ---------
 <p align="center">
-  <img src="https://github.com/Balluff-BVS/TestScripts/blob/master/SegmentMSER/segment_mser.PNG?raw=true">
+  <img src="https://github.com/Balluff-BVS/halconscripts/raw/master/SegmentMSER/segment_mser.PNG">
 </p>
 
 Description
