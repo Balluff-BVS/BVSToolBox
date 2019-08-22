@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Read DXF'</l>
+<l>InfoString:='Read .dxf file from chosen folder'</l>
+<c>*press Execute to load contours saved in .dxf</c>
+<l>HalconCallbacks:=['Read']</l>
+<c></c>
+<l>filename_String:='kontury'</l>
+<l>file_directory_String:='-'</l>
+<c></c>
+<l>read_image (Image, 'C:/Users/Agata/Desktop/Agatka/img/pcb_layout.png')</l>
+<l>threshold (Image, Region, 0, 128)</l>
+<l>gen_contour_region_xld (Region, Contours, 'border')</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="contour_Contours" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="filename_String" base_type="ctrl" dimension="0"/>
+<par name="file_directory_String" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="file_toPrint_String" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>*if user doesn't put specific directory, the model is saved in default directory</c>
+<c>*as default the  model is saved in 'images' folder on industrial controller</c>
+<c>*specific directory works only when using BVS Cockpit installed on PC</c>
+<c>*file_toPrint_String shows where the model is saved</c>
+<l>if(file_directory_String!='-')</l>
+<l>    file_toPrint_String:=file_directory_String+filename_String+'.dxf'</l>
+<l>else</l>
+<l>    file_toPrint_String:='/data/icsServer/share/images/'+filename_String+'.dxf'    </l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="contour_Contours"/>
+<parameter id="file_directory_String"/>
+<parameter id="file_toPrint_String"/>
+<parameter id="filename_String"/>
+<parameter id="input_Img"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="Read">
+<interface>
+<oo>
+<par name="contours_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="filename_String" base_type="ctrl" dimension="0"/>
+<par name="file_directory_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c></c>
+<l>if(file_directory_String!='-')</l>
+<l>    file_dir:=file_directory_String+filename_String+'.dxf'</l>
+<l>else</l>
+<l>    file_dir:='/data/icsServer/share/images/'+filename_String+'.dxf'    </l>
+<l>endif</l>
+<c></c>
+<l>read_contour_xld_dxf (contours_Contour, file_dir, [], [], DxfStatus)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="Read">
+<parameters>
+<parameter id="contours_Contour"/>
+<parameter id="file_directory_String"/>
+<parameter id="filename_String"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
