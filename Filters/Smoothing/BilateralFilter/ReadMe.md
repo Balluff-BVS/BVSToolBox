@@ -1,4 +1,4 @@
-# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/halconscripts/raw/master/Filters/Smoothing/BilateralFilter/bilateral_filter.zip">Download</a></p>
+# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/TestScripts/raw/master/Filters/Smoothing/BilateralFilter/bilateral_filter.zip" data-icon="octicon-cloud-download">Download</a></p>
 
 BILATERAL FILTER
 ==========
@@ -7,7 +7,7 @@ BILATERAL FILTER
 
 Original Picture             | Filtered Picture
 :-------------------------:|:-------------------------:
-![Image error](https://github.com/Balluff-BVS/TestScripts/blob/master/Filters/Smoothing/BilateralFilter/original.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/TestScripts/blob/master/Filters/Smoothing/BilateralFilter/bilateral_image.png?raw=true)
+![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Filters/Smoothing/BilateralFilter/original.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Filters/Smoothing/BilateralFilter/bilateral_image.png?raw=true)
 
 Description
 ----------
