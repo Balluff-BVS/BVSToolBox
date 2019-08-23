@@ -189,6 +189,10 @@
 <l>    correctness_String:='None of codes is correct (or \'code_to_compare\' field is empty) '</l>
 <l>endif</l>
 <c></c>
+<l>if(number_of_codes_correct==number_of_codes_found_Int)</l>
+<l>    correctness_String:='All codes are correct'</l>
+<l>endif</l>
+<c></c>
 <l>get_bar_code_param (BarCodeHandle_Object, 'check_char', check_char_toPrint_String)</l>
 <l>get_bar_code_param (BarCodeHandle_Object, 'composite_code', composite_code_toPrint_String)</l>
 <l>get_bar_code_param (BarCodeHandle_Object, 'barcode_height_min', barcode_height_min_toPrint_Int)</l>
