@@ -10,9 +10,11 @@ Example
 
 Description
 ----------
-Detects and reads bar code symbols in an image.
+Detects and reads bar code symbols in a whole image or chosen region of interest. 
 
 Enables setting up to 18 parameters to improve detection. User may choose how many of read codes are displayed as output, check their correctness and point one of them in the picture. 
+
+The correct value of code is read from the code matched in Wizard. When function is running, this value is compared with other detected codes. It is also possible to give correct value of code as input parameter, but this would be used when Wizard has not been performed.
 
 Input parameters
 --------------
@@ -26,7 +28,7 @@ Input parameters
 
 **code_to_print** - pick one of indexes of found *Barcodes* and mark it on the image with red pointer. Counting starts from '1'.
 
-**code_to_compare** - value of code to compare with read codes. All found codes are compared with this string.
+**input_code_to_compare** - value of code to compare with read codes. All found codes are compared with this string unless the Wizard is performed and the code matched in Wizard can be read.
 
 **check_char** - When set to 'present', a check character is expected and used to verify the 
 		correctness of the bar code. No bar code result is returned if the check 
@@ -168,5 +170,7 @@ Regions containing detected barcodes and red pointer marking barcode with index 
 **Barcodes1, Barcodes2, ...** - strings with codes read from the image.
 
 **correctness** - information whether any of *Barcodes* is the same as *code_to_check*. If so, also prints its index.
+
+**code_to_compare** - value of code currently set as correct. This equals either the code read in Wizard or *input_code_to_compare* if Wizard has not been performed.
 
 Additionally, all input parameters are displayed as output.
