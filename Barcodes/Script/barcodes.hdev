@@ -18,7 +18,7 @@
 <l>code_type_Enum:='auto'</l>
 <c></c>
 <l>code_to_print_Int:=1</l>
-<l>code_to_compare_String:='-'</l>
+<l>input_code_to_compare_String:='-'</l>
 <c></c>
 <c></c>
 <l>check_char_Enum_Values:=['absent', 'present', 'preserved']</l>
@@ -66,6 +66,7 @@
 <l>barcode_width_min_Int:=-1</l>
 <c></c>
 <l>pointers_Region_Color:=[255,0,0]</l>
+<l>output_Region_Color:=[255,255,0]</l>
 <c></c>
 <l>ArrayCount:=3</l>
 <l>ArrayCount_MinMax:=[1,100]</l>
@@ -79,6 +80,8 @@
 <interface>
 <io>
 <par name="input_Img" base_type="iconic" dimension="0"/>
+<par name="Mask" base_type="iconic" dimension="0"/>
+<par name="ROI_Aoi" base_type="iconic" dimension="0"/>
 </io>
 <oo>
 <par name="output_Region" base_type="iconic" dimension="0"/>
@@ -86,7 +89,7 @@
 </oo>
 <ic>
 <par name="code_type_Enum" base_type="ctrl" dimension="0"/>
-<par name="code_to_compare_String" base_type="ctrl" dimension="0"/>
+<par name="input_code_to_compare_String" base_type="ctrl" dimension="0"/>
 <par name="code_to_print_Int" base_type="ctrl" dimension="0"/>
 <par name="check_char_Enum" base_type="ctrl" dimension="0"/>
 <par name="composite_code_Enum" base_type="ctrl" dimension="0"/>
@@ -126,6 +129,7 @@
 <par name="min_code_length_toPrint_Int" base_type="ctrl" dimension="0"/>
 <par name="correctness_String" base_type="ctrl" dimension="0"/>
 <par name="Barcode_StringArray" base_type="ctrl" dimension="0"/>
+<par name="code_to_compare_String" base_type="ctrl" dimension="0"/>
 </oc>
 </interface>
 <body>
@@ -148,13 +152,28 @@
 <l>set_bar_code_param (BarCodeHandle_Object, 'upce_encodation', upce_encodation_Enum[1])</l>
 <l>set_bar_code_param (BarCodeHandle_Object, 'min_code_length', min_code_length_Int)</l>
 <c></c>
-<l>find_bar_code (input_Img, output_Region, BarCodeHandle_Object, code_type_Enum[1], Barcode_StringArray)</l>
+<c>*reading code from region marked with mask in Wizard</c>
+<l>reduce_domain (input_Img, Mask, CodeToCompare)</l>
+<l>find_bar_code (CodeToCompare, SymbolRegions, BarCodeHandle_Object, 'auto', DecodedDataStrings)</l>
+<l>count_obj (SymbolRegions, Number)</l>
+<c>*if code marked in wizard can be read to DecodedDataString, it's used as model code to</c>
+<c>*check correctness of other detected codes</c>
+<c>*otherwise, correctness of the rest of detected codes is checked by comparing them with input_code_to_compare_String</c>
+<l>code_to_compare_String:=input_code_to_compare_String</l>
+<l>if (Number&gt;0)</l>
+<l>    code_to_compare_String := DecodedDataStrings</l>
+<l>endif</l>
+<c></c>
+<l>reduce_domain (input_Img, ROI_Aoi, ImageReduced)</l>
+<l>find_bar_code (ImageReduced, output_Region, BarCodeHandle_Object, code_type_Enum[1], Barcode_StringArray)</l>
 <l>count_obj (output_Region, number_of_codes_found_Int)</l>
 <c>*the barcode with index 'code_to_print' is pointed with red dot</c>
 <l>gen_empty_region (pointers_Region)</l>
 <l>area_center (output_Region, Area, Row, Column)</l>
-<l>gen_circle (pointers_Region, Row[code_to_print_Int-1], Column[code_to_print_Int-1], 10)</l>
-<c>*checks if the code matched with pointer is the same as given in 'code_to_compare'</c>
+<l>if(code_to_print_Int&gt;0 and code_to_print_Int&lt;number_of_codes_found_Int)</l>
+<l>    gen_circle (pointers_Region, Row[code_to_print_Int-1], Column[code_to_print_Int-1], 10)</l>
+<l>endif</l>
+<c>*compares values of detected codes with code_to_compare_String</c>
 <l>number_of_codes_correct:=0</l>
 <l>correctness_String:='Correct code with index: '</l>
 <l>for i:=0 to number_of_codes_found_Int-1 by 1</l>
@@ -196,6 +215,8 @@
 <parameters>
 <parameter id="ArrayCount"/>
 <parameter id="Barcode_StringArray"/>
+<parameter id="Mask"/>
+<parameter id="ROI_Aoi"/>
 <parameter id="barcode_height_min_MInt"/>
 <parameter id="barcode_height_min_toPrint_Int"/>
 <parameter id="barcode_width_min_Int"/>
@@ -214,6 +235,7 @@
 <parameter id="element_size_max_toPrint_Real"/>
 <parameter id="element_size_min_MReal"/>
 <parameter id="input_Img"/>
+<parameter id="input_code_to_compare_String"/>
 <parameter id="majority_voting_Enum"/>
 <parameter id="majority_voting_toPrint_String"/>
 <parameter id="meas_thresh_MReal"/>
