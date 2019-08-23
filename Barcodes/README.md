@@ -18,6 +18,9 @@ The correct value of code is read from the code matched in Wizard. When function
 
 Input parameters
 --------------
+
+**ROI** - region of interest, which is searched for barcodes.
+
 **ArrayCount** - number of codes to be displayed as output
 
 **code_type** - Type of the searched bar code.
