@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Texture Laws'</l>
+<l>InfoString := ' Filter an image using a Laws texture filter. Filter size can be only set to 3, 5, 7'</l>
+<c></c>
+<l>FilterTypes_Enum_Values:=[ 'll', 'le', 'ls', 'lw', 'lr', 'lu', 'lo', 'el', 'ee', 'es', 'ew', 'er', 'eu', 'eo', 'sl', 'se', 'ss', 'sw', 'sr', 'su', 'so', 'wl', 'we', 'ws', 'ww', 'wr', 'wu', 'wo', 'rl', 're', 'rs', 'rw', 'rr', 'ru', 'ro', 'ul', 'ue', 'us', 'uw', 'ur', 'uu', 'uo', 'ol', 'oe', 'os', 'ow', 'or', 'ou', 'oo']</l>
+<l>FilterTypes_Enum:='el'</l>
+<c></c>
+<l>Shift_Int:=2</l>
+<c></c>
+<c></c>
+<l>FilterSize_Int:=3</l>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageTexture_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="FilterTypes_Enum" base_type="ctrl" dimension="0"/>
+<par name="Shift_Int" base_type="ctrl" dimension="0"/>
+<par name="FilterSize_Int" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c></c>
+<l>texture_laws (Image_Img, ImageTexture_Img, FilterTypes_Enum[1], Shift_Int, FilterSize_Int)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="FilterSize_Int"/>
+<parameter id="FilterTypes_Enum"/>
+<parameter id="ImageTexture_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="Shift_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
