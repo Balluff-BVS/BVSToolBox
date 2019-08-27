@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Harmonic interpolation'</l>
+<l>InfoString := 'Perform a harmonic interpolation on an image region. Reconstructs the destroyed image data of Image inside the region Region'</l>
+<c></c>
+<l>MinTresh_MInt_MinMax:= [0, 255]</l>
+<l>MinTresh_MInt:=128</l>
+<c></c>
+<l>MaxTresh_MInt_MinMax:= [0, 255]</l>
+<l>MaxTresh_MInt:=255</l>
+<c></c>
+<l>Precision_Real:=0.001</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+<par name="Mask" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="InpaintedImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MinTresh_MInt" base_type="ctrl" dimension="0"/>
+<par name="MaxTresh_MInt" base_type="ctrl" dimension="0"/>
+<par name="Precision_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>if (Precision_Real &lt; 0)</l>
+<l>    Precision_Real:=0</l>
+<l>endif</l>
+<c></c>
+<l>reduce_domain (Image_Img,Mask,ImageReduced)</l>
+<l>threshold (ImageReduced, Region, MinTresh_MInt, MaxTresh_MInt)</l>
+<l>connection (Region, ConnectedRegions)</l>
+<c></c>
+<l>harmonic_interpolation (ImageReduced, ConnectedRegions, InpaintedImage_Img, Precision_Real)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Image_Img"/>
+<parameter id="InpaintedImage_Img"/>
+<parameter id="Mask"/>
+<parameter id="MaxTresh_MInt"/>
+<parameter id="MinTresh_MInt"/>
+<parameter id="Precision_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'inpainting_ct'</l>
+<l>InfoString := ' Perform an inpainting by coherence transport.'</l>
+<c></c>
+<l>MinTresh_MInt_MinMax:= [0, 255]</l>
+<l>MinTresh_MInt:=128</l>
+<c></c>
+<l>MaxTresh_MInt_MinMax:= [0, 255]</l>
+<l>MaxTresh_MInt:=255</l>
+<c></c>
+<l>Epsilon_MReal_MinMax:=[1,20]</l>
+<l>Epsilon_MReal:=5</l>
+<c></c>
+<l>Kappa_MReal_MinMax:=[0,100]</l>
+<l>Kappa_MReal:=25</l>
+<c></c>
+<l>Sigma_MReal_MinMax:=[0,20]</l>
+<l>Sigma_MReal:=1.41</l>
+<c></c>
+<l>Rho_MReal_MinMax:=[0.001,20]</l>
+<l>Rho_MReal:=4</l>
+<c></c>
+<l>ChannelCoeficient_Int:=1</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+<par name="Mask" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="InpaintedImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MinTresh_MInt" base_type="ctrl" dimension="0"/>
+<par name="MaxTresh_MInt" base_type="ctrl" dimension="0"/>
+<par name="Epsilon_MReal" base_type="ctrl" dimension="0"/>
+<par name="Kappa_MReal" base_type="ctrl" dimension="0"/>
+<par name="Sigma_MReal" base_type="ctrl" dimension="0"/>
+<par name="Rho_MReal" base_type="ctrl" dimension="0"/>
+<par name="ChannelCoeficient_Int" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>reduce_domain (Image_Img,Mask,ImageReduced)</l>
+<l>threshold (ImageReduced, Region, MinTresh_MInt, MaxTresh_MInt)</l>
+<l>connection (Region, ConnectedRegions)</l>
+<c></c>
+<l>inpainting_ct (ImageReduced, ConnectedRegions, InpaintedImage_Img, Epsilon_MReal, Kappa_MReal, Sigma_MReal, Rho_MReal, ChannelCoeficient_Int)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ChannelCoeficient_Int"/>
+<parameter id="Epsilon_MReal"/>
+<parameter id="Image_Img"/>
+<parameter id="InpaintedImage_Img"/>
+<parameter id="Kappa_MReal"/>
+<parameter id="Mask"/>
+<parameter id="MaxTresh_MInt"/>
+<parameter id="MinTresh_MInt"/>
+<parameter id="Rho_MReal"/>
+<parameter id="Sigma_MReal"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

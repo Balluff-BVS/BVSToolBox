@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Inpainting aniso'</l>
+<l>InfoString := 'Perform an inpainting by anisotropic diffusion.'</l>
+<c></c>
+<l>MinTresh_MInt_MinMax:= [0, 255]</l>
+<l>MinTresh_MInt:=128</l>
+<c></c>
+<l>MaxTresh_MInt_MinMax:= [0, 255]</l>
+<l>MaxTresh_MInt:=255</l>
+<c></c>
+<l>Contrast_Real:=5</l>
+<c></c>
+<l>Theta_Real:=0.5</l>
+<c></c>
+<l>Iterations_Int:=10</l>
+<c></c>
+<l>Rho_Real:=3</l>
+<c></c>
+<l>Mode_Enum_Values:=['parabolic', 'perona-malik', 'shock', 'weickert']</l>
+<l>Mode_Enum:='weickert'</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+<par name="Mask" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="InpaintedImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MinTresh_MInt" base_type="ctrl" dimension="0"/>
+<par name="MaxTresh_MInt" base_type="ctrl" dimension="0"/>
+<par name="Mode_Enum" base_type="ctrl" dimension="0"/>
+<par name="Contrast_Real" base_type="ctrl" dimension="0"/>
+<par name="Theta_Real" base_type="ctrl" dimension="0"/>
+<par name="Iterations_Int" base_type="ctrl" dimension="0"/>
+<par name="Rho_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>if (Contrast_Real &lt;= 0)</l>
+<l>    Contrast_Real:=0.1</l>
+<l>endif</l>
+<c></c>
+<l>if (Theta_Real &lt;= 0)</l>
+<l>    Theta_Real:=0.1</l>
+<l>endif</l>
+<c></c>
+<l>if (Rho_Real &lt; 0)</l>
+<l>    Rho_Real:=0</l>
+<l>endif</l>
+<c></c>
+<l>if (Iterations_Int &lt; 1)</l>
+<l>    Iterations_Int:=1</l>
+<l>endif</l>
+<c></c>
+<l>reduce_domain (Image_Img,Mask,ImageReduced)</l>
+<l>threshold (ImageReduced, Region, MinTresh_MInt, MaxTresh_MInt)</l>
+<l>connection (Region, ConnectedRegions)</l>
+<c></c>
+<l>inpainting_aniso (ImageReduced, ConnectedRegions, InpaintedImage_Img, Mode_Enum[1], Contrast_Real, Theta_Real, Iterations_Int, Rho_Real)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Contrast_Real"/>
+<parameter id="Image_Img"/>
+<parameter id="InpaintedImage_Img"/>
+<parameter id="Iterations_Int"/>
+<parameter id="Mask"/>
+<parameter id="MaxTresh_MInt"/>
+<parameter id="MinTresh_MInt"/>
+<parameter id="Mode_Enum"/>
+<parameter id="Rho_Real"/>
+<parameter id="Theta_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

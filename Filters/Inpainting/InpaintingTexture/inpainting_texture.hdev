@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Inpainting texture'</l>
+<l>InfoString := 'Perform an inpainting by texture propagation. All Even values of MaskSize are changed to odd by adding 1'</l>
+<c></c>
+<l>MinTresh_MInt_MinMax:= [0, 255]</l>
+<l>MinTresh_MInt:=128</l>
+<c></c>
+<l>MaxTresh_MInt_MinMax:= [0, 255]</l>
+<l>MaxTresh_MInt:=255</l>
+<c></c>
+<l>MaskSize_Int:=9</l>
+<c></c>
+<l>SearchSize_Int:=30</l>
+<c></c>
+<l>Anisotropy_Real:=1</l>
+<c></c>
+<l>Smoothness_Real:=1</l>
+<c></c>
+<l>PostIteration_Enum_Values:=['min_grad', 'min_range_extension', 'none']</l>
+<l>PostIteration_Enum:='none'</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+<par name="Mask" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="InpaintedImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MinTresh_MInt" base_type="ctrl" dimension="0"/>
+<par name="MaxTresh_MInt" base_type="ctrl" dimension="0"/>
+<par name="MaskSize_Int" base_type="ctrl" dimension="0"/>
+<par name="SearchSize_Int" base_type="ctrl" dimension="0"/>
+<par name="Anisotropy_Real" base_type="ctrl" dimension="0"/>
+<par name="Smoothness_Real" base_type="ctrl" dimension="0"/>
+<par name="PostIteration_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="MaskSizeInfo_Int" base_type="ctrl" dimension="0"/>
+<par name="SearchSizeInfo_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>if (Smoothness_Real &lt; 0)</l>
+<l>    Smoothness_Real:=0</l>
+<l>endif</l>
+<c></c>
+<l>if (Anisotropy_Real &lt; 0)</l>
+<l>    Anisotropy_Real:=0</l>
+<l>endif</l>
+<c></c>
+<l>if (MaskSize_Int &lt; 3)</l>
+<l>    MaskSize_Int :=3</l>
+<l>endif</l>
+<c></c>
+<l>MaskSize_Int:=(MaskSize_Int/2)*2+1</l>
+<c></c>
+<c></c>
+<l>reduce_domain (Image_Img,Mask,ImageReduced)</l>
+<l>threshold (ImageReduced, Region, MinTresh_MInt, MaxTresh_MInt)</l>
+<l>connection (Region, ConnectedRegions)</l>
+<c></c>
+<l>inpainting_texture (ImageReduced, ConnectedRegions, InpaintedImage_Img, MaskSize_Int, SearchSize_Int, Anisotropy_Real, PostIteration_Enum[1], Smoothness_Real)</l>
+<c></c>
+<l>MaskSizeInfo_Int:=MaskSize_Int</l>
+<l>SearchSizeInfo_Int:=SearchSize_Int</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Anisotropy_Real"/>
+<parameter id="Image_Img"/>
+<parameter id="InpaintedImage_Img"/>
+<parameter id="Mask"/>
+<parameter id="MaskSizeInfo_Int"/>
+<parameter id="MaskSize_Int"/>
+<parameter id="MaxTresh_MInt"/>
+<parameter id="MinTresh_MInt"/>
+<parameter id="PostIteration_Enum"/>
+<parameter id="SearchSizeInfo_Int"/>
+<parameter id="SearchSize_Int"/>
+<parameter id="Smoothness_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
