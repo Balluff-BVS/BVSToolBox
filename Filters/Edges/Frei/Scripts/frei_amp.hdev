@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Frei amp'</l>
+<l>InfoString := 'Detect edges (amplitude) using the Frei-Chen operator.'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageEdgeAmp_Img" base_type="iconic" dimension="0"/>
+</oo>
+</interface>
+<body>
+<l>frei_amp (Image_Img, ImageEdgeAmp_Img)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageEdgeAmp_Img"/>
+<parameter id="Image_Img"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
