@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Gauss Distribution'</l>
+<l>InfoString:='Generate a Gaussian noise distribution.'</l>
+<c></c>
+<l>Sigma_Real:=2</l>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageNoise_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Sigma_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>gauss_distribution (Sigma_Real, Distribution)</l>
+<l>add_noise_distribution (Image_Img, ImageNoise_Img, Distribution)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageNoise_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="Sigma_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
