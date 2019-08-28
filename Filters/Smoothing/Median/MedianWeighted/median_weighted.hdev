@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'median_weighted'</l>
+<l>InfoString := ' Weighted median filtering with different rank masks.'</l>
+<c></c>
+<c></c>
+<l>MaskType_Enum_Values:=['gauss', 'inner']</l>
+<l>MaskType_Enum:='inner'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageWMedian_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MaskType_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>median_weighted (Image_Img, ImageWMedian_Img, MaskType_Enum[1], 3)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageWMedian_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="MaskType_Enum"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

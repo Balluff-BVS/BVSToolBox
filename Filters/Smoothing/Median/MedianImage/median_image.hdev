@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'median_image'</l>
+<l>InfoString := 'Compute a median filter with various masks.'</l>
+<c></c>
+<l>Radius_MInt_MinMax:= [1, 4095]</l>
+<l>Radius_MInt:=1</l>
+<c></c>
+<l>MaskType_Enum_Values:=['circle', 'square']</l>
+<l>MaskType_Enum:='circle'</l>
+<c></c>
+<l>Margin_Enum_Values:=[ 'mirrored', 'cyclic', 'continued', '0', '30', '60', '90', '120', '150', '180', '210', '240', '255']</l>
+<l>Margin_Enum:='mirrored'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageMedian_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MaskType_Enum" base_type="ctrl" dimension="0"/>
+<par name="Radius_MInt" base_type="ctrl" dimension="0"/>
+<par name="Margin_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>Test_String := Margin_Enum[1]</l>
+<c></c>
+<c></c>
+<l>if(Test_String == 'mirrored')</l>
+<l>    temp := 'mirrored'</l>
+<l>elseif (Test_String == 'cyclic')</l>
+<l>    temp := 'cyclic'</l>
+<l>elseif (Test_String == 'continued')</l>
+<l>    temp := 'continued'</l>
+<l>elseif (Test_String == '0')</l>
+<l>    temp := 0</l>
+<l>elseif (Test_String == '30')</l>
+<l>    temp := 30</l>
+<l>elseif (Test_String == '60')</l>
+<l>    temp := 60</l>
+<l>elseif (Test_String == '90')</l>
+<l>    temp := 90</l>
+<l>elseif (Test_String == '120')</l>
+<l>    temp := 120</l>
+<l>elseif (Test_String == '150')</l>
+<l>    temp := 150</l>
+<l>elseif (Test_String == '180')</l>
+<l>    temp := 180</l>
+<l>elseif (Test_String == '210')</l>
+<l>    temp := 210</l>
+<l>elseif (Test_String == '240')</l>
+<l>    temp := 240</l>
+<l>elseif (Test_String == '255')</l>
+<l>    temp := 255</l>
+<l>endif</l>
+<c></c>
+<l>median_image (Image_Img, ImageMedian_Img, MaskType_Enum[1], Radius_MInt, temp)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageMedian_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="Margin_Enum"/>
+<parameter id="MaskType_Enum"/>
+<parameter id="Radius_MInt"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
