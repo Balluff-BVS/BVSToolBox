@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'mean_n'</l>
+<l>InfoString := 'Average gray values over several channels.'</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageMean_Img" base_type="iconic" dimension="0"/>
+</oo>
+</interface>
+<body>
+<l>mean_n (Image_Img, ImageMean_Img)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageMean_Img"/>
+<parameter id="Image_Img"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
