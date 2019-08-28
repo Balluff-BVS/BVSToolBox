@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Sobel Amplitude'</l>
+<l>InfoString := 'Calculates first derivative of an image and is used as an edge detector. '</l>
+<c></c>
+<l>Size_Enum_Values:= ['3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23', '25', '27', '29', '31', '33', '35', '37', '39']</l>
+<l>Size_Enum:='3'</l>
+<l>FilterType_Enum_Values:=[ 'sum_abs', 'sum_abs_binomial', 'sum_sqrt', 'sum_sqrt_binomial', 'thin_max_abs', 'thin_max_abs_binomial', 'thin_sum_abs', 'thin_sum_abs_binomial']</l>
+<l>FilterType_Enum:='sum_abs'</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="EdgeAmplitude_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="FilterType_Enum" base_type="ctrl" dimension="0"/>
+<par name="Size_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>String_Temp:=Size_Enum[1]</l>
+<c></c>
+<l>if (String_Temp=='1')</l>
+<l>    temp:=1</l>
+<l>elseif(String_Temp=='3')</l>
+<l>    temp:=3</l>
+<l>elseif(String_Temp=='5')</l>
+<l>    temp:=5</l>
+<l>elseif(String_Temp=='7')</l>
+<l>    temp:=7</l>
+<l>elseif(String_Temp=='11')</l>
+<l>    temp:=11</l>
+<l>elseif(String_Temp=='13')</l>
+<l>    temp:=13</l>
+<l>elseif(String_Temp=='15')</l>
+<l>    temp:=15</l>
+<l>elseif(String_Temp=='17')</l>
+<l>    temp:=17</l>
+<l>elseif(String_Temp=='19')</l>
+<l>    temp:=19</l>
+<l>elseif(String_Temp=='21')</l>
+<l>    temp:=21</l>
+<l>elseif(String_Temp=='23')</l>
+<l>    temp:=23</l>
+<l>elseif(String_Temp=='25')</l>
+<l>    temp:=25</l>
+<l>elseif(String_Temp=='27')</l>
+<l>    temp:=27</l>
+<l>elseif(String_Temp=='29')</l>
+<l>    temp:=29</l>
+<l>elseif(String_Temp=='31')</l>
+<l>    temp:=31</l>
+<l>elseif(String_Temp=='33')</l>
+<l>    temp:=33</l>
+<l>elseif(String_Temp=='35')</l>
+<l>    temp:=35</l>
+<l>elseif(String_Temp=='37')</l>
+<l>    temp:=37</l>
+<l>elseif(String_Temp=='39')</l>
+<l>    temp:=39</l>
+<l>endif</l>
+<c></c>
+<l>sobel_amp (Image_Img, EdgeAmplitude_Img, FilterType_Enum[1], temp)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="EdgeAmplitude_Img"/>
+<parameter id="FilterType_Enum"/>
+<parameter id="Image_Img"/>
+<parameter id="Size_Enum"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

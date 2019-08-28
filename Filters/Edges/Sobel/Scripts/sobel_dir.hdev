@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Sobel Dir'</l>
+<l>InfoString:='Detect edges (amplitude and direction) using the Sobel operator'</l>
+<c></c>
+<l>FilterType_Enum_Values:=['sum_abs', 'sum_abs_binomial', 'sum_sqrt', 'sum_sqrt_binomial']</l>
+<l>FilterType_Enum:='sum_abs'</l>
+<c></c>
+<l>Size_Enum_Values:=['3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23', '25', '27', '29', '31', '33', '35', '37', '39']</l>
+<l>Size_Enum:='3'</l>
+<c></c>
+<l>Mode_Enum_Values:=['inms', 'nms']</l>
+<l>Mode_Enum:='nms'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageResult_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="FilterType_Enum" base_type="ctrl" dimension="0"/>
+<par name="Size_Enum" base_type="ctrl" dimension="0"/>
+<par name="Mode_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>TempString:=Size_Enum[1]</l>
+<c></c>
+<l>if(TempString=='3')</l>
+<l>    temp:=3</l>
+<l>elseif(TempString=='5')</l>
+<l>    temp:=5</l>
+<l>elseif(TempString=='7')</l>
+<l>    temp:=7</l>
+<l>elseif(TempString=='9')</l>
+<l>    temp:=9</l>
+<l>elseif(TempString=='11')</l>
+<l>    temp:=11</l>
+<l>elseif(TempString=='13')</l>
+<l>    temp:=13</l>
+<l>elseif(TempString=='15')</l>
+<l>    temp:=15</l>
+<l>elseif(TempString=='17')</l>
+<l>    temp:=17</l>
+<l>elseif(TempString=='19')</l>
+<l>    temp:=19</l>
+<l>elseif(TempString=='21')</l>
+<l>    temp:=21</l>
+<l>elseif(TempString=='23')</l>
+<l>    temp:=23</l>
+<l>elseif(TempString=='25')</l>
+<l>    temp:=25</l>
+<l>elseif(TempString=='27')</l>
+<l>    temp:=27</l>
+<l>elseif(TempString=='29')</l>
+<l>    temp:=29</l>
+<l>elseif(TempString=='31')</l>
+<l>    temp:=31</l>
+<l>elseif(TempString=='33')</l>
+<l>    temp:=33</l>
+<l>elseif(TempString=='35')</l>
+<l>    temp:=35</l>
+<l>elseif(TempString=='37')</l>
+<l>    temp:=37</l>
+<l>elseif(TempString=='39')</l>
+<l>    temp:=39</l>
+<l>endif</l>
+<c></c>
+<l>sobel_dir (Image_Img, EdgeAmplitude, EdgeDirection, FilterType_Enum[1], temp)</l>
+<l>nonmax_suppression_dir (EdgeAmplitude, EdgeDirection, ImageResult_Img, Mode_Enum[1])</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="FilterType_Enum"/>
+<parameter id="ImageResult_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="Mode_Enum"/>
+<parameter id="Size_Enum"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
