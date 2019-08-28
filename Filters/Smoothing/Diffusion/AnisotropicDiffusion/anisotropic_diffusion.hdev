@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Anisotropic diffusion'</l>
+<l>InfoString := 'Perform an anisotropic diffusion of an image. If user sets Theta or Contrast value to 0 or less than 0, then it is automatically changed to 0.1. Values of Iterations set less than 1 are changed to 1.'</l>
+<c></c>
+<l>Mode_Enum_Values:=['parabolic', 'perona-malik', 'weickert']</l>
+<l>Mode_Enum:='weickert'</l>
+<c></c>
+<l>Contrast_Real:=5</l>
+<l>Theta_Real:=1</l>
+<l>Iterations_Int:=10</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageAniso_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Mode_Enum" base_type="ctrl" dimension="0"/>
+<par name="Contrast_Real" base_type="ctrl" dimension="0"/>
+<par name="Theta_Real" base_type="ctrl" dimension="0"/>
+<par name="Iterations_Int" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ContrastInfo_Real" base_type="ctrl" dimension="0"/>
+<par name="ThetaInfo_Real" base_type="ctrl" dimension="0"/>
+<par name="IterationsInfo_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>if (Contrast_Real&lt;=0)</l>
+<l>    Contrast_Real:=0.1</l>
+<l>endif</l>
+<c></c>
+<l>if (Theta_Real&lt;=0)</l>
+<l>    Theta_Real:=0.1</l>
+<l>endif</l>
+<c></c>
+<l>if (Iterations_Int&lt;1)</l>
+<l>    Theta_Real:=1</l>
+<l>endif</l>
+<c></c>
+<l>anisotropic_diffusion (Image_Img, ImageAniso_Img, Mode_Enum[1], Contrast_Real, Theta_Real, Iterations_Int)</l>
+<c></c>
+<l>ContrastInfo_Real:=Contrast_Real</l>
+<l>ThetaInfo_Real:=Theta_Real</l>
+<l>IterationsInfo_Int:=Iterations_Int</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ContrastInfo_Real"/>
+<parameter id="Contrast_Real"/>
+<parameter id="ImageAniso_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="IterationsInfo_Int"/>
+<parameter id="Iterations_Int"/>
+<parameter id="Mode_Enum"/>
+<parameter id="ThetaInfo_Real"/>
+<parameter id="Theta_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

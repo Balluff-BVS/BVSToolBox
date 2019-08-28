@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Isotropic diffusion'</l>
+<l>InfoString := 'Perform an isotropic diffusion of an image. If user sets Sigma value to 0 or less than 0, then it is automatically changed to 0.1. Values of Iterations set less than 0 are changed to 0.'</l>
+<c></c>
+<c></c>
+<l>Sigma_Real:=0.1</l>
+<l>Iterations_Int:=10</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="SmoothedImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Sigma_Real" base_type="ctrl" dimension="0"/>
+<par name="Iterations_Int" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="SigmaInfo_Real" base_type="ctrl" dimension="0"/>
+<par name="IterationsInfo_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>if (Iterations_Int &lt; 0)</l>
+<l>     Iterations_Int := 0</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>if (Sigma_Real &lt; 0)</l>
+<l>    Sigma_Real := 0.1</l>
+<l>endif</l>
+<c></c>
+<l>isotropic_diffusion (Image_Img, SmoothedImage_Img, Sigma_Real, Iterations_Int)</l>
+<c></c>
+<l>IterationsInfo_Int:=Iterations_Int</l>
+<l>SigmaInfo_Real:= Sigma_Real</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Image_Img"/>
+<parameter id="IterationsInfo_Int"/>
+<parameter id="Iterations_Int"/>
+<parameter id="SigmaInfo_Real"/>
+<parameter id="Sigma_Real"/>
+<parameter id="SmoothedImage_Img"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
