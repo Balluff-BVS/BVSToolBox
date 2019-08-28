@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Roberts filter'</l>
+<l>InfoString:='Detect edges using the Roberts filter.'</l>
+<c></c>
+<l>FilterType_Enum_Values:=['gradient_max', 'gradient_sum', 'roberts_max']</l>
+<l>FilterType_Enum:= 'gradient_sum'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageRoberts_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="FilterType_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>roberts (Image_Img, ImageRoberts_Img, FilterType_Enum[1])</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="FilterType_Enum"/>
+<parameter id="ImageRoberts_Img"/>
+<parameter id="Image_Img"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
