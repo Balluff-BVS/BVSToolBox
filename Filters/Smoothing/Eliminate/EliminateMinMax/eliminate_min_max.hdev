@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Eliminate min max'</l>
+<l>InfoString := 'Smooth an image in the spatial domain to suppress noise. Mode = 1 --&gt; replace a local maximum with next minor local maximum and replace a local minimum with next bigger local minimum. Mode = 2 --&gt; replace with mean value of all pixels within the local neighborhood (including the replaced pixel). Mode = 3 --&gt; replace with median value of all pixels within the local neighborhood (including the replaced pixel (this is default and used if Mode has got any other value than 1 or 2). If user sets MaskWidth or MaskHeight to value less than 3, then it is automatically changed to 3. Values of MaskWidth or MaskHeight set higher than Image Width and height are changed to Image Width or Height. All even numbers are changed to odd by adding 1 to it.'</l>
+<c></c>
+<l>Mode_Mint_MinMax := [1,3]</l>
+<l>Mode_MInt:=3</l>
+<l>MaskWidth_Int:=3</l>
+<l>MaskHeight_Int:=3</l>
+<l>Gap_Real:=1</l>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="FilteredImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MaskWidth_Int" base_type="ctrl" dimension="0"/>
+<par name="MaskHeight_Int" base_type="ctrl" dimension="0"/>
+<par name="Gap_Real" base_type="ctrl" dimension="0"/>
+<par name="Mode_MInt" base_type="ctrl" dimension="0"/>
+<par name="Width_Int" base_type="ctrl" dimension="0"/>
+<par name="Height_Int" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="MaskWidthInfo_Int" base_type="ctrl" dimension="0"/>
+<par name="MaskHeightInfo_Int" base_type="ctrl" dimension="0"/>
+<par name="GapInfo_Real" base_type="ctrl" dimension="0"/>
+<par name="WidthInfo_Int" base_type="ctrl" dimension="0"/>
+<par name="HeightInfo_Int" base_type="ctrl" dimension="0"/>
+<par name="ModeInfo_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>get_image_size (Image_Img, Width_Int, Height_Int)</l>
+<c></c>
+<l>if (MaskHeight_Int &lt; 3)</l>
+<l>    MaskHeight_Int := 3</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>if (MaskWidth_Int &lt; 3)</l>
+<l>    MaskWidth_Int := 3</l>
+<l>endif</l>
+<c></c>
+<l>MaskWidth_Int := (MaskWidth_Int/2)*2+1</l>
+<l>MaskHeight_Int := (MaskHeight_Int/2)*2+1</l>
+<c></c>
+<l>if (MaskHeight_Int &gt; Height_Int)</l>
+<l>    MaskHeight_Int := Height_Int</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>if (MaskWidth_Int &gt; Width_Int)</l>
+<l>    MaskWidth_Int := Width_Int</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>        </c>
+<l>eliminate_min_max (Image_Img, FilteredImage_Img, MaskWidth_Int, MaskHeight_Int, Gap_Real, Mode_MInt)</l>
+<c></c>
+<l>MaskWidthInfo_Int := MaskWidth_Int</l>
+<l>WidthInfo_Int:=Width_Int</l>
+<l>MaskHeightInfo_Int := MaskHeight_Int</l>
+<l>HeightInfo_Int:=Height_Int</l>
+<l>GapInfo_Real:=Gap_Real</l>
+<l>ModeInfo_Int := Mode_MInt</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="FilteredImage_Img"/>
+<parameter id="GapInfo_Real"/>
+<parameter id="Gap_Real"/>
+<parameter id="HeightInfo_Int"/>
+<parameter id="Height_Int"/>
+<parameter id="Image_Img"/>
+<parameter id="MaskHeightInfo_Int"/>
+<parameter id="MaskHeight_Int"/>
+<parameter id="MaskWidthInfo_Int"/>
+<parameter id="MaskWidth_Int"/>
+<parameter id="ModeInfo_Int"/>
+<parameter id="Mode_MInt"/>
+<parameter id="WidthInfo_Int"/>
+<parameter id="Width_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
