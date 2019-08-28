@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Deviation image'</l>
+<l>InfoString := ' Calculate the standard deviation of gray values within rectangular windows. If user sets Width or Height to value less than 3, then it is automatically changed to 3. All even numbers are changed to odd by adding 1 to it. '</l>
+<c></c>
+<l>Width_Int:=11</l>
+<l>Height_Int:=11</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageDeviation_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Width_Int" base_type="ctrl" dimension="0"/>
+<par name="Height_Int" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="WidthInfo_Int" base_type="ctrl" dimension="0"/>
+<par name="HeightInfo_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c></c>
+<l>if (Height_Int &lt; 3)</l>
+<l>    Height_Int := 3 </l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>if (Width_Int &lt; 3)</l>
+<l>    Width_Int := 3</l>
+<l>endif</l>
+<c></c>
+<l>        Width_Int:=(Width_Int/2)*2+1</l>
+<l>        Height_Int:=(Height_Int/2)*2+1</l>
+<c>        </c>
+<l>        deviation_image (Image_Img, ImageDeviation_Img, Width_Int, Height_Int)</l>
+<c>        </c>
+<c></c>
+<l>WidthInfo_Int:=Width_Int</l>
+<l>HeightInfo_Int:=Height_Int</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="HeightInfo_Int"/>
+<parameter id="Height_Int"/>
+<parameter id="ImageDeviation_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="WidthInfo_Int"/>
+<parameter id="Width_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Sigma image'</l>
+<l>InfoString := ' Non-linear smoothing with the sigma filter. Setting MaskHeight and MaskWidth all even numbers  are changed to odd by adding 1 to it. '</l>
+<c></c>
+<l>MaskWidth_MInt_MinMax := [3, 101]</l>
+<l>MaskWidth_MInt:=5</l>
+<c></c>
+<l>MaskHeight_MInt_MinMax := [3, 101]</l>
+<l>MaskHeight_MInt:=5</l>
+<c></c>
+<l>Sigma_MInt_MinMax := [0,255]</l>
+<l>Sigma_MInt:=3</l>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageSigma_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MaskHeight_MInt" base_type="ctrl" dimension="0"/>
+<par name="MaskWidth_MInt" base_type="ctrl" dimension="0"/>
+<par name="Sigma_MInt" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="MaskHeightInfo_Int" base_type="ctrl" dimension="0"/>
+<par name="MaskWidthInfo_Int" base_type="ctrl" dimension="0"/>
+<par name="SigmaInfo_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c></c>
+<l>MaskWidth_MInt := (MaskWidth_MInt/2)*2+1</l>
+<l>MaskHeight_MInt := (MaskHeight_MInt/2)*2+1</l>
+<c>        </c>
+<l>sigma_image (Image_Img, ImageSigma_Img, MaskHeight_MInt, MaskWidth_MInt, Sigma_MInt)</l>
+<c>        </c>
+<c></c>
+<l>MaskWidthInfo_Int := MaskWidth_MInt</l>
+<l>MaskHeightInfo_Int := MaskHeight_MInt</l>
+<l>SigmaInfo_Int := Sigma_MInt</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageSigma_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="MaskHeightInfo_Int"/>
+<parameter id="MaskHeight_MInt"/>
+<parameter id="MaskWidthInfo_Int"/>
+<parameter id="MaskWidth_MInt"/>
+<parameter id="SigmaInfo_Int"/>
+<parameter id="Sigma_MInt"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

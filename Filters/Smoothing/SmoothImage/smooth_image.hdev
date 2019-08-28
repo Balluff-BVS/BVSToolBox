@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'smooth_image'</l>
+<l>InfoString := ' Smooth an image using various filters.'</l>
+<c></c>
+<l>Filter_Enum_Values:=['deriche1', 'deriche2', 'shen', 'gauss']</l>
+<l>Filter_Enum:='deriche2'</l>
+<c></c>
+<l>Alpha_Real:=0.5</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageSmooth_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Filter_Enum" base_type="ctrl" dimension="0"/>
+<par name="Alpha_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>smooth_image (Image_Img, ImageSmooth_Img, Filter_Enum[1], Alpha_Real)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Alpha_Real"/>
+<parameter id="Filter_Enum"/>
+<parameter id="ImageSmooth_Img"/>
+<parameter id="Image_Img"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

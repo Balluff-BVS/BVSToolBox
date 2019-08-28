@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'guided_filter'</l>
+<l>InfoString := 'Guided filtering of an image. If user sets Radius value to 0 or less than 0, then it is automatically changed to 1. Values of Amplitude set less than 0 or 0 are changed to 0.1.'</l>
+<c></c>
+<l>Radius_Int:=3</l>
+<l>Amplitude_Real:=20</l>
+<c></c>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+<par name="ImageGuide_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageGuided_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Radius_Int" base_type="ctrl" dimension="0"/>
+<par name="Amplitude_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>if(Radius_Int&lt;0)</l>
+<l>    Radius_Int:=1</l>
+<l>endif</l>
+<c></c>
+<l>if(Amplitude_Real&lt;0)</l>
+<l>   Amplitude_Real:=0.1</l>
+<l>endif</l>
+<c></c>
+<l>guided_filter (Image_Img, ImageGuide_Img, ImageGuided_Img, Radius_Int, Amplitude_Real)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Amplitude_Real"/>
+<parameter id="ImageGuide_Img"/>
+<parameter id="ImageGuided_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="Radius_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
