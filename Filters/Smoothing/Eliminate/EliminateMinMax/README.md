@@ -1,4 +1,4 @@
-# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/TestScripts/raw/master/Filters/Smoothing/Eliminate/EliminateMinMax/eliminate_min_max.zip" data-icon="octicon-cloud-download">Download</a></p>
+# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/halconscripts/raw/master/Filters/Smoothing/Eliminate/EliminateMinMax/eliminate_min_max.zip" data-icon="octicon-cloud-download">Download</a></p>
 
 
 ELIMINATE MIN MAX
@@ -8,7 +8,7 @@ ELIMINATE MIN MAX
 
 Original Picture             | Filtered Picture
 :-------------------------:|:-------------------------:
-![Image error](https://github.com/Balluff-BVS/TestScripts/blob/master/Filters/Smoothing/Eliminate/EliminateMinMax/gauss_distribiution.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/TestScripts/blob/master/Filters/Smoothing/Eliminate/EliminateMinMax/eliminate_min_max.png?raw=true)
+![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Filters/Smoothing/Eliminate/EliminateMinMax/gauss_distribiution.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Filters/Smoothing/Eliminate/EliminateMinMax/eliminate_min_max.png?raw=true)
 
 Description
 ----------
