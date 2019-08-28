@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Points Sojka'</l>
+<l>InfoString:= 'Find corners using the Sojka operator.'</l>
+<c></c>
+<l>Mask_Size_Enum_Values:=[ '5', '7', '9', '11', '13']</l>
+<l>Mask_Size_Enum:='9'</l>
+<l>SigmaW_Real:=2.5</l>
+<l>SigmaD_Real:=0.75</l>
+<l>MinGrad_Real:=30</l>
+<l>MinApparentness_Real:=90</l>
+<l>Min_Angle_Real:=0.5</l>
+<l>Subpix_Enum_Values:=[ 'false', 'true']</l>
+<l>Subpix_Enum:= 'false'</l>
+<c></c>
+<l>Size_Real:=6</l>
+<l>Angle_Real:=0.785398</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Cross_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Mask_Size_Enum" base_type="ctrl" dimension="0"/>
+<par name="SigmaW_Real" base_type="ctrl" dimension="0"/>
+<par name="SigmaD_Real" base_type="ctrl" dimension="0"/>
+<par name="MinGrad_Real" base_type="ctrl" dimension="0"/>
+<par name="MinApparentness_Real" base_type="ctrl" dimension="0"/>
+<par name="Min_Angle_Real" base_type="ctrl" dimension="0"/>
+<par name="Subpix_Enum" base_type="ctrl" dimension="0"/>
+<par name="Size_Real" base_type="ctrl" dimension="0"/>
+<par name="Angle_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>String_Temp:=Mask_Size_Enum[1]</l>
+<l>if (String_Temp=='5')</l>
+<l>    temp:=5</l>
+<l>elseif(String_Temp=='7')</l>
+<l>    temp:=7</l>
+<l>elseif(String_Temp=='9')</l>
+<l>    temp:=9</l>
+<l>elseif(String_Temp=='11')</l>
+<l>    temp:=11</l>
+<l>elseif(String_Temp=='13')</l>
+<l>    temp:=13</l>
+<l>endif</l>
+<c></c>
+<l>points_sojka (Image_Img, temp, SigmaW_Real, SigmaD_Real, MinGrad_Real, MinApparentness_Real, Min_Angle_Real, Subpix_Enum[1], Row, Column)</l>
+<l>gen_cross_contour_xld (Cross_Contour, Row, Column, Size_Real, Angle_Real)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Angle_Real"/>
+<parameter id="Cross_Contour"/>
+<parameter id="Image_Img"/>
+<parameter id="Mask_Size_Enum"/>
+<parameter id="MinApparentness_Real"/>
+<parameter id="MinGrad_Real"/>
+<parameter id="Min_Angle_Real"/>
+<parameter id="SigmaD_Real"/>
+<parameter id="SigmaW_Real"/>
+<parameter id="Size_Real"/>
+<parameter id="Subpix_Enum"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

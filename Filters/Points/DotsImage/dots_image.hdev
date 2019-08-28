@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Dots image'</l>
+<l>InfoString := 'Segment a dot print.'</l>
+<c></c>
+<l>FilterType_Enum_Values:=['all', 'dark', 'light']</l>
+<l>FilterType_Enum:='light'</l>
+<c></c>
+<l>Diameter_Enum_Values:=['3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23']</l>
+<l>Diameter_Enum:=5</l>
+<c></c>
+<l>PixelShift_Enum_Values:=['-1', '0', '1', '2']</l>
+<l>PixelShift_Enum:=0</l>
+<c></c>
+<l>MinGray_MInt_MinMax :=[0,255]</l>
+<l>MinGray_MInt := 50</l>
+<c></c>
+<l>MaxGray_MInt_MinMax := [0,255]</l>
+<l>MaxGray_MInt:=255</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="DotImage_Img" base_type="iconic" dimension="0"/>
+<par name="Region_Region" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Diameter_Enum" base_type="ctrl" dimension="0"/>
+<par name="PixelShift_Enum" base_type="ctrl" dimension="0"/>
+<par name="FilterType_Enum" base_type="ctrl" dimension="0"/>
+<par name="MinGray_MInt" base_type="ctrl" dimension="0"/>
+<par name="MaxGray_MInt" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>String_Temp:=Diameter_Enum[1]</l>
+<l>if (String_Temp=='3')</l>
+<l>    temp:=3</l>
+<l>elseif(String_Temp=='5')</l>
+<l>    temp:=5</l>
+<l>elseif(String_Temp=='7')</l>
+<l>    temp:=7</l>
+<l>elseif(String_Temp=='9')</l>
+<l>    temp:=9</l>
+<l>elseif(String_Temp=='11')</l>
+<l>    temp:=11</l>
+<l>elseif(String_Temp=='13')</l>
+<l>    temp:=13</l>
+<l>elseif(String_Temp=='15')</l>
+<l>    temp:=15</l>
+<l>elseif(String_Temp=='17')</l>
+<l>    temp:=17</l>
+<l>elseif(String_Temp=='19')</l>
+<l>    temp:=19</l>
+<l>elseif(String_Temp=='21')</l>
+<l>    temp:=21</l>
+<l>elseif(String_Temp=='23')</l>
+<l>    temp:=23</l>
+<l>endif</l>
+<c></c>
+<l>String_Temp1:=PixelShift_Enum[1]</l>
+<l>if (String_Temp1=='-1')</l>
+<l>    temp1:=-1</l>
+<l>elseif(String_Temp1=='0')</l>
+<l>    temp1:=0</l>
+<l>elseif(String_Temp1=='1')</l>
+<l>    temp1:=1</l>
+<l>elseif(String_Temp1=='2')</l>
+<l>    temp1:=2 </l>
+<l>endif</l>
+<c></c>
+<l>dots_image (Image_Img, DotImage_Img, temp, FilterType_Enum[1], temp1)</l>
+<l>threshold (DotImage_Img, Region_Region, MinGray_MInt, MaxGray_MInt)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Diameter_Enum"/>
+<parameter id="DotImage_Img"/>
+<parameter id="FilterType_Enum"/>
+<parameter id="Image_Img"/>
+<parameter id="MaxGray_MInt"/>
+<parameter id="MinGray_MInt"/>
+<parameter id="PixelShift_Enum"/>
+<parameter id="Region_Region"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

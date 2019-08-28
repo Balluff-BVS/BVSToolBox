@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Points Lepetit'</l>
+<l>InfoString:='Detect points of interest using the Lepetit operator.'</l>
+<c></c>
+<l>Radius_Int:=3</l>
+<l>CheckNeighbor_Int:=1</l>
+<l>MinCheckNeighborDiff_Int:=15</l>
+<l>MinScore_Int:=30</l>
+<l>Subpix_Enum_Values:=[ 'interpolation', 'none']</l>
+<l>Subpix_Enum:='interpolation'</l>
+<c></c>
+<l>Size_Real:=6</l>
+<l>Angle_Real:=0.785398</l>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Cross_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Radius_Int" base_type="ctrl" dimension="0"/>
+<par name="CheckNeighbor_Int" base_type="ctrl" dimension="0"/>
+<par name="MinCheckNeighborDiff_Int" base_type="ctrl" dimension="0"/>
+<par name="MinScore_Int" base_type="ctrl" dimension="0"/>
+<par name="Subpix_Enum" base_type="ctrl" dimension="0"/>
+<par name="Size_Real" base_type="ctrl" dimension="0"/>
+<par name="Angle_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>points_lepetit (Image_Img, Radius_Int, CheckNeighbor_Int, MinCheckNeighborDiff_Int, MinScore_Int, Subpix_Enum[1], Row, Column)</l>
+<l>gen_cross_contour_xld (Cross_Contour, Row, Column, Size_Real, Angle_Real)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Angle_Real"/>
+<parameter id="CheckNeighbor_Int"/>
+<parameter id="Cross_Contour"/>
+<parameter id="Image_Img"/>
+<parameter id="MinCheckNeighborDiff_Int"/>
+<parameter id="MinScore_Int"/>
+<parameter id="Radius_Int"/>
+<parameter id="Size_Real"/>
+<parameter id="Subpix_Enum"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

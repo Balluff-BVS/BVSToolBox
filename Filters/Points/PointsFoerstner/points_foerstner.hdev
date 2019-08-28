@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>* read_image (Image, 'printer_chip/printer_chip_01')</l>
+<l>* points_foerstner (Image, 1, 2, 3, 200, 0.3, 'gauss', 'false', RowJunctions, ColumnJunctions, CoRRJunctions, CoRCJunctions, CoCCJunctions, RowArea, ColumnArea, CoRRArea, CoRCArea, CoCCArea)</l>
+<l>* gen_cross_contour_xld (Cross, RowJunctions, ColumnJunctions, 6, 0.785398)</l>
+<c></c>
+<l>ToolName:='Points Foerstner'</l>
+<l>InfoString:='Detect points of interest using the Forstner operator.'</l>
+<c></c>
+<l>SigmaGrad_Real:=1</l>
+<l>SigmaInt_Real:=2</l>
+<l>SigmaPoints_Real:=3</l>
+<l>ThreshInhom_Real:=200</l>
+<l>ThreshShape_Real:=0.3</l>
+<l>Smoothing_Enum_Values:=[ 'gauss', 'mean']</l>
+<l>Smoothing_Enum:='gauss'</l>
+<l>EliminateDoublets_Enum_Values:=['false', 'true']</l>
+<l>EliminateDoublets_Enum:='false'</l>
+<c></c>
+<l>Size_Real:=6</l>
+<l>Angle_Real:=0.785398</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Cross_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="SigmaGrad_Real" base_type="ctrl" dimension="0"/>
+<par name="SigmaInt_Real" base_type="ctrl" dimension="0"/>
+<par name="SigmaPoints_Real" base_type="ctrl" dimension="0"/>
+<par name="ThreshInhom_Real" base_type="ctrl" dimension="0"/>
+<par name="ThreshShape_Real" base_type="ctrl" dimension="0"/>
+<par name="Smoothing_Enum" base_type="ctrl" dimension="0"/>
+<par name="EliminateDoublets_Enum" base_type="ctrl" dimension="0"/>
+<par name="Size_Real" base_type="ctrl" dimension="0"/>
+<par name="Angle_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>points_foerstner (Image_Img, SigmaGrad_Real, SigmaInt_Real, SigmaPoints_Real, ThreshInhom_Real, ThreshShape_Real, Smoothing_Enum[1], EliminateDoublets_Enum[1], RowJunctions, ColumnJunctions, CoRRJunctions, CoRCJunctions, CoCCJunctions, RowArea, ColumnArea, CoRRArea, CoRCArea, CoCCArea)</l>
+<l>gen_cross_contour_xld (Cross_Contour, RowJunctions, ColumnJunctions, Size_Real, Angle_Real)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Angle_Real"/>
+<parameter id="Cross_Contour"/>
+<parameter id="EliminateDoublets_Enum"/>
+<parameter id="Image_Img"/>
+<parameter id="SigmaGrad_Real"/>
+<parameter id="SigmaInt_Real"/>
+<parameter id="SigmaPoints_Real"/>
+<parameter id="Size_Real"/>
+<parameter id="Smoothing_Enum"/>
+<parameter id="ThreshInhom_Real"/>
+<parameter id="ThreshShape_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
