@@ -1,4 +1,4 @@
-# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/TestScripts/raw/master/Filters/Smoothing/Mean/MeanN/mean_n.zip" data-icon="octicon-cloud-download">Download</a></p>
+# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/halconscripts/raw/master/Filters/Smoothing/Mean/MeanN/mean_n.zip" data-icon="octicon-cloud-download">Download</a></p>
 
 
 MEAN N
@@ -8,7 +8,7 @@ MEAN N
 
 Original Picture             | Filtered Picture
 :-------------------------:|:-------------------------:
-![Image error](https://github.com/Balluff-BVS/TestScripts/blob/master/Filters/Smoothing/Mean/MeanN/multichannel_image.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/TestScripts/blob/master/Filters/Smoothing/Mean/MeanN/mean_n.png?raw=true)
+![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Filters/Smoothing/Mean/MeanN/multichannel_image.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Filters/Smoothing/Mean/MeanN/mean_n.png?raw=true)
 
 Description
 ----------
