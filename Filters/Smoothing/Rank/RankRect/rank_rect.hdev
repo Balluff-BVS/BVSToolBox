@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Rank rect'</l>
+<l>InfoString := 'Compute a rank filter with rectangular masks.'</l>
+<c></c>
+<l>MaskWidth_MInt_MinMax := [3,4095]</l>
+<l>MaskWidth_MInt:=15</l>
+<c></c>
+<l>MaskHeight_MInt_MinMax := [3,4095]</l>
+<l>MaskHeight_MInt:=15</l>
+<c></c>
+<l>Rank_Int:=5</l>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageRank_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MaskWidth_MInt" base_type="ctrl" dimension="0"/>
+<par name="MaskHeight_MInt" base_type="ctrl" dimension="0"/>
+<par name="Rank_MInt" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c></c>
+<l>rank_rect (Image_Img, ImageRank_Img, MaskWidth_MInt, MaskHeight_MInt, Rank_MInt)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageRank_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="MaskHeight_MInt"/>
+<parameter id="MaskWidth_MInt"/>
+<parameter id="Rank_MInt"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

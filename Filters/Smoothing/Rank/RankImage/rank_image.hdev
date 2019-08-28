@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Rank image' </l>
+<l>InfoString := 'Compute a rank filter with arbitrary masks.'</l>
+<c></c>
+<l>MinTresh_MInt_MinMax:= [0, 255]</l>
+<l>MinTresh_MInt:=128</l>
+<c></c>
+<l>MaxTresh_MInt_MinMax:= [0, 255]</l>
+<l>MaxTresh_MInt:=255</l>
+<c></c>
+<l>Margin_Enum_Values:=[ 'mirrored', 'cyclic', 'continued', '0', '30', '60', '90', '120', '150', '180', '210', '240', '255']</l>
+<l>Margin_Enum:='mirrored'</l>
+<c></c>
+<l>Rank_MInt_MinMax:= [1, 4095]</l>
+<l>Rank_MInt:=5</l>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+<par name="Mask" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageRank_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MinTresh_MInt" base_type="ctrl" dimension="0"/>
+<par name="MaxTresh_MInt" base_type="ctrl" dimension="0"/>
+<par name="Margin_Enum" base_type="ctrl" dimension="0"/>
+<par name="Rank_MInt" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>Test_String := Margin_Enum[1]</l>
+<c></c>
+<c></c>
+<l>if(Test_String == 'mirrored')</l>
+<l>    temp := 'mirrored'</l>
+<l>elseif (Test_String == 'cyclic')</l>
+<l>    temp := 'cyclic'</l>
+<l>elseif (Test_String == 'continued')</l>
+<l>    temp := 'continued'</l>
+<l>elseif (Test_String == '0')</l>
+<l>    temp := 0</l>
+<l>elseif (Test_String == '30')</l>
+<l>    temp := 30</l>
+<l>elseif (Test_String == '60')</l>
+<l>    temp := 60</l>
+<l>elseif (Test_String == '90')</l>
+<l>    temp := 90</l>
+<l>elseif (Test_String == '120')</l>
+<l>    temp := 120</l>
+<l>elseif (Test_String == '150')</l>
+<l>    temp := 150</l>
+<l>elseif (Test_String == '180')</l>
+<l>    temp := 180</l>
+<l>elseif (Test_String == '210')</l>
+<l>    temp := 210</l>
+<l>elseif (Test_String == '240')</l>
+<l>    temp := 240</l>
+<l>elseif (Test_String == '255')</l>
+<l>    temp := 255</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>reduce_domain (Image_Img,Mask,ImageReduced)</l>
+<l>threshold (ImageReduced, Region, MinTresh_MInt, MaxTresh_MInt)</l>
+<l>connection (Region, ConnectedRegions)</l>
+<l>get_image_size (ImageReduced, Width, Height)</l>
+<l>region_to_bin (ConnectedRegions, BinImage, 255, 0, Width, Height)</l>
+<c></c>
+<l>rank_image (Image_Img, ConnectedRegions, ImageRank_Img, Rank_MInt, temp)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageRank_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="Margin_Enum"/>
+<parameter id="Mask"/>
+<parameter id="MaxTresh_MInt"/>
+<parameter id="MinTresh_MInt"/>
+<parameter id="Rank_MInt"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
