@@ -6,7 +6,7 @@ CORNER RESPONSE
 
 ## Example
 
-Original Picture             | Edges
+Original Picture             | Filtered Picture
 :-------------------------:|:-------------------------:
 ![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Filters/Points/CornerResponse/original.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Filters/Points/CornerResponse/corner_response.png?raw=true)
 
