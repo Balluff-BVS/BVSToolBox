@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Points Harris'</l>
+<l>InfoString:='Detect points of interest using the Harris operator.'</l>
+<c></c>
+<l>SigmaGrad_Real:=0.7</l>
+<l>SigmaSmooth_Real:=2</l>
+<l>Alpha_Real:=0.08</l>
+<l>Threshold_Real:=1000</l>
+<c></c>
+<l>Size_Real:=6</l>
+<l>Angle_Real:=0.785398</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Cross_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="SigmaGrad_Real" base_type="ctrl" dimension="0"/>
+<par name="SigmaSmooth_Real" base_type="ctrl" dimension="0"/>
+<par name="Alpha_Real" base_type="ctrl" dimension="0"/>
+<par name="Threshold_Real" base_type="ctrl" dimension="0"/>
+<par name="Size_Real" base_type="ctrl" dimension="0"/>
+<par name="Angle_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>points_harris (Image_Img, SigmaGrad_Real, SigmaSmooth_Real, Alpha_Real, Threshold_Real, Row, Column)</l>
+<l>gen_cross_contour_xld (Cross_Contour, Row, Column, Size_Real, Angle_Real)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Alpha_Real"/>
+<parameter id="Angle_Real"/>
+<parameter id="Cross_Contour"/>
+<parameter id="Image_Img"/>
+<parameter id="SigmaGrad_Real"/>
+<parameter id="SigmaSmooth_Real"/>
+<parameter id="Size_Real"/>
+<parameter id="Threshold_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Points Haris Binomial'</l>
+<l>InfoString:=' Detect points of interest using the binomial approximation of the Harris operator.'</l>
+<c></c>
+<l>MaskSizeGrad_Int:=5</l>
+<l>MaskSizeSmooth_Int:=15</l>
+<l>Alpha_Real:=0.08</l>
+<l>Threshold_Int:=1000</l>
+<l>Subpix_Enum_Values:=['off', 'on']</l>
+<l>Subpix_Enum:='on'</l>
+<c></c>
+<l>Size_Real:=6</l>
+<l>Angle_Real:=0.785398</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Cross_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MaskSizeGrad_Int" base_type="ctrl" dimension="0"/>
+<par name="MaskSizeSmooth_Int" base_type="ctrl" dimension="0"/>
+<par name="Alpha_Real" base_type="ctrl" dimension="0"/>
+<par name="Threshold_Int" base_type="ctrl" dimension="0"/>
+<par name="Subpix_Enum" base_type="ctrl" dimension="0"/>
+<par name="Size_Real" base_type="ctrl" dimension="0"/>
+<par name="Angle_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>points_harris_binomial (Image_Img, MaskSizeGrad_Int, MaskSizeSmooth_Int, Alpha_Real, Threshold_Int, Subpix_Enum[1], Row, Column)</l>
+<l>gen_cross_contour_xld (Cross_Contour, Row, Column, Size_Real, Angle_Real)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Alpha_Real"/>
+<parameter id="Angle_Real"/>
+<parameter id="Cross_Contour"/>
+<parameter id="Image_Img"/>
+<parameter id="MaskSizeGrad_Int"/>
+<parameter id="MaskSizeSmooth_Int"/>
+<parameter id="Size_Real"/>
+<parameter id="Subpix_Enum"/>
+<parameter id="Threshold_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
