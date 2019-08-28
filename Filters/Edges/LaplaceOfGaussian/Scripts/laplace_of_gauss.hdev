@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Laplace of Gauss'</l>
+<l>InfoString:='Calculates the Laplace-of-Gaussian operator'</l>
+<c></c>
+<l>Sigma_Real:=2.0</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageLaplace_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Sigma_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>laplace_of_gauss (Image_Img, ImageLaplace, Sigma_Real)</l>
+<c></c>
+<c>*converting type of output image</c>
+<l>get_image_size (ImageLaplace, Width, Height)</l>
+<l>gen_rectangle1 (Rectangle, 0, 0, Height, Width)</l>
+<l>min_max_gray (Rectangle, ImageLaplace, 0, Min, Max, Range)</l>
+<l>Mult:=255/(Max-Min)</l>
+<l>Add:=-Mult*Min</l>
+<l>scale_image (ImageLaplace, ImageScaled, Mult, Add)</l>
+<l>convert_image_type (ImageScaled, ImageLaplace_Img, 'byte')</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageLaplace_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="Sigma_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

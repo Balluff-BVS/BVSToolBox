@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Diff of Gauss'</l>
+<l>InfoString := 'Approximate the LoG operator (Laplace of Gaussian)'</l>
+<c></c>
+<l>Sigma_Real:=3</l>
+<l>SigFactor_Real:=1.6</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageConverted_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Sigma_Real" base_type="ctrl" dimension="0"/>
+<par name="SigFactor_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>diff_of_gauss (Image_Img, DiffOfGauss, Sigma_Real, SigFactor_Real)</l>
+<c></c>
+<l>get_image_size (DiffOfGauss, Width, Height)</l>
+<l>gen_rectangle1 (Rectangle, 0, 0, Height, Width)</l>
+<l>min_max_gray (Rectangle, DiffOfGauss, 0, Min, Max, Range)</l>
+<l>Mult:=255/(Max-Min)</l>
+<l>Add:=-Mult*Min</l>
+<l>scale_image (DiffOfGauss, ImageScaled, Mult, Add)</l>
+<l>convert_image_type (ImageScaled, ImageConverted_Img, 'byte')</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageConverted_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="SigFactor_Real"/>
+<parameter id="Sigma_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
