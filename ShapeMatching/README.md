@@ -12,7 +12,7 @@ Teaching Picture             | Shape Matching
 Description
 -----------
 
-**save_shape_matching_model** - Performs model teaching: capture a reference image, then match a shape using green mask in 'Wizard'. 
+**save_shape_matching_model** - Performs model teaching from given input (mask and reference image or input region) 
 Created shape model can be saved in default directory on industrial controller or in User's directory, when working with BVS Cockpit installed on PC.
 
 **use_shape_matching_model** - Read previously saved shape model from specific directory and uses it to find matching shapes on image.
