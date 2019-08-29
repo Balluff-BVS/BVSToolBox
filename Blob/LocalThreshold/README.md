@@ -1,4 +1,4 @@
-# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/TestScripts/raw/master/LocalThreshold/local_threshold.zip" data-icon="octicon-cloud-download">Download</a></p>
+# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/halconscripts/raw/master/Blob/LocalThreshold/local_threshold.zip" data-icon="octicon-cloud-download">Download</a></p>
 
 LOCAL THRESHOLD
 ===========
@@ -6,7 +6,7 @@ Example
 ---------
 Original Picture             | Thresholded Picture
 :-------------------------:|:-------------------------:
-![Image error](https://github.com/Balluff-BVS/TestScripts/blob/master/LocalThreshold/original.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/TestScripts/blob/master/LocalThreshold/local_threshold.png?raw=true)
+![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Blob/LocalThreshold/original.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Blob/LocalThreshold/local_threshold.png?raw=true)
 
 Description
 ----------
