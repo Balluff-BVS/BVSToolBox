@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Local threshold'</l>
+<l>InfoString := 'Segment an image using local thresholding.'</l>
+<c></c>
+<l>light_dark_Enum_Values:=['light', 'dark']</l>
+<l>light_dark_Enum:='dark'</l>
+<c></c>
+<l>mask_size_Int:=15</l>
+<l>scale_Real:=0.2</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="output_Region" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="light_dark_Enum" base_type="ctrl" dimension="0"/>
+<par name="mask_size_Int" base_type="ctrl" dimension="0"/>
+<par name="scale_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>range_val:=128</l>
+<c>*range changes depending on image type (byte/uint2)</c>
+<c>*it's const provided that cockpit uses only byte images</c>
+<c></c>
+<l>genParamName:=['mask_size','scale','range']</l>
+<l>genParamValue:=[mask_size_Int, scale_Real, range_val]</l>
+<c></c>
+<l>local_threshold (input_Img, output_Region, 'adapted_std_deviation', light_dark_Enum[1], genParamName, genParamValue)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="input_Img"/>
+<parameter id="light_dark_Enum"/>
+<parameter id="mask_size_Int"/>
+<parameter id="output_Region"/>
+<parameter id="scale_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
