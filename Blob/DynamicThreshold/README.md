@@ -4,9 +4,10 @@ DYNAMIC THRESHOLD
 ===========
 Example
 ---------
-<p align="center">
-  <img src="https://github.com/Balluff-BVS/halconscripts/blob/master/Blob/DynamicThreshold/dynamic_threshold.png?raw=true">
-</p>
+
+Original Picture             | Thresholded Picture
+:-------------------------:|:-------------------------:
+![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Blob/DynamicThreshold/original.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Blob/DynamicThreshold/dynamic_threshold.png?raw=true)
 
 Description
 ----------
