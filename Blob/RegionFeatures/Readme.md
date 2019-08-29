@@ -1,31 +1,73 @@
-# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/TestScripts/raw/master/CheckBlobs/check_blobs.zip" data-icon="octicon-cloud-download">Download</a></p>
+# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/halconscripts/raw/master/Blob/RegionFeatures/region_features.zip" data-icon="octicon-cloud-download">Download</a></p>
 
-CHECK BLOBS
+REGION FEATURES
 ===========
 Example
 ---------
 <p align="center">
-  <img src="https://github.com/Balluff-BVS/TestScripts/blob/master/CheckBlobs/check_blobs.png?raw=true" alt="Picture error">
+  <img src="https://github.com/Balluff-BVS/halconscripts/blob/master/Blob/RegionFeatures/region_info.PNG?raw=true" alt="Picture error">
 </p>
 
 Description
 ----------
-Extracts regions from image using given threshold and region features, ex.: area, circularity, height etc. 
 
-Enables pointing one region and displaying 10 of its feature values.
+Select regions according to indicated features.
+
+**regionInfo_one_region** - returns 10 indicated parameters of one of selected regions, marked with red pointer
+
+**regionInfo_multiple_regions** - returns the value of one chosen parameter of all selected regions
 
 Input parameters
 ----------
- * Features - shape features to be checked
- * Operation - linkage type of the individual features
- * Min_Values / Max_Values - limits of the features
- * MinGray / MaxGray - threshold for the gray values
- * region_to_measure - index of region which parameters are displayed
- * sort_mode - kind of sorting
- * row_or_col - sorting first with respect to row, then to column, or otherwise
- * Parametr [0-9] - choose shape features to be measured and displayed as output
+**FeaturesSelection** - features to be checked when selecting regions
 
-**SHAPE FEATURES:**
+*Default:* 'area'
+
+**Operation** - linkage type of the individual features
+
+*Default:* 'and'
+
+*List of values:* 'and', 'or'
+
+**Min_Values / Max_Values** - limits of the features
+
+*Default:* Min_Value = 150, Max_Value = 99999
+
+*Range of values:* (0,99999)
+
+**sort_mode** - kind of sorting
+
+*Default:* 'first_point'
+
+*List of values:* 'character', 'first_point', 'last_point', 'lower_left', 'lower_right', 'upper_left', 'upper_right'
+
+**row_or_col** - sorting first with respect to row, then to column, or otherwise
+
+*Default:* 'row'
+
+*List of values:* 'column', 'row'
+
+**Parameters for *regionInfo_one_region* only:**
+
+**region_to_measure** - index of region which parameters are displayed
+
+*Default:* 0
+
+**Parametr [0-9]** - choose shape features to be measured and displayed as output
+
+**Parameters for *regionInfo_multiple_region* only:**
+
+**Feature_toPrint** - region feature which value is put into output array
+
+*Default:* 'area'
+
+**ArrayCount** - number of elements in the output array
+
+*Default:* 10
+
+*Range of values:* (0, 32)
+
+**POSSIBLE FEATURES:**
 
  * area
  * row - Row index of the center
@@ -69,6 +111,10 @@ Output
 ---------
 Collection of regions selected from image.
 
-10 chosen parameters of a single region marked with red pointer.
+*regions_number* - number of selected regions
+
+**regionInfo_one_region** - 10 chosen parameters of a single region marked with red pointer (named *Parameter0_Val*, *Parametr1_Val* etc.); current coordinates of the pointer (*pointer_X, pointer_Y*)
+
+**regionInfo_multiple_regions** - an array *Parameters* of values of an indicated parameter (*Feature_toPrint*)
 
 
