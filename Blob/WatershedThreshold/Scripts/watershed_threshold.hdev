@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Watershed Threshold'</l>
+<l>InfoString := 'Returns information about regions found by watershed_threshold'</l>
+<c></c>
+<l>Threshold_MInt_MinMax:=[0,255]</l>
+<l>Threshold_MInt:=50</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="output_Region" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Threshold_MInt" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="number_of_regions_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c></c>
+<l>watersheds_threshold (image_Img, Basins, Threshold_MInt)</l>
+<l>select_shape (Basins, output_Region, 'area', 'and', 1, 99999)</l>
+<l>count_obj (output_Region, number_of_regions_Int)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Threshold_MInt"/>
+<parameter id="image_Img"/>
+<parameter id="number_of_regions_Int"/>
+<parameter id="output_Region"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
