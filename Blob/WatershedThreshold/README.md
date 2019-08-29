@@ -1,6 +1,6 @@
 # <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/halconscripts/raw/master/Blob/WatershedThreshold/watershed_threshold.zip" data-icon="octicon-cloud-download">Download</a></p>
 
-LOCAL THRESHOLD
+WATERSHED THRESHOLD
 ===========
 Example
 ---------
