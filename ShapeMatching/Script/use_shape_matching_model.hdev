@@ -97,6 +97,8 @@
 <par name="ShapeCenterX_RealArray" base_type="ctrl" dimension="0"/>
 <par name="ShapeCenterY_RealArray" base_type="ctrl" dimension="0"/>
 <par name="ShapeScore_RealArray" base_type="ctrl" dimension="0"/>
+<par name="ShapeAngle_RealArray" base_type="ctrl" dimension="0"/>
+<par name="ShapeScale_RealArray" base_type="ctrl" dimension="0"/>
 </oc>
 </interface>
 <body>
@@ -116,6 +118,8 @@
 <l>ShapeScore_RealArray:=Score</l>
 <l>ShapeCenterX_RealArray:=Column</l>
 <l>ShapeCenterY_RealArray:=Row</l>
+<l>ShapeAngle_RealArray:=Angle</l>
+<l>ShapeScale_RealArray:=Scale</l>
 <c></c>
 <l>if(filepath_model_String!='-')</l>
 <l>    file_model_String:=filepath_model_String+filename_model_String+'.shm'</l>
@@ -141,8 +145,10 @@
 <parameter id="ObjectPointer_Int"/>
 <parameter id="ScaleMin_Real"/>
 <parameter id="Scale_Max_Real"/>
+<parameter id="ShapeAngle_RealArray"/>
 <parameter id="ShapeCenterX_RealArray"/>
 <parameter id="ShapeCenterY_RealArray"/>
+<parameter id="ShapeScale_RealArray"/>
 <parameter id="ShapeScore_RealArray"/>
 <parameter id="SubPixel_Enum"/>
 <parameter id="file_model_String"/>
