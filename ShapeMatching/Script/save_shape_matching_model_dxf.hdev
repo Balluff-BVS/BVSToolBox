@@ -9,26 +9,16 @@
 <l>HalconCallbacks:=['ReadContours', 'SaveModel']</l>
 <c></c>
 <l>filename_contours_String:='metal-part-01'</l>
-<l>filepath_contours_String:='-'</l>
+<l>file_directory_contours_String:='-'</l>
 <l>filename_model_String:='model'</l>
-<l>filepath_model_String:='-'</l>
+<l>file_directory_model_String:='-'</l>
 <c></c>
 <l>ModelImage_Scale_Real:=3.38</l>
 <l>AngleStart_Real:=0</l>
 <l>AngleStop_Real:=6.28</l>
 <c></c>
-<l>Optimization_Enum_Values:=['auto', 'no_pregeneration', 'none', 'point_reduction_high', 'point_reduction_low', 'point_reduction_medium', 'pregeneration']</l>
-<l>Optimization_Enum:='pregeneration'</l>
-<c></c>
-<l>Metric_Enum_Values:=['ignore_color_polarity', 'ignore_global_polarity', 'ignore_local_polarity', 'use_polarity']</l>
-<l>Metric_Enum:='use_polarity'</l>
-<c></c>
-<l>Contrast_Int:=30</l>
-<l>MinContrast_Int:=10</l>
 <l>ScaleMin_Real:=0.9</l>
 <l>ScaleMax_Real:=1.1</l>
-<l>ScaleStep_Real:='auto'</l>
-<c></c>
 </body>
 <docu id="main">
 <parameters/>
@@ -45,8 +35,8 @@
 </oo>
 <ic>
 <par name="filename_contours_String" base_type="ctrl" dimension="0"/>
-<par name="filepath_contours_String" base_type="ctrl" dimension="0"/>
-<par name="filepath_model_String" base_type="ctrl" dimension="0"/>
+<par name="file_directory_contours_String" base_type="ctrl" dimension="0"/>
+<par name="file_directory_model_String" base_type="ctrl" dimension="0"/>
 <par name="filename_model_String" base_type="ctrl" dimension="0"/>
 <par name="ModelImage_Scale_Real" base_type="ctrl" dimension="0"/>
 </ic>
@@ -60,15 +50,15 @@
 <l>get_image_size (input_Img, Width, Height)</l>
 <l>gen_model_image_of_bright_object_with_holes (Contours_Object, Image_Img, ModelImage_Scale_Real, Width, Height)    </l>
 <c>    </c>
-<l>if(filepath_contours_String!='-')</l>
-<l>    file_toRead_String := filepath_contours_String+filename_contours_String+'.dxf'</l>
+<l>if (file_directory_contours_String!='-')</l>
+<l>    file_toRead_String := file_directory_contours_String+filename_contours_String+'.dxf'</l>
 <l>else</l>
 <l>    file_toRead_String := '/data/icsServer/share/images/'+filename_contours_String+'.dxf'</l>
 <l>endif    </l>
 <c></c>
 <c></c>
-<l>if(filepath_model_String!='-')</l>
-<l>    file_toSave_String:=filepath_model_String+filename_model_String+'.dxf'</l>
+<l>if (file_directory_model_String!='-')</l>
+<l>    file_toSave_String := file_directory_model_String+filename_model_String+'.dxf'</l>
 <l>else</l>
 <l>    file_toSave_String:='/data/icsServer/share/images/'+filename_model_String+'.dxf'    </l>
 <l>endif</l>
@@ -80,12 +70,12 @@
 <parameter id="Contours_Object"/>
 <parameter id="Image_Img"/>
 <parameter id="ModelImage_Scale_Real"/>
+<parameter id="file_directory_contours_String"/>
+<parameter id="file_directory_model_String"/>
 <parameter id="file_toRead_String"/>
 <parameter id="file_toSave_String"/>
 <parameter id="filename_contours_String"/>
 <parameter id="filename_model_String"/>
-<parameter id="filepath_contours_String"/>
-<parameter id="filepath_model_String"/>
 <parameter id="input_Img"/>
 </parameters>
 </docu>
@@ -199,13 +189,8 @@
 <par name="ModelImage_Scale_Real" base_type="ctrl" dimension="0"/>
 <par name="AngleStart_Real" base_type="ctrl" dimension="0"/>
 <par name="AngleStop_Real" base_type="ctrl" dimension="0"/>
-<par name="Optimization_Enum" base_type="ctrl" dimension="0"/>
-<par name="Metric_Enum" base_type="ctrl" dimension="0"/>
-<par name="Contrast_Int" base_type="ctrl" dimension="0"/>
-<par name="MinContrast_Int" base_type="ctrl" dimension="0"/>
 <par name="ScaleMin_Real" base_type="ctrl" dimension="0"/>
 <par name="ScaleMax_Real" base_type="ctrl" dimension="0"/>
-<par name="ScaleStep_Real" base_type="ctrl" dimension="0"/>
 </ic>
 </interface>
 <body>
@@ -215,7 +200,7 @@
 <l>    file_model_String:='/data/icsServer/share/images/'+filename_model_String+'.shm'    </l>
 <l>endif</l>
 <c></c>
-<l>create_scaled_shape_model (Image_Img_, 5, AngleStart_Real, AngleStop_Real, 'auto', ScaleMin_Real, ScaleMax_Real, ScaleStep_Real, Optimization_Enum[1], Metric_Enum[1], Contrast_Int, MinContrast_Int, ModelID)</l>
+<l>create_scaled_shape_model (Image_Img_, 'auto', AngleStart_Real, AngleStop_Real, 'auto', ScaleMin_Real, ScaleMax_Real, 'auto', 'auto', 'use_polarity', 'auto', 'auto', ModelID)</l>
 <l>write_shape_model (ModelID, file_model_String)</l>
 <l>get_shape_model_params (ModelID, NumLevels, AngleStart, AngleExtent, AngleStep, ScaleMin, ScaleMax, ScaleStep, Metric, MinContrast)</l>
 <c></c>
@@ -227,15 +212,10 @@
 <parameters>
 <parameter id="AngleStart_Real"/>
 <parameter id="AngleStop_Real"/>
-<parameter id="Contrast_Int"/>
 <parameter id="Image_Img_"/>
-<parameter id="Metric_Enum"/>
-<parameter id="MinContrast_Int"/>
 <parameter id="ModelImage_Scale_Real"/>
-<parameter id="Optimization_Enum"/>
 <parameter id="ScaleMax_Real"/>
 <parameter id="ScaleMin_Real"/>
-<parameter id="ScaleStep_Real"/>
 <parameter id="filename_model_String"/>
 <parameter id="filepath_model_String"/>
 <parameter id="input_Img"/>
