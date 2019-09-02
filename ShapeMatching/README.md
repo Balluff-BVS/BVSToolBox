@@ -12,18 +12,15 @@ Teaching Picture             | Shape Matching
 Description
 -----------
 
-**save_shape_matching_model** - Performs model teaching from given input (mask and reference image or input region) 
+**save_shape_matching_model** - Performs model teaching from given input (mask and reference image, input region od .dxf file) 
 Created shape model can be saved in default directory on industrial controller or in User's directory, when working with BVS Cockpit installed on PC.
 
 **use_shape_matching_model** - Read previously saved shape model from specific directory and uses it to find matching shapes on image.
-Image is searched in given region of interest, marked with blue rectangle.
-Get parameters such as: center coordinates, rotation angle, scale and matching score of one of shapes. 
-Red pointers mark all found shapes and green pointer the one which parameters are displayed.
+Image is searched in given region of interest - *inputAOI*.
+Get parameters such as: center coordinates, rotation angle, scale and matching score of found shapes. 
 
 Input parameters
 ----------------
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-**Common for *'save_shape_matching_model'* and *'use_shape_matching_model'*:**
 
 **inputAOI** - Rectangular region of interest.
 
@@ -56,10 +53,6 @@ Input parameters
 **file_directory** - path to the file to save/read. As default it is set as */data/icsServer/share/images/*, 
 which leads to folder in industrial controller memory. User can customize the path by filling in *file_directory* field, when working 
 with BVS Cockpit installed on PC.  
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-**Parameters for *use_shape_matching_model* only:**
 
 **MinScore** - Minimum score of the instances of the models to be found.
 
