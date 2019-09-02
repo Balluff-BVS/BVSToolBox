@@ -4,33 +4,64 @@
 <interface/>
 <body>
 <l>ToolName:='Use shape model'</l>
-<l>InfoString:='Reads scaled and rotated shape model from a file and uses it to find matching shapes'</l>
+<l>InfoString:='Reads shape model from a file and uses it to find matching shapes. Uses 2D transformation matrix'</l>
 <c>*press Execute to read the model</c>
-<l>HalconCallbacks:=['Read']</l>
+<l>HalconCallbacks:=['LoadModel']</l>
 <c>*user may defines filename and specific file directory, or leaves it as default</c>
-<l>filename_String:='model'</l>
-<l>file_directory_String:='-'</l>
+<l>filename_model_String:='model'</l>
+<l>filepath_model_String:='-'</l>
 <c></c>
-<l>output_Region_Color:=[255,0,0]</l>
 <c>*input parameters described in use_shape_matching_model_ReadMe.txt</c>
 <l>AngleStart_Real:=0</l>
 <l>AngleStop_Real:=6.29</l>
-<l>ScaleMin_Real:=0.1</l>
-<l>ScaleMax_Real:=1</l>
-<l>MinScore_Real:=0.5</l>
+<l>ScaleMin_Real:=0.9</l>
+<l>ScaleMax_Real:=1.1</l>
+<l>MinScore_Real:=0.6</l>
 <l>NumMatches_Int:=0</l>
 <l>MaxOverlap_Real:=0.5</l>
 <l>SubPixel_Enum_Values:=['none', 'interpolation', 'least_squares', 'least_squares_high', 'least_squares_very_high', 'max_deformation 1', 'max_deformation 2', 'max_deformation 3', 'max_deformation 4', 'max_deformation 5', 'max_deformation 6']</l>
 <l>SubPixel_Enum:='least_squares'</l>
 <l>NumLevels_MInt_MinMax:=[0,10]</l>
-<l>NumLevels_MInt:=0</l>
-<l>Greediness_Real:=0.9</l>
+<l>NumLevels_MInt:=4</l>
+<l>Greediness_Real:=0.3</l>
 <c></c>
-<l>pointers_Region_Color:=[0,255,0]</l>
+<l>ArrayCount:=3</l>
+<l>ArrayCount_MinMax:=[1,32]</l>
+<l>ObjectPointer_Int:=1</l>
 <c></c>
+<l>Models_Contour_Color:=[0,255,0]</l>
 </body>
 <docu id="main">
 <parameters/>
+</docu>
+</procedure>
+<procedure name="LoadModel">
+<interface>
+<ic>
+<par name="filename_model_String" base_type="ctrl" dimension="0"/>
+<par name="filepath_model_String" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ModelID_Tuple_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>if(filepath_model_String!='-')</l>
+<l>    file_model:=filepath_model_String+filename_model_String+'.shm'</l>
+<l>else</l>
+<l>    file_model:='/data/icsServer/share/images/'+filename_model_String+'.shm'    </l>
+<l>endif</l>
+<c></c>
+<l>read_shape_model (file_model, ModelID_Tuple_)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="LoadModel">
+<parameters>
+<parameter id="ModelID_Tuple_"/>
+<parameter id="filename_model_String"/>
+<parameter id="filepath_model_String"/>
+</parameters>
 </docu>
 </procedure>
 <procedure name="HalconRun">
@@ -40,63 +71,57 @@
 <par name="inputAOI_Aoi" base_type="iconic" dimension="0"/>
 </io>
 <oo>
-<par name="output_Region" base_type="iconic" dimension="0"/>
-<par name="pointer_Region" base_type="iconic" dimension="0"/>
+<par name="Models_Contour" base_type="iconic" dimension="0"/>
+<par name="Cross_Contour" base_type="iconic" dimension="0"/>
 </oo>
 <ic>
+<par name="ModelID_Tuple" base_type="ctrl" dimension="0"/>
+<par name="filepath_model_String" base_type="ctrl" dimension="0"/>
+<par name="filename_model_String" base_type="ctrl" dimension="0"/>
 <par name="AngleStart_Real" base_type="ctrl" dimension="0"/>
 <par name="AngleStop_Real" base_type="ctrl" dimension="0"/>
-<par name="ScaleMin_Real" base_type="ctrl" dimension="0"/>
-<par name="ScaleMax_Real" base_type="ctrl" dimension="0"/>
 <par name="MinScore_Real" base_type="ctrl" dimension="0"/>
 <par name="NumMatches_Int" base_type="ctrl" dimension="0"/>
 <par name="MaxOverlap_Real" base_type="ctrl" dimension="0"/>
 <par name="SubPixel_Enum" base_type="ctrl" dimension="0"/>
-<par name="NumLevels_MInt" base_type="ctrl" dimension="0"/>
+<par name="NumLevels_Int" base_type="ctrl" dimension="0"/>
 <par name="Greediness_Real" base_type="ctrl" dimension="0"/>
-<par name="ModelID_Tuple" base_type="ctrl" dimension="0"/>
-<par name="filename_String" base_type="ctrl" dimension="0"/>
-<par name="file_directory_String" base_type="ctrl" dimension="0"/>
-<par name="shape_toPrint_Int" base_type="ctrl" dimension="0"/>
+<par name="ArrayCount" base_type="ctrl" dimension="0"/>
+<par name="ObjectPointer_Int" base_type="ctrl" dimension="0"/>
+<par name="ScaleMin_Real" base_type="ctrl" dimension="0"/>
+<par name="Scale_Max_Real" base_type="ctrl" dimension="0"/>
 </ic>
 <oc>
-<par name="file_toPrint_String" base_type="ctrl" dimension="0"/>
+<par name="file_model_String" base_type="ctrl" dimension="0"/>
 <par name="number_of_shapes_found_Int" base_type="ctrl" dimension="0"/>
-<par name="row_toPrint_Real" base_type="ctrl" dimension="0"/>
-<par name="column_toPrint_Real" base_type="ctrl" dimension="0"/>
-<par name="angle_toPrint_Real" base_type="ctrl" dimension="0"/>
-<par name="scale_toPrint_Real" base_type="ctrl" dimension="0"/>
-<par name="score_toPrint_Real" base_type="ctrl" dimension="0"/>
+<par name="ShapeCenterX_RealArray" base_type="ctrl" dimension="0"/>
+<par name="ShapeCenterY_RealArray" base_type="ctrl" dimension="0"/>
+<par name="ShapeScore_RealArray" base_type="ctrl" dimension="0"/>
 </oc>
 </interface>
 <body>
-<c>*if user doesn't put specific directory, the model is saved in default directory</c>
-<c>*as default the  model is saved in 'images' folder on industrial controller</c>
-<c>*specific directory works only when using BVS Cockpit installed on PC</c>
-<c>*file_toPrint_String shows where the model is saved</c>
-<l>if(file_directory_String!='-')</l>
-<l>    file_toPrint_String:=file_directory_String+filename_String+'.shm'</l>
-<l>else</l>
-<l>    file_toPrint_String:='/data/icsServer/share/images/'+filename_String+'.shm'    </l>
-<l>endif</l>
-<c>*inputAOI_Aoi is searched for shapes</c>
+<l>gen_empty_obj(Models_Contour)</l>
 <l>reduce_domain (input_Img, inputAOI_Aoi, ImageReduced)</l>
-<l>find_scaled_shape_models (ImageReduced,ModelID_Tuple, AngleStart_Real, AngleStop_Real, ScaleMin_Real, ScaleMax_Real, MinScore_Real, NumMatches_Int, MaxOverlap_Real, SubPixel_Enum[1], NumLevels_MInt, Greediness_Real, Row, Column, Angle, Scale, Score, Model)</l>
-<c>*found shapes are pointed with red dots</c>
-<l>gen_empty_region (output_Region)</l>
-<l>for i := 0 to |Row|-1 by 1</l>
-<l>   gen_circle(Circle, Row[i], Column[i], 10*Scale[i])   </l>
-<l>   union2 (Circle, output_Region, output_Region)</l>
+<l>find_scaled_shape_models (ImageReduced,ModelID_Tuple, AngleStart_Real, AngleStop_Real, 0.9, 1.1, MinScore_Real, NumMatches_Int, MaxOverlap_Real, SubPixel_Enum[1], NumLevels_Int, Greediness_Real, Row, Column, Angle, Scale, Score, Model)</l>
+<l>number_of_shapes_found_Int:=|Score|</l>
+<l>for i := 0 to number_of_shapes_found_Int - 1 by 1</l>
+<l>        get_shape_model_contours (ModelContours, ModelID_Tuple, 1)</l>
+<l>        vector_angle_to_rigid (0, 0, 0, Row[i], Column[i], Angle[i], HomMat2D)</l>
+<l>        affine_trans_contour_xld (ModelContours, ModelTrans, HomMat2D)</l>
+<l>        concat_obj (ModelTrans, Models_Contour, Models_Contour)</l>
 <l>endfor</l>
 <c></c>
-<l>number_of_shapes_found_Int:=|Row|</l>
-<l>gen_circle (pointer_Region, Row[shape_toPrint_Int], Column[shape_toPrint_Int], 20*Scale[shape_toPrint_Int])</l>
+<l>gen_cross_contour_xld (Cross_Contour, Row[ObjectPointer_Int-1], Column[ObjectPointer_Int-1], 10, 0)</l>
 <c></c>
-<l>row_toPrint_Real:=Row[shape_toPrint_Int]</l>
-<l>column_toPrint_Real:=Column[shape_toPrint_Int]</l>
-<l>angle_toPrint_Real:=Angle[shape_toPrint_Int]</l>
-<l>scale_toPrint_Real:=Scale[shape_toPrint_Int]</l>
-<l>score_toPrint_Real:=Score[shape_toPrint_Int]</l>
+<l>ShapeScore_RealArray:=Score</l>
+<l>ShapeCenterX_RealArray:=Column</l>
+<l>ShapeCenterY_RealArray:=Row</l>
+<c></c>
+<l>if(filepath_model_String!='-')</l>
+<l>    file_model_String:=filepath_model_String+filename_model_String+'.shm'</l>
+<l>else</l>
+<l>    file_model_String:='/data/icsServer/share/images/'+filename_model_String+'.shm'    </l>
+<l>endif</l>
 <c></c>
 <l>return ()</l>
 </body>
@@ -104,79 +129,29 @@
 <parameters>
 <parameter id="AngleStart_Real"/>
 <parameter id="AngleStop_Real"/>
+<parameter id="ArrayCount"/>
+<parameter id="Cross_Contour"/>
 <parameter id="Greediness_Real"/>
 <parameter id="MaxOverlap_Real"/>
 <parameter id="MinScore_Real"/>
 <parameter id="ModelID_Tuple"/>
-<parameter id="NumLevels_MInt"/>
+<parameter id="Models_Contour"/>
+<parameter id="NumLevels_Int"/>
 <parameter id="NumMatches_Int"/>
-<parameter id="ScaleMax_Real"/>
+<parameter id="ObjectPointer_Int"/>
 <parameter id="ScaleMin_Real"/>
+<parameter id="Scale_Max_Real"/>
+<parameter id="ShapeCenterX_RealArray"/>
+<parameter id="ShapeCenterY_RealArray"/>
+<parameter id="ShapeScore_RealArray"/>
 <parameter id="SubPixel_Enum"/>
-<parameter id="angle_toPrint_Real"/>
-<parameter id="column_toPrint_Real"/>
-<parameter id="file_directory_String"/>
-<parameter id="file_toPrint_String"/>
-<parameter id="filename_String"/>
+<parameter id="file_model_String"/>
+<parameter id="filename_model_String"/>
+<parameter id="filepath_model_String"/>
 <parameter id="inputAOI_Aoi"/>
 <parameter id="input_Img"/>
 <parameter id="number_of_shapes_found_Int"/>
-<parameter id="output_Region"/>
-<parameter id="pointer_Region"/>
-<parameter id="row_toPrint_Real"/>
-<parameter id="scale_toPrint_Real"/>
-<parameter id="score_toPrint_Real"/>
-<parameter id="shape_toPrint_Int"/>
 </parameters>
-</docu>
-</procedure>
-<procedure name="Read">
-<interface>
-<ic>
-<par name="filename_String" base_type="ctrl" dimension="0"/>
-<par name="file_directory_String" base_type="ctrl" dimension="0"/>
-</ic>
-<oc>
-<par name="ModelID_Tuple_" base_type="ctrl" dimension="0"/>
-</oc>
-</interface>
-<body>
-<c></c>
-<l>if(file_directory_String!='-')</l>
-<l>    file_dir:=file_directory_String+filename_String+'.shm'</l>
-<l>else</l>
-<l>    file_dir:='/data/icsServer/share/images/'+filename_String+'.shm'    </l>
-<l>endif</l>
-<c></c>
-<l>read_shape_model (file_dir, ModelID_Tuple_)</l>
-<l>return ()</l>
-</body>
-<docu id="Read">
-<parameters>
-<parameter id="ModelID_Tuple_"/>
-<parameter id="file_directory_String"/>
-<parameter id="filename_String"/>
-</parameters>
-</docu>
-</procedure>
-<procedure name="HalconInit">
-<interface/>
-<body>
-<l>return ()</l>
-</body>
-<docu id="HalconInit">
-<parameters/>
-</docu>
-</procedure>
-<procedure name="HalconFinalize">
-<interface/>
-<body>
-<c></c>
-<c></c>
-<l>return ()</l>
-</body>
-<docu id="HalconFinalize">
-<parameters/>
 </docu>
 </procedure>
 </hdevelop>
