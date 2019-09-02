@@ -13,6 +13,8 @@
 <c>*choose how to generate contours</c>
 <l>mode_Enum_Values:=['border', 'border_holes', 'center']</l>
 <l>mode_Enum:='border'</l>
+<l>SmoothContours_Int:=5</l>
+<c></c>
 </body>
 <docu id="main">
 <parameters/>
@@ -26,18 +28,21 @@
 </io>
 <oo>
 <par name="contours_Contour" base_type="iconic" dimension="0"/>
+<par name="Polygons_Object" base_type="iconic" dimension="0"/>
 </oo>
 <ic>
 <par name="filename_String" base_type="ctrl" dimension="0"/>
 <par name="file_directory_String" base_type="ctrl" dimension="0"/>
 <par name="mode_Enum" base_type="ctrl" dimension="0"/>
+<par name="SmoothContours_Int" base_type="ctrl" dimension="0"/>
 </ic>
 <oc>
 <par name="file_toPrint_String" base_type="ctrl" dimension="0"/>
 </oc>
 </interface>
 <body>
-<l>gen_contour_region_xld (region_to_save_Region, contours_Contour, mode_Enum[1])</l>
+<l>gen_contour_region_xld (region_to_save_Region, Contours, mode_Enum[1])</l>
+<l>smooth_contours_xld (Contours, contours_Contour, SmoothContours_Int)</l>
 <c></c>
 <c>*if user doesn't put specific directory, the model is saved in default directory</c>
 <c>*as default the  model is saved in 'images' folder on industrial controller</c>
@@ -53,6 +58,8 @@
 </body>
 <docu id="HalconRun">
 <parameters>
+<parameter id="Polygons_Object"/>
+<parameter id="SmoothContours_Int"/>
 <parameter id="contours_Contour"/>
 <parameter id="file_directory_String"/>
 <parameter id="file_toPrint_String"/>
@@ -72,11 +79,14 @@
 <par name="filename_String" base_type="ctrl" dimension="0"/>
 <par name="file_directory_String" base_type="ctrl" dimension="0"/>
 <par name="mode_Enum" base_type="ctrl" dimension="0"/>
+<par name="SmoothContours_Int" base_type="ctrl" dimension="0"/>
 </ic>
 </interface>
 <body>
 <c>*generate contours around given region_to_save</c>
-<l>gen_contour_region_xld (region_to_save_Region, contours_Contour, mode_Enum[1])</l>
+<l>gen_contour_region_xld (region_to_save_Region, Contours, mode_Enum[1])</l>
+<l>smooth_contours_xld (Contours, contours_Contour, SmoothContours_Int)</l>
+<c></c>
 <c></c>
 <l>if(file_directory_String!='-')</l>
 <l>    file_dir:=file_directory_String+filename_String+'.dxf'</l>
@@ -90,6 +100,7 @@
 </body>
 <docu id="Save">
 <parameters>
+<parameter id="SmoothContours_Int"/>
 <parameter id="file_directory_String"/>
 <parameter id="filename_String"/>
 <parameter id="mode_Enum"/>
