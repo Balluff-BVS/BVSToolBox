@@ -57,7 +57,7 @@
 <l>else</l>
 <l>    file_toPrint_String:='/data/icsServer/share/images/'+filename_String+'.shm'    </l>
 <l>endif</l>
-<l>dev_set_window_extents (0, 0, 407, 407)</l>
+<c></c>
 <c>*creating shape model from given region</c>
 <l>get_region_convex (model_Region, Rows, Columns)</l>
 <l>gen_contour_polygon_xld (output_contour_Contour, Rows, Columns)</l>

@@ -92,7 +92,7 @@
 <par name="Scale_Max_Real" base_type="ctrl" dimension="0"/>
 </ic>
 <oc>
-<par name="file_model_String" base_type="ctrl" dimension="0"/>
+<par name="file_toPrint_String" base_type="ctrl" dimension="0"/>
 <par name="number_of_shapes_found_Int" base_type="ctrl" dimension="0"/>
 <par name="ShapeCenterX_RealArray" base_type="ctrl" dimension="0"/>
 <par name="ShapeCenterY_RealArray" base_type="ctrl" dimension="0"/>
@@ -122,9 +122,9 @@
 <l>ShapeScale_RealArray:=Scale</l>
 <c></c>
 <l>if(filepath_model_String!='-')</l>
-<l>    file_model_String:=filepath_model_String+filename_model_String+'.shm'</l>
+<l>    file_toPrint_String := filepath_model_String+filename_model_String+'.shm'</l>
 <l>else</l>
-<l>    file_model_String:='/data/icsServer/share/images/'+filename_model_String+'.shm'    </l>
+<l>    file_toPrint_String := '/data/icsServer/share/images/'+filename_model_String+'.shm'</l>
 <l>endif</l>
 <c></c>
 <l>return ()</l>
@@ -151,7 +151,7 @@
 <parameter id="ShapeScale_RealArray"/>
 <parameter id="ShapeScore_RealArray"/>
 <parameter id="SubPixel_Enum"/>
-<parameter id="file_model_String"/>
+<parameter id="file_toPrint_String"/>
 <parameter id="filename_model_String"/>
 <parameter id="filepath_model_String"/>
 <parameter id="inputAOI_Aoi"/>
