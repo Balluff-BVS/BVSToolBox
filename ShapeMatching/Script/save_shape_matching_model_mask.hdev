@@ -58,7 +58,7 @@
 <l>reduce_domain (reference_input_RImg, Mask, ImageReduced)</l>
 <l>create_scaled_shape_model (ImageReduced, 'auto', AngleStart_Real, AngleStop_Real, 'auto', ScaleMin_Real, ScaleMax_Real, 'auto', 'auto', 'use_polarity', 'auto', 'auto', ModelID_Tuple_)</l>
 <c>*reference image is seen as output image</c>
-<l>copy_obj (reference_input_RImg, output_Img, 1, 1)</l>
+<l>copy_obj (ImageReduced, output_Img, 1, 1)</l>
 <c></c>
 <l>return ()</l>
 </body>

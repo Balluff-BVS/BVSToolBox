@@ -9,7 +9,7 @@
 <l>HalconCallbacks:=['LoadModel']</l>
 <c>*user may defines filename and specific file directory, or leaves it as default</c>
 <l>filename_model_String:='model'</l>
-<l>filepath_model_String:='-'</l>
+<l>file_directory_model_String:='-'</l>
 <c></c>
 <c>*input parameters described in use_shape_matching_model_ReadMe.txt</c>
 <l>AngleStart_Real:=0</l>
@@ -39,15 +39,15 @@
 <interface>
 <ic>
 <par name="filename_model_String" base_type="ctrl" dimension="0"/>
-<par name="filepath_model_String" base_type="ctrl" dimension="0"/>
+<par name="file_directory_model_String" base_type="ctrl" dimension="0"/>
 </ic>
 <oc>
 <par name="ModelID_Tuple_" base_type="ctrl" dimension="0"/>
 </oc>
 </interface>
 <body>
-<l>if(filepath_model_String!='-')</l>
-<l>    file_model:=filepath_model_String+filename_model_String+'.shm'</l>
+<l>if (file_directory_model_String!='-')</l>
+<l>    file_model := file_directory_model_String+filename_model_String+'.shm'</l>
 <l>else</l>
 <l>    file_model:='/data/icsServer/share/images/'+filename_model_String+'.shm'    </l>
 <l>endif</l>
@@ -59,8 +59,8 @@
 <docu id="LoadModel">
 <parameters>
 <parameter id="ModelID_Tuple_"/>
+<parameter id="file_directory_model_String"/>
 <parameter id="filename_model_String"/>
-<parameter id="filepath_model_String"/>
 </parameters>
 </docu>
 </procedure>
@@ -76,7 +76,7 @@
 </oo>
 <ic>
 <par name="ModelID_Tuple" base_type="ctrl" dimension="0"/>
-<par name="filepath_model_String" base_type="ctrl" dimension="0"/>
+<par name="file_directory_model_String" base_type="ctrl" dimension="0"/>
 <par name="filename_model_String" base_type="ctrl" dimension="0"/>
 <par name="AngleStart_Real" base_type="ctrl" dimension="0"/>
 <par name="AngleStop_Real" base_type="ctrl" dimension="0"/>
@@ -121,8 +121,8 @@
 <l>ShapeAngle_RealArray:=Angle</l>
 <l>ShapeScale_RealArray:=Scale</l>
 <c></c>
-<l>if(filepath_model_String!='-')</l>
-<l>    file_toPrint_String := filepath_model_String+filename_model_String+'.shm'</l>
+<l>if (file_directory_model_String!='-')</l>
+<l>    file_toPrint_String := file_directory_model_String+filename_model_String+'.shm'</l>
 <l>else</l>
 <l>    file_toPrint_String := '/data/icsServer/share/images/'+filename_model_String+'.shm'</l>
 <l>endif</l>
@@ -151,9 +151,9 @@
 <parameter id="ShapeScale_RealArray"/>
 <parameter id="ShapeScore_RealArray"/>
 <parameter id="SubPixel_Enum"/>
+<parameter id="file_directory_model_String"/>
 <parameter id="file_toPrint_String"/>
 <parameter id="filename_model_String"/>
-<parameter id="filepath_model_String"/>
 <parameter id="inputAOI_Aoi"/>
 <parameter id="input_Img"/>
 <parameter id="number_of_shapes_found_Int"/>
