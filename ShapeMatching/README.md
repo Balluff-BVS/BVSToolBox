@@ -52,9 +52,9 @@ Input parameters
 
 **filename** - name of file to save/read. Format .shm is added automatically while saving/reading. In save_shape_matching_model_dxf there are two filenames: *filename_contours* for .dxf file to read and *filename_model* for shape model to save.
 
-**file_directory, filepath** - path to the file to save/read. As default it is set as */data/icsServer/share/images/*, 
+**file_directory** - path to the file to save/read. As default it is set as */data/icsServer/share/images/*, 
 which leads to folder in industrial controller memory. User can customize the path by filling in *file_directory* field, when working 
-with BVS Cockpit installed on PC. In save_shape_matching_model_dxf there are two filepaths: *filepath_contours* for .dxf file to read and *filepath_model* for shape model to save.
+with BVS Cockpit installed on PC. In save_shape_matching_model_dxf there are two filepaths: *file_directory_contours* for .dxf file to read and *file_directory_model* for shape model to save.
 
 **ArrayCount** - number of found shapes to return in output array
 
@@ -109,7 +109,7 @@ with BVS Cockpit installed on PC. In save_shape_matching_model_dxf there are two
 Output
 -------
 
-**save_shape_matching_model** - saves .shm file with prepared model under *filename* in *file_directory (filepath)*. Path to file is displayed as *file_toPrint*. save_shape_matching_model_dxf also displays shape model in the *Output* image.
+**save_shape_matching_model** - saves .shm file with prepared model under *filename* in *file_directory*. Path to file is displayed as *file_toPrint* (or separately *file_toRead* for reading .dxf file and *file_toSave* for saving model in save_shape_matching_model_dxf). save_shape_matching_model_dxf also displays shape model in the *Output* image.
 
 **use_shape_matching_model** - marks matching shapes on image with green border and displays their number as *number_of_shapes_found*. Shape with index *ObjectPointer* is marked with purple cross. Parameters of found shapes are returned in arrays such as:
 
