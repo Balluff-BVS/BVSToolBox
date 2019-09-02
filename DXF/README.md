@@ -41,6 +41,15 @@ Input parameters
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'border_holes' - In addition to the outer border of the input region you get the contours of all holes.
 
+**SmoothContours** - number of points used to calculate the regression line while smoothing contours
+
+*Default value:* 5
+
+*Suggested values:* 3, 5, 7, 9
+
+*Restriction:* SmoothContours >= 3 (the value is odd)
+
+
 Output
 -------------
 
