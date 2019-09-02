@@ -46,8 +46,6 @@ Input parameters
 
 *Restriction:* ScaleMin > 0, ScaleMax >= ScaleMin
 
-**ModelImage_Scale** - scale used in save_shape_matching_model_dxf to transform read contours into output image.
-
 **filename** - name of file to save/read. Format .shm is added automatically while saving/reading. In save_shape_matching_model_dxf there are two filenames: *filename_contours* for .dxf file to read and *filename_model* for shape model to save.
 
 **file_directory** - path to the file to save/read. As default it is set as */data/icsServer/share/images/*, 
@@ -113,6 +111,8 @@ with BVS Cockpit installed on PC. In save_shape_matching_model_dxf there are two
 *Suggested values:* 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0
 
 *Typical range of values:* 0 <= Greediness <= 1
+
+**ModelImage_Scale** - scale used in *save_shape_matching_model_dxf* only to transform read contours into output image.
 
 Output
 -------
