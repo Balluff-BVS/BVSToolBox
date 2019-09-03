@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<c></c>
+<l>ToolName := 'Binomial Filter'</l>
+<l>InfoString := 'Smooth an image using the binomial filter. MaskWidth and MaskHeight are odd numbers from 1 to 37.'</l>
+<c></c>
+<l>MaskWidth_Int:=5</l>
+<l>MaskHeight_Int:=5</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageBinomial_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MaskWidth_Int" base_type="ctrl" dimension="0"/>
+<par name="MaskHeight_Int" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>binomial_filter (Image_Img, ImageBinomial_Img, MaskWidth_Int, MaskHeight_Int)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageBinomial_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="MaskHeight_Int"/>
+<parameter id="MaskWidth_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
