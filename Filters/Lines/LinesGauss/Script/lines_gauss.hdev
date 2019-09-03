@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Gauss lines'</l>
+<l>InfoString := 'Detect lines and their width.'</l>
+<c></c>
+<c>*selecting from found lines parameters</c>
+<l>SegmentContour_smoothCont_Int:=5</l>
+<l>SegmentContour_MaxLineDist1_Real:=4</l>
+<l>SegmentContour_MaxLineDist2_Real:=2</l>
+<l>UnionContours_MaxDistAbs_Real:=10</l>
+<l>UnionContours_MaxDistRel_Real:=1</l>
+<l>UnionContours_MaxShift_Real:=2</l>
+<l>UnionContours_MaxAngle_Real:=0.1</l>
+<l>SelectContours_MinLength_Real:=0.5</l>
+<l>SelectContours_MaxLength_Real:=200</l>
+<c></c>
+<c>*calculate Gauss lines parameters</c>
+<l>max_line_width_Int:=8</l>
+<l>contrast_Int:=12</l>
+<c></c>
+<l>light_dark_Enum_Values:=['dark','light']</l>
+<l>light_dark_Enum:='dark'</l>
+<c></c>
+<l>extract_width_Enum_Values:=['false','true']</l>
+<l>extract_width_Enum:='true'</l>
+<c></c>
+<l>line_model_Enum_Values:=['bar-shaped','gaussian','none','parabolic']</l>
+<l>line_model_Enum:='parabolic'</l>
+<c></c>
+<l>complete_junctions_Enum_Values:=['false','true']</l>
+<l>complete_junctions_Enum:='true'</l>
+<c></c>
+<l>read_image (input_Img, 'C:/Users/Agata/Desktop/Agatka/img/scratch.jpg')</l>
+<l>get_image_size (input_Img, Width, Height)</l>
+<l>* calculate_lines_gauss_parameters (MaxLineWidth, [Contrast,0], Sigma, Low, High)</l>
+<l>if (|max_line_width_Int| != 1)</l>
+<l>    throw ('Wrong number of values of control parameter: 1')</l>
+<l>endif</l>
+<l>if (not is_number(max_line_width_Int))</l>
+<l>    throw ('Wrong type of control parameter: 1')</l>
+<l>endif</l>
+<l>if (max_line_width_Int &lt;= 0)</l>
+<l>    throw ('Wrong value of control parameter: 1')</l>
+<l>endif</l>
+<l>if (|[contrast_Int,0]| != 1 and |[contrast_Int,0]| != 2)</l>
+<l>    throw ('Wrong number of values of control parameter: 2')</l>
+<l>endif</l>
+<l>if (min(is_number([contrast_Int,0])) == 0)</l>
+<l>    throw ('Wrong type of control parameter: 2')</l>
+<l>endif</l>
+<l>ContrastHigh := [contrast_Int,0][0]</l>
+<l>if (ContrastHigh &lt; 0)</l>
+<l>    throw ('Wrong value of control parameter: 2')</l>
+<l>endif</l>
+<l>if (|[contrast_Int,0]| == 2)</l>
+<l>    ContrastLow := [contrast_Int,0][1]</l>
+<l>else</l>
+<l>    ContrastLow := ContrastHigh / 3.0</l>
+<l>endif</l>
+<l>if (ContrastLow &lt; 0)</l>
+<l>    throw ('Wrong value of control parameter: 2')</l>
+<l>endif</l>
+<l>if (ContrastLow &gt; ContrastHigh)</l>
+<l>    throw ('Wrong value of control parameter: 2')</l>
+<l>endif</l>
+<l>if (max_line_width_Int &lt; 1.73)</l>
+<l>    ContrastLow := ContrastLow * max_line_width_Int / 1.73</l>
+<l>    ContrastHigh := ContrastHigh * max_line_width_Int / 1.73</l>
+<l>    max_line_width_Int := 1.73</l>
+<l>endif</l>
+<l>HalfWidth := max_line_width_Int / 2.0</l>
+<l>Sigma := HalfWidth / 1.73</l>
+<l>Help := -2.0 * HalfWidth / (2.5 * pow(Sigma,3.0)) * exp(-0.5 * pow(HalfWidth / Sigma,2.0))</l>
+<l>High := fabs(ContrastHigh * Help)</l>
+<l>Low := fabs(ContrastLow * Help)</l>
+<c></c>
+<l>lines_gauss (input_Img, Lines, Sigma, Low, High, 'dark', 'true', 'gaussian', 'true')</l>
+<l>segment_contours_xld (Lines, ContoursSplit, 'lines', SegmentContour_smoothCont_Int, SegmentContour_MaxLineDist1_Real, SegmentContour_MaxLineDist2_Real)</l>
+<l>* union_collinear_contours_xld (ContoursSplit, UnionContours, UnionContours_MaxDistAbs_Real, UnionContours_MaxDistRel_Real, UnionContours_MaxShift_Real, UnionContours_MaxAngle_Real, 'attr_keep')</l>
+<l>union_adjacent_contours_xld (ContoursSplit, UnionContours, UnionContours_MaxDistAbs_Real, UnionContours_MaxDistRel_Real, 'attr_keep')</l>
+<l>select_contours_xld (UnionContours, output_Contour, 'contour_length', SelectContours_MinLength_Real, SelectContours_MaxLength_Real, -0.5, 0.5)</l>
+<l>count_obj (output_Contour, Number)</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="output_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="max_line_width_Int" base_type="ctrl" dimension="0"/>
+<par name="contrast_Int" base_type="ctrl" dimension="0"/>
+<par name="light_dark_Enum" base_type="ctrl" dimension="0"/>
+<par name="extract_width_Enum" base_type="ctrl" dimension="0"/>
+<par name="line_model_Enum" base_type="ctrl" dimension="0"/>
+<par name="complete_junctions_Enum" base_type="ctrl" dimension="0"/>
+<par name="SegmentContour_smoothCont_Int" base_type="ctrl" dimension="0"/>
+<par name="SegmentContour_MaxLineDist1_Real" base_type="ctrl" dimension="0"/>
+<par name="SegmentContour_MaxLineDist2_Real" base_type="ctrl" dimension="0"/>
+<par name="UnionContours_MaxDistAbs_Real" base_type="ctrl" dimension="0"/>
+<par name="UnionContours_MaxDistRel_Real" base_type="ctrl" dimension="0"/>
+<par name="UnionContours_MaxShift_Real" base_type="ctrl" dimension="0"/>
+<par name="UnionContours_MaxAngle_Real" base_type="ctrl" dimension="0"/>
+<par name="SelectContours_MinLength_Real" base_type="ctrl" dimension="0"/>
+<par name="SelectContours_MaxLength_Real" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="sigma_Real" base_type="ctrl" dimension="0"/>
+<par name="low_Real" base_type="ctrl" dimension="0"/>
+<par name="high_Real" base_type="ctrl" dimension="0"/>
+<par name="help_Real" base_type="ctrl" dimension="0"/>
+<par name="contour_num_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>get_image_size (input_Img, Width, Height)</l>
+<l>* calculate_lines_gauss_parameters (MaxLineWidth, [Contrast,0], Sigma, Low, High)</l>
+<l>if (|max_line_width_Int| != 1)</l>
+<l>    throw ('Wrong number of values of control parameter: 1')</l>
+<l>endif</l>
+<l>if (not is_number(max_line_width_Int))</l>
+<l>    throw ('Wrong type of control parameter: 1')</l>
+<l>endif</l>
+<l>if (max_line_width_Int &lt;= 0)</l>
+<l>    throw ('Wrong value of control parameter: 1')</l>
+<l>endif</l>
+<l>if (|[contrast_Int,0]| != 1 and |[contrast_Int,0]| != 2)</l>
+<l>    throw ('Wrong number of values of control parameter: 2')</l>
+<l>endif</l>
+<l>if (min(is_number([contrast_Int,0])) == 0)</l>
+<l>    throw ('Wrong type of control parameter: 2')</l>
+<l>endif</l>
+<l>ContrastHigh := [contrast_Int,0][0]</l>
+<l>if (ContrastHigh &lt; 0)</l>
+<l>    throw ('Wrong value of control parameter: 2')</l>
+<l>endif</l>
+<l>if (|[contrast_Int,0]| == 2)</l>
+<l>    ContrastLow := [contrast_Int,0][1]</l>
+<l>else</l>
+<l>    ContrastLow := ContrastHigh / 3.0</l>
+<l>endif</l>
+<l>if (ContrastLow &lt; 0)</l>
+<l>    throw ('Wrong value of control parameter: 2')</l>
+<l>endif</l>
+<l>if (ContrastLow &gt; ContrastHigh)</l>
+<l>    throw ('Wrong value of control parameter: 2')</l>
+<l>endif</l>
+<l>if (max_line_width_Int &lt; 1.73)</l>
+<l>    ContrastLow := ContrastLow * max_line_width_Int / 1.73</l>
+<l>    ContrastHigh := ContrastHigh * max_line_width_Int / 1.73</l>
+<l>    max_line_width_Int := 1.73</l>
+<l>endif</l>
+<l>HalfWidth := max_line_width_Int / 2.0</l>
+<l>Sigma := HalfWidth / 1.73</l>
+<l>Help := -2.0 * HalfWidth / (2.5 * pow(Sigma,3.0)) * exp(-0.5 * pow(HalfWidth / Sigma,2.0))</l>
+<l>High := fabs(ContrastHigh * Help)</l>
+<l>Low := fabs(ContrastLow * Help)</l>
+<c></c>
+<l>lines_gauss (input_Img, Lines, Sigma, Low, High, light_dark_Enum[1], extract_width_Enum[1], line_model_Enum[1], complete_junctions_Enum[1])</l>
+<l>segment_contours_xld (Lines, ContoursSplit, 'lines', SegmentContour_smoothCont_Int, SegmentContour_MaxLineDist1_Real, SegmentContour_MaxLineDist2_Real)</l>
+<l>union_collinear_contours_xld (ContoursSplit, UnionContours, UnionContours_MaxDistAbs_Real, UnionContours_MaxDistRel_Real, UnionContours_MaxShift_Real, UnionContours_MaxAngle_Real, 'attr_keep')</l>
+<l>* union_adjacent_contours_xld (Lines, UnionContours, UnionContours_MaxDistAbs_Real, UnionContours_MaxDistRel_Real, 'attr_keep')</l>
+<l>select_contours_xld (UnionContours, output_Contour, 'contour_length', SelectContours_MinLength_Real, SelectContours_MaxLength_Real, -0.5, 0.5)</l>
+<l>count_obj (output_Contour, Number)</l>
+<c></c>
+<l>sigma_Real:=Sigma</l>
+<l>low_Real:=Low</l>
+<l>high_Real:=High</l>
+<l>help_Real:=Help</l>
+<l>contour_num_Int:=Number</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="SegmentContour_MaxLineDist1_Real"/>
+<parameter id="SegmentContour_MaxLineDist2_Real"/>
+<parameter id="SegmentContour_smoothCont_Int"/>
+<parameter id="SelectContours_MaxLength_Real"/>
+<parameter id="SelectContours_MinLength_Real"/>
+<parameter id="UnionContours_MaxAngle_Real"/>
+<parameter id="UnionContours_MaxDistAbs_Real"/>
+<parameter id="UnionContours_MaxDistRel_Real"/>
+<parameter id="UnionContours_MaxShift_Real"/>
+<parameter id="complete_junctions_Enum"/>
+<parameter id="contour_num_Int"/>
+<parameter id="contrast_Int"/>
+<parameter id="extract_width_Enum"/>
+<parameter id="help_Real"/>
+<parameter id="high_Real"/>
+<parameter id="input_Img"/>
+<parameter id="light_dark_Enum"/>
+<parameter id="line_model_Enum"/>
+<parameter id="low_Real"/>
+<parameter id="max_line_width_Int"/>
+<parameter id="output_Contour"/>
+<parameter id="sigma_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
