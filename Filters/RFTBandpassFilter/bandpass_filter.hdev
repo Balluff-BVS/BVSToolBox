@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Bandpass filter'</l>
+<l>InfoString := 'Extracts shapes using bandpass filter and RFT'</l>
+<l>shape_area_min_Int:=150</l>
+<l>shape_area_max_Int:=99999</l>
+<l>filter_freq_Real:=0.4</l>
+<l>features_Enum_Values:=['area','area_points','row','column_points','row_points',\
+                       'column','width','height','ratio','row1','column1','row2','column2',\
+                       'circularity','compactness','contlength','convexity','ra','ra_points',\
+                       'rb','rb_points','phi','phi_points','anisometry','anisometry_points',\
+                       'bulkiness','struct_factor','outer_radius','max_diameter','orientation',\
+                       'orientation_points','rect2_phi','rect2_len1','rect2_len2','moments_m11',\
+                       'moments_m11_points','moments_m20','moments_m20_points','moments_m02',\
+                       'moments_m02_points']</l>
+<l>features_Enum:='area'</l>
+<l>operation_Enum_Values:=['and', 'or']</l>
+<l>operation_Enum:='and'</l>
+<l>* dev_close_window ()</l>
+<l>* read_image (Image, 'C:/Users/Agata/Desktop/Agatka/halcon/blob analysis 2/dice_00.jpg')</l>
+<l> read_image (Image, 'printer_chip/printer_chip_01')</l>
+<l>* read_image (Image, 'C:/Users/Agata/Desktop/Agatka/kolektor/image-2019-07-18_15-12-25_10000003.bmp')</l>
+<l> get_image_size (Image, Width, Height)</l>
+<l>* dev_open_window (0, 0, Width, Height, 'black', WindowHandle)</l>
+<l>* dev_display (Image)</l>
+<c></c>
+<l>* optimize_rft_speed (Width, Height, 'standard')</l>
+<l>gen_sin_bandpass (ImageBandpass, 0.4, 'none', 'rft', Width, Height)</l>
+<l>rft_generic (Image, ImageFFT, 'to_freq', 'none', 'complex', Width)</l>
+<l>convol_fft (ImageFFT, ImageBandpass, ImageConvol)</l>
+<l>rft_generic (ImageConvol, Lines, 'from_freq', 'n', 'byte', Width)</l>
+<l>threshold (Lines, Region, 5, 255)</l>
+<l>connection (Region, ConnectedRegions)</l>
+<l>select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', 15000, 99999)</l>
+<l>count_obj (SelectedRegions, Number)</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="output_Region" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="filter_freq_Real" base_type="ctrl" dimension="0"/>
+<par name="shape_area_min_Int" base_type="ctrl" dimension="0"/>
+<par name="shape_area_max_Int" base_type="ctrl" dimension="0"/>
+<par name="features_Enum" base_type="ctrl" dimension="0"/>
+<par name="operation_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="regions_num_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c></c>
+<l>get_image_size (input_Img, Width, Height)</l>
+<c></c>
+<l>gen_sin_bandpass (ImageBandpass, filter_freq_Real, 'none', 'rft', Width, Height)</l>
+<l>rft_generic (input_Img, ImageFFT, 'to_freq', 'none', 'complex', Width)</l>
+<l>convol_fft (ImageFFT, ImageBandpass, ImageConvol)</l>
+<l>rft_generic (ImageConvol, Lines, 'from_freq', 'n', 'byte', Width)</l>
+<c></c>
+<l>threshold (Lines, Region, 5, 255)</l>
+<l>connection (Region, ConnectedRegions)</l>
+<l>select_shape (ConnectedRegions, output_Region, features_Enum[1], operation_Enum[1], shape_area_min_Int, shape_area_max_Int)</l>
+<l>count_obj (output_Region, regions_num_Int)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="features_Enum"/>
+<parameter id="filter_freq_Real"/>
+<parameter id="input_Img"/>
+<parameter id="operation_Enum"/>
+<parameter id="output_Region"/>
+<parameter id="regions_num_Int"/>
+<parameter id="shape_area_max_Int"/>
+<parameter id="shape_area_min_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
