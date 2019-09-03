@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Lines Facet'</l>
+<l>InfoString:='Detection of lines using the facet model.'</l>
+<c></c>
+<l>Low_Real:=3</l>
+<l>Hight_Real:=8</l>
+<l>LightDark_Enum_Values:=['dark', 'light']</l>
+<l>LightDark_Enum:='light'</l>
+<l>MaskSize_Enum_Values:=['3', '5', '7', '9', '11']</l>
+<l>MaskSize_Enum:='5'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Lines_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Low_Real" base_type="ctrl" dimension="0"/>
+<par name="Hight_Real" base_type="ctrl" dimension="0"/>
+<par name="LightDark_Enum" base_type="ctrl" dimension="0"/>
+<par name="MaskSize_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>TempString:=MaskSize_Enum[1]</l>
+<l>if(TempString=='3')</l>
+<l>    temp:=3</l>
+<l>elseif(TempString=='5')</l>
+<l>    temp:=5</l>
+<l>elseif(TempString=='5')</l>
+<l>    temp:=5</l>
+<l>elseif(TempString=='7')</l>
+<l>    temp:=7</l>
+<l>elseif(TempString=='9')</l>
+<l>    temp:=9</l>
+<l>elseif(TempString=='11')</l>
+<l>    temp:=11</l>
+<l>endif</l>
+<l>lines_facet (Image_Img, Lines_Contour, temp, Low_Real, Hight_Real, LightDark_Enum[1])</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Hight_Real"/>
+<parameter id="Image_Img"/>
+<parameter id="LightDark_Enum"/>
+<parameter id="Lines_Contour"/>
+<parameter id="Low_Real"/>
+<parameter id="MaskSize_Enum"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

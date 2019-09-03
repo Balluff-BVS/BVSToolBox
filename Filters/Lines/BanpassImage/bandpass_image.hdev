@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Bandpass image'</l>
+<l>InfoString:='Extract lines using bandpass filter'</l>
+<c></c>
+<l>MinGray_MInt_MinMax:=[0,255]</l>
+<l>MinGray_MInt:=0</l>
+<c></c>
+<l>MaxGray_MInt_MinMax:=[0,255]</l>
+<l>MaxGray_MInt:=255</l>
+<c></c>
+<l>Length_Int:=1</l>
+<l>Mode_Enum_Values:=['filter','generalize1','generalize2']</l>
+<l>Mode_Enum:='filter'</l>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageBandpass_Img" base_type="iconic" dimension="0"/>
+<par name="Contours_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MinGray_MInt" base_type="ctrl" dimension="0"/>
+<par name="MaxGray_MInt" base_type="ctrl" dimension="0"/>
+<par name="Length_Int" base_type="ctrl" dimension="0"/>
+<par name="Mode_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>bandpass_image (Image_Img, ImageBandpass_Img, 'lines')</l>
+<l>threshold (ImageBandpass_Img, Region, MinGray_MInt, MaxGray_MInt)</l>
+<l>skeleton (Region, Skeleton)</l>
+<l>gen_contours_skeleton_xld (Skeleton, Contours_Contour, Length_Int, Mode_Enum[1])</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Contours_Contour"/>
+<parameter id="ImageBandpass_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="Length_Int"/>
+<parameter id="MaxGray_MInt"/>
+<parameter id="MinGray_MInt"/>
+<parameter id="Mode_Enum"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
