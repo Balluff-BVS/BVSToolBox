@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Wiener Filter'</l>
+<l>InfoString := 'Wiener filter produces an estimate of the original image (= image without noise and blurring) by minimizing the mean square error between estimated and original image. wiener_filter can be used to restore images corrupted by noise and/or blurring '</l>
+<c></c>
+<l>Blurring_Real:=5</l>
+<l>Angle_Int:=0</l>
+<l>Type_Enum_Values:=['1','2','3','4','5']</l>
+<l>Type_Enum:='3'</l>
+<c></c>
+<l>MaskType_Enum_Values:=['circle','square']</l>
+<l>MaskType_Enum:='circle'</l>
+<l>Radius_Int:=1</l>
+<l>Margin_Enum_Values:=['mirrored', 'cyclic', 'continued', '0', '30', '60', '90', '120', '150', '180', '210', '240', '255']</l>
+<l>Margin_Enum:='mirrored'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="OutputImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Blurring_Real" base_type="ctrl" dimension="0"/>
+<par name="Angle_Int" base_type="ctrl" dimension="0"/>
+<par name="Type_Enum" base_type="ctrl" dimension="0"/>
+<par name="MaskType_Enum" base_type="ctrl" dimension="0"/>
+<par name="Radius_Int" base_type="ctrl" dimension="0"/>
+<par name="Margin_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>get_image_size (Image_Img, Width, Height)</l>
+<c></c>
+<l>String_Temp:=Type_Enum[1]</l>
+<l>if(String_Temp=='1')</l>
+<l>    Temp:=1</l>
+<l>elseif(String_Temp=='2')</l>
+<l>    Temp:=2</l>
+<l>elseif(String_Temp=='3')</l>
+<l>    Temp:=3</l>
+<l>elseif(String_Temp=='4')</l>
+<l>    Temp:=4</l>
+<l>elseif(String_Temp=='5')</l>
+<l>    Temp:=5</l>
+<l>endif</l>
+<l>gen_psf_motion (Psf, Width, Height, Blurring_Real, Angle_Int, Temp)</l>
+<c></c>
+<l>String_Temp1:=Margin_Enum[1]</l>
+<l>if(String_Temp1=='mirrored')</l>
+<l>    Temp1:='mirrored'</l>
+<l>elseif(String_Temp1== 'cyclic')</l>
+<l>    Temp1:= 'cyclic'</l>
+<l>elseif(String_Temp1== 'continued')</l>
+<l>    Temp1:='continued'</l>
+<l>elseif(String_Temp1=='0')</l>
+<l>    Temp1:=0</l>
+<l>elseif(String_Temp1=='30')</l>
+<l>    Temp1:=30</l>
+<l>elseif(String_Temp1=='60')</l>
+<l>    Temp1:=60</l>
+<l>elseif(String_Temp1=='90')</l>
+<l>    Temp1:=90</l>
+<l>elseif(String_Temp1=='120')</l>
+<l>    Temp1:=120</l>
+<l>elseif(String_Temp1=='150')</l>
+<l>    Temp1:=150</l>
+<l>elseif(String_Temp1=='180')</l>
+<l>    Temp1:=180</l>
+<l>elseif(String_Temp1=='210')</l>
+<l>    Temp1:=210</l>
+<l>elseif(String_Temp1=='255')</l>
+<l>    Temp1:=255</l>
+<l>endif</l>
+<c></c>
+<l>median_image (Image_Img, ImageMedian, MaskType_Enum[1], Radius_Int, Temp1)</l>
+<l>wiener_filter (Image_Img, Psf, ImageMedian, RestoredImage_Img)</l>
+<c></c>
+<c></c>
+<l>gen_rectangle1 (Rectangle, 0, 0, Height, Width)</l>
+<l>min_max_gray (Rectangle, RestoredImage_Img, 0, Min, Max, Range)</l>
+<l>Mult:=255/(Max-Min)</l>
+<l>Add:=-Mult*Min</l>
+<l>scale_image (RestoredImage_Img, ImageScaled,Mult, Add)</l>
+<l>convert_image_type (ImageScaled, OutputImage_Img, 'byte')</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Angle_Int"/>
+<parameter id="Blurring_Real"/>
+<parameter id="Image_Img"/>
+<parameter id="Margin_Enum"/>
+<parameter id="MaskType_Enum"/>
+<parameter id="OutputImage_Img"/>
+<parameter id="Radius_Int"/>
+<parameter id="Type_Enum"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
