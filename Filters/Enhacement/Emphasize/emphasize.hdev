@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Emphasize'</l>
+<l>InfoString:='Enhance contrast of the image.MaskWidth and MaskHeight are odd numbers.'</l>
+<c></c>
+<l>MaskWidth_Int:=7</l>
+<l>MaskHeight_Int:=7</l>
+<l>Factor_Real:=1</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageEmphasize_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MaskWidth_Int" base_type="ctrl" dimension="0"/>
+<par name="MaskHeight_Int" base_type="ctrl" dimension="0"/>
+<par name="Factor_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>emphasize (Image_Img, ImageEmphasize_Img, MaskWidth_Int, MaskHeight_Int, Factor_Real)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Factor_Real"/>
+<parameter id="ImageEmphasize_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="MaskHeight_Int"/>
+<parameter id="MaskWidth_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

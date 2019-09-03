@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Mean Curvature Flow'</l>
+<l>InfoString:='Apply the mean curvature flow to an image.'</l>
+<c></c>
+<l>Sigma_Real:=0.5</l>
+<l>Theta_Real:=0.5</l>
+<l>Iterations_Int:=10</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageMCF_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Sigma_Real" base_type="ctrl" dimension="0"/>
+<par name="Theta_Real" base_type="ctrl" dimension="0"/>
+<par name="Iterations_Int" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>mean_curvature_flow (Image_Img, ImageMCF_Img, Sigma_Real, Theta_Real, Iterations_Int)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageMCF_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="Iterations_Int"/>
+<parameter id="Sigma_Real"/>
+<parameter id="Theta_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

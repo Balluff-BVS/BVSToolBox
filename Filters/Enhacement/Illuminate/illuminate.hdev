@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Illuminate'</l>
+<l>InfoString:='Illuminate image.MaskWidth and MaskHeight are odds numbers.'</l>
+<c></c>
+<l>MaskWidth_Int:=101</l>
+<l>MaskHeight_Int:=101</l>
+<l>Factor_Real:=0.7</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageIlluminate_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="MaskWidth_Int" base_type="ctrl" dimension="0"/>
+<par name="MaskHeight_Int" base_type="ctrl" dimension="0"/>
+<par name="Factor_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>illuminate (Image_Img, ImageIlluminate_Img, MaskWidth_Int, MaskHeight_Int, Factor_Real)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Factor_Real"/>
+<parameter id="ImageIlluminate_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="MaskHeight_Int"/>
+<parameter id="MaskWidth_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

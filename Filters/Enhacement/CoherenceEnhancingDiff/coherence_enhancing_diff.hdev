@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Coherence Enhancing Diff'</l>
+<l>InfoString:=' Perform a coherence enhancing diffusion of an image.'</l>
+<c></c>
+<l>Sigma_Real:=0.5</l>
+<l>Rho_Real:=3</l>
+<l>Theta_Real:=0.5</l>
+<l>Interations_Int:=10</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="Image_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageCED_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Sigma_Real" base_type="ctrl" dimension="0"/>
+<par name="Rho_Real" base_type="ctrl" dimension="0"/>
+<par name="Theta_Real" base_type="ctrl" dimension="0"/>
+<par name="Interations_Int" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>coherence_enhancing_diff (Image_Img, ImageCED_Img, Sigma_Real, Rho_Real, Theta_Real, Interations_Int)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ImageCED_Img"/>
+<parameter id="Image_Img"/>
+<parameter id="Interations_Int"/>
+<parameter id="Rho_Real"/>
+<parameter id="Sigma_Real"/>
+<parameter id="Theta_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
