@@ -7,7 +7,7 @@ DXF
 
 Original Picture             | Extracted Edges
 :-------------------------:|:-------------------------:
-![Image error](https://github.com/Balluff-BVS/TestScripts/blob/master/DXF/original.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/TestScripts/blob/master/DXF/contours_to_save.png?raw=true)
+![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/DXF/original.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/DXF/contours_to_save.png?raw=true)
 
 Description
 ------------
