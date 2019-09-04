@@ -7,7 +7,7 @@ EDGES IMAGE
 
 Original Picture             | Extracted Edges
 :-------------------------:|:-------------------------:
-![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/EdgesImage/original.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Filters/EdgesImage/edges_image.png?raw=true)
+![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Filters/EdgesImage/original.png?raw=true)  |  ![Image error](https://github.com/Balluff-BVS/halconscripts/blob/master/Filters/EdgesImage/edges_image.png?raw=true)
 
 Description
 ------------
