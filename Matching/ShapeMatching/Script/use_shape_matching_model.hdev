@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName:='Use shape model'</l>
+<l>InfoString:='Reads shape model from a file and uses it to find matching shapes. Uses 2D transformation matrix'</l>
+<c>*press Execute to read the model</c>
+<l>HalconCallbacks:=['LoadModel']</l>
+<c>*user may defines filename and specific file directory, or leaves it as default</c>
+<l>filename_model_String:='model'</l>
+<l>file_directory_model_String:='-'</l>
+<c></c>
+<c>*input parameters described in use_shape_matching_model_ReadMe.txt</c>
+<l>AngleStart_Real:=0</l>
+<l>AngleStop_Real:=6.29</l>
+<l>ScaleMin_Real:=0.9</l>
+<l>ScaleMax_Real:=1.1</l>
+<l>MinScore_Real:=0.6</l>
+<l>NumMatches_Int:=0</l>
+<l>MaxOverlap_Real:=0.5</l>
+<l>SubPixel_Enum_Values:=['none', 'interpolation', 'least_squares', 'least_squares_high', 'least_squares_very_high', 'max_deformation 1', 'max_deformation 2', 'max_deformation 3', 'max_deformation 4', 'max_deformation 5', 'max_deformation 6']</l>
+<l>SubPixel_Enum:='least_squares'</l>
+<l>NumLevels_MInt_MinMax:=[0,10]</l>
+<l>NumLevels_MInt:=4</l>
+<l>Greediness_Real:=0.3</l>
+<c></c>
+<l>ArrayCount:=3</l>
+<l>ArrayCount_MinMax:=[1,32]</l>
+<l>ObjectPointer_Int:=1</l>
+<c></c>
+<l>Models_Contour_Color:=[0,255,0]</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="LoadModel">
+<interface>
+<ic>
+<par name="filename_model_String" base_type="ctrl" dimension="0"/>
+<par name="file_directory_model_String" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ModelID_Tuple_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>if (file_directory_model_String!='-')</l>
+<l>    file_model := file_directory_model_String+filename_model_String+'.shm'</l>
+<l>else</l>
+<l>    file_model:='/data/icsServer/share/images/'+filename_model_String+'.shm'    </l>
+<l>endif</l>
+<c></c>
+<l>read_shape_model (file_model, ModelID_Tuple_)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="LoadModel">
+<parameters>
+<parameter id="ModelID_Tuple_"/>
+<parameter id="file_directory_model_String"/>
+<parameter id="filename_model_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+<par name="inputAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Models_Contour" base_type="iconic" dimension="0"/>
+<par name="Cross_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ModelID_Tuple" base_type="ctrl" dimension="0"/>
+<par name="file_directory_model_String" base_type="ctrl" dimension="0"/>
+<par name="filename_model_String" base_type="ctrl" dimension="0"/>
+<par name="AngleStart_Real" base_type="ctrl" dimension="0"/>
+<par name="AngleStop_Real" base_type="ctrl" dimension="0"/>
+<par name="MinScore_Real" base_type="ctrl" dimension="0"/>
+<par name="NumMatches_Int" base_type="ctrl" dimension="0"/>
+<par name="MaxOverlap_Real" base_type="ctrl" dimension="0"/>
+<par name="SubPixel_Enum" base_type="ctrl" dimension="0"/>
+<par name="NumLevels_Int" base_type="ctrl" dimension="0"/>
+<par name="Greediness_Real" base_type="ctrl" dimension="0"/>
+<par name="ArrayCount" base_type="ctrl" dimension="0"/>
+<par name="ObjectPointer_Int" base_type="ctrl" dimension="0"/>
+<par name="ScaleMin_Real" base_type="ctrl" dimension="0"/>
+<par name="Scale_Max_Real" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="file_toPrint_String" base_type="ctrl" dimension="0"/>
+<par name="number_of_shapes_found_Int" base_type="ctrl" dimension="0"/>
+<par name="ShapeCenterX_RealArray" base_type="ctrl" dimension="0"/>
+<par name="ShapeCenterY_RealArray" base_type="ctrl" dimension="0"/>
+<par name="ShapeScore_RealArray" base_type="ctrl" dimension="0"/>
+<par name="ShapeAngle_RealArray" base_type="ctrl" dimension="0"/>
+<par name="ShapeScale_RealArray" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>gen_empty_obj(Models_Contour)</l>
+<l>reduce_domain (input_Img, inputAOI_Aoi, ImageReduced)</l>
+<l>find_scaled_shape_models (ImageReduced,ModelID_Tuple, AngleStart_Real, AngleStop_Real, 0.9, 1.1, MinScore_Real, NumMatches_Int, MaxOverlap_Real, SubPixel_Enum[1], NumLevels_Int, Greediness_Real, Row, Column, Angle, Scale, Score, Model)</l>
+<l>number_of_shapes_found_Int:=|Score|</l>
+<l>for i := 0 to number_of_shapes_found_Int - 1 by 1</l>
+<l>        get_shape_model_contours (ModelContours, ModelID_Tuple, 1)</l>
+<l>        vector_angle_to_rigid (0, 0, 0, Row[i], Column[i], Angle[i], HomMat2D)</l>
+<l>        affine_trans_contour_xld (ModelContours, ModelTrans, HomMat2D)</l>
+<l>        concat_obj (ModelTrans, Models_Contour, Models_Contour)</l>
+<l>endfor</l>
+<c></c>
+<l>gen_cross_contour_xld (Cross_Contour, Row[ObjectPointer_Int-1], Column[ObjectPointer_Int-1], 10, 0)</l>
+<c></c>
+<l>ShapeScore_RealArray:=Score</l>
+<l>ShapeCenterX_RealArray:=Column</l>
+<l>ShapeCenterY_RealArray:=Row</l>
+<l>ShapeAngle_RealArray:=Angle</l>
+<l>ShapeScale_RealArray:=Scale</l>
+<c></c>
+<l>if (file_directory_model_String!='-')</l>
+<l>    file_toPrint_String := file_directory_model_String+filename_model_String+'.shm'</l>
+<l>else</l>
+<l>    file_toPrint_String := '/data/icsServer/share/images/'+filename_model_String+'.shm'</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="AngleStart_Real"/>
+<parameter id="AngleStop_Real"/>
+<parameter id="ArrayCount"/>
+<parameter id="Cross_Contour"/>
+<parameter id="Greediness_Real"/>
+<parameter id="MaxOverlap_Real"/>
+<parameter id="MinScore_Real"/>
+<parameter id="ModelID_Tuple"/>
+<parameter id="Models_Contour"/>
+<parameter id="NumLevels_Int"/>
+<parameter id="NumMatches_Int"/>
+<parameter id="ObjectPointer_Int"/>
+<parameter id="ScaleMin_Real"/>
+<parameter id="Scale_Max_Real"/>
+<parameter id="ShapeAngle_RealArray"/>
+<parameter id="ShapeCenterX_RealArray"/>
+<parameter id="ShapeCenterY_RealArray"/>
+<parameter id="ShapeScale_RealArray"/>
+<parameter id="ShapeScore_RealArray"/>
+<parameter id="SubPixel_Enum"/>
+<parameter id="file_directory_model_String"/>
+<parameter id="file_toPrint_String"/>
+<parameter id="filename_model_String"/>
+<parameter id="inputAOI_Aoi"/>
+<parameter id="input_Img"/>
+<parameter id="number_of_shapes_found_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
