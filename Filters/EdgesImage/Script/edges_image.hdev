@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Edges'</l>
+<l>InfoString := 'Extract edges using Deriche, Lanser, Shen, or Canny filters.'</l>
+<c></c>
+<l>filter_Enum_Values:=['canny', 'deriche1', 'deriche2', 'lanser1', 'lanser2',\
+                     'mshen', 'shen', 'sobel_fast']</l>
+<l>filter_Enum:='canny'</l>
+<c></c>
+<l>alpha_MReal_MinMax:=[0.2,50.0]</l>
+<l>alpha_MReal:=1.0</l>
+<c></c>
+<l>NMS_Enum_Values:=['hvnms', 'inms', 'nms', 'none']</l>
+<l>NMS_Enum:='nms'</l>
+<c></c>
+<l>low_MInt_MinMax:=[1,255]</l>
+<l>low_MInt:=20</l>
+<c></c>
+<l>high_MInt_MinMax:=[1,255]</l>
+<l>high_MInt:=40</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="input_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="output_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="filter_Enum" base_type="ctrl" dimension="0"/>
+<par name="alpha_MReal" base_type="ctrl" dimension="0"/>
+<par name="NMS_Enum" base_type="ctrl" dimension="0"/>
+<par name="low_MInt" base_type="ctrl" dimension="0"/>
+<par name="high_MInt" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>edges_image (input_Img, ImaAmp, ImaDir, filter_Enum[1], alpha_MReal, NMS_Enum[1], low_MInt, high_MInt)</l>
+<l>threshold (ImaAmp, Edges, 1, 255)</l>
+<l>skeleton (Edges, Skeleton)</l>
+<l>gen_contours_skeleton_xld (Skeleton, output_Contour, 1, 'filter')</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="NMS_Enum"/>
+<parameter id="alpha_MReal"/>
+<parameter id="filter_Enum"/>
+<parameter id="high_MInt"/>
+<parameter id="input_Img"/>
+<parameter id="low_MInt"/>
+<parameter id="output_Contour"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
