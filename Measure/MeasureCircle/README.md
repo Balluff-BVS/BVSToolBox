@@ -95,7 +95,11 @@ Contour of the measured circle.
 
 Rectangular contours used to measure the region.
 
-Red pointer showing circle which parameters are currently displayed as output. User may switch between regions by changing *circle_to_measure* parameter.
+**measure_circle.hdev** returns red pointer showing circle which parameters are currently returned as output. User may switch between regions by changing *circle_to_measure* parameter. It returns all possible parameters of one of measured regions only.
+
+**measure_circle_return_array.hdev** returns arrays with all possible parameters of all measured regions.
+
+Measured parameters:
 
 **center_y, center_x** - coordinates of the center of circle
 
