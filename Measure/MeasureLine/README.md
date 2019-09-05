@@ -100,7 +100,11 @@ Contour of the measured line.
 
 Rectangular contours used to measure the line.
 
-Red pointer showing the beginning of line which parameters are currently displayed as output. User may switch between regions by changing *line_to_measure* parameter.
+**measure_line.hdev** returns red pointer showing line which parameters are currently returned as output. User may switch between regions by changing *line_to_measure* parameter. It returns all possible parameters of one of measured regions only.
+
+**measure_line_return_array.hdev** returns arrays with all possible parameters of all measured regions.
+
+Measured parameters:
 
 **x_begin, y_begin** - coordinates of the beginning point of line
 
