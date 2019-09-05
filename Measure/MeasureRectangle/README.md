@@ -95,7 +95,11 @@ Contour of the measured rectangle.
 
 Rectangular contours used to measure the region.
 
-Red pointer showing rectangle which parameters are currently displayed as output. User may switch between regions by changing *rectangle_to_measure* parameter.
+**measure_rectangle.hdev** returns red pointer showing rectangle which parameters are currently returned as output. User may switch between regions by changing *rectangle_to_measure* parameter. It returns all possible parameters of one of measured regions only.
+
+**measure_rectangle_return_array.hdev** returns arrays with all possible parameters of all measured regions.
+
+Measured parameters:
 
 **center_y, center_x** - coordinates of the center of rectangle
 
