@@ -95,7 +95,11 @@ Contour of the measured ellipse.
 
 Rectangular contours used to measure the region.
 
-Red pointer showing ellipse which parameters are currently displayed as output. User may switch between regions by changing *ellipse_to_measure* parameter.
+**measure_ellipse.hdev** returns red pointer showing ellipse which parameters are currently returned as output. User may switch between regions by changing *ellipse_to_measure* parameter. It returns all possible parameters of one of measured regions only.
+
+**measure_ellipse_return_array.hdev** returns arrays with all possible parameters of all measured regions.
+
+Measured parameters:
 
 **center_y, center_x** - coordinates of the center of ellipse
 
