@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.1.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Measure line'</l>
+<l>InfoString := 'Measures lines obtained by Check Blobs'</l>
+<c></c>
+<c>*select_contours_xld</c>
+<l>SelectContours_MinLength_Real:=20</l>
+<l>SelectContours_MaxLength_Real:=800</l>
+<c></c>
+<c>*add_metrology_line_measure</c>
+<l>measure_length1_Enum_Values:=['10','20','30']</l>
+<l>measue_length1_Enum:='20'</l>
+<c></c>
+<l>measure_length2_MInt_MinMax:=[1,10]</l>
+<l>measure_length2_MInt:=5</l>
+<c></c>
+<l>measure_sigma_MReal_MinMax:=[0.4,10]</l>
+<l>measure_sigma_MReal:=1</l>
+<c></c>
+<l>measure_threshold_MInt_MinMax:=[1,255]</l>
+<l>measure_threshold_MInt:=2</l>
+<c></c>
+<c>*segment_contours_xld</c>
+<l>SegmentContours_SmoothCont_Int:=5</l>
+<l>SegmentContours_MaxLineDist1_Real:=4.0</l>
+<l>SegmentContours_MaxLineDist2_Real:=2.0</l>
+<c></c>
+<c>*union_collinear_contours_xld</c>
+<l>UnionContours_MaxDistAbs_Real:=10.0</l>
+<l>UnionContours_MaxDistRel_Real:=1.0</l>
+<l>UnionContours_MaxShift_Real:=2.0</l>
+<l>UnionContours_MaxAngle_Real:=0.1</l>
+<c></c>
+<l>ArrayCount:=5</l>
+<l>ArrayCount_MinMax:=[1,32]</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="image_Img" base_type="iconic" dimension="0"/>
+<par name="object_to_measure_Region" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="contour_Contour" base_type="iconic" dimension="0"/>
+<par name="contour_measure_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ArrayCount" base_type="ctrl" dimension="0"/>
+<par name="SelectContours_MinLength_Real" base_type="ctrl" dimension="0"/>
+<par name="SelectContours_MaxLength_Real" base_type="ctrl" dimension="0"/>
+<par name="measure_length1_Enum" base_type="ctrl" dimension="0"/>
+<par name="measure_length2_MInt" base_type="ctrl" dimension="0"/>
+<par name="measure_sigma_MReal" base_type="ctrl" dimension="0"/>
+<par name="measure_threshold_MInt" base_type="ctrl" dimension="0"/>
+<par name="SegmentContours_SmoothCont_Int" base_type="ctrl" dimension="0"/>
+<par name="SegmentContours_MaxLineDist1_Real" base_type="ctrl" dimension="0"/>
+<par name="SegmentContours_MaxLineDist2_Real" base_type="ctrl" dimension="0"/>
+<par name="UnionContours_MaxDistAbs_Real" base_type="ctrl" dimension="0"/>
+<par name="UnionContours_MaxDistRel_Real" base_type="ctrl" dimension="0"/>
+<par name="UnionContours_MaxShift_Real" base_type="ctrl" dimension="0"/>
+<par name="UnionContours_MaxAngle_Real" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="number_of_lines_Int" base_type="ctrl" dimension="0"/>
+<par name="line_length_RealArray" base_type="ctrl" dimension="0"/>
+<par name="x_begin_RealArray" base_type="ctrl" dimension="0"/>
+<par name="y_begin_RealArray" base_type="ctrl" dimension="0"/>
+<par name="x_end_RealArray" base_type="ctrl" dimension="0"/>
+<par name="y_end_RealArray" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>if(measure_length1_Enum[1]=='10')</l>
+<l>    Mlength1:=10</l>
+<l>endif</l>
+<c></c>
+<l>if(measure_length1_Enum[1]=='20')</l>
+<l>    Mlength1:=20</l>
+<l>endif</l>
+<c></c>
+<l>if(measure_length1_Enum[1]=='30')</l>
+<l>    Mlength1:=30</l>
+<l>endif</l>
+<c></c>
+<l>get_image_size (image_Img, Width, Height)</l>
+<c>*fitting line contours to the region</c>
+<l>gen_contour_region_xld (object_to_measure_Region, Contour, 'border')</l>
+<l>segment_contours_xld (Contour, ContoursSplit, 'lines_circles', 5, 4, 2)</l>
+<l>union_collinear_contours_xld (ContoursSplit, UnionContours, UnionContours_MaxDistAbs_Real, UnionContours_MaxDistRel_Real, UnionContours_MaxShift_Real, UnionContours_MaxAngle_Real, 'attr_keep')</l>
+<l>select_contours_xld (UnionContours, SelectedContours, 'contour_length', SelectContours_MinLength_Real, SelectContours_MaxLength_Real, -0.5, 0.5)</l>
+<l>fit_line_contour_xld (SelectedContours, 'tukey', -1, 0, 5, 2, RowBegin, ColBegin, RowEnd, ColEnd, Nr, Nc, Dist)</l>
+<c></c>
+<c>*applying metrology model</c>
+<l>create_metrology_model (MetrologyHandle)</l>
+<l>set_metrology_model_image_size (MetrologyHandle, Width, Height)</l>
+<l>add_metrology_object_line_measure (MetrologyHandle, RowBegin, ColBegin, RowEnd, ColEnd, Mlength1,\
+                                   measure_length2_MInt, measure_sigma_MReal, \
+                                   measure_threshold_MInt, [], [], Index)</l>
+<l>apply_metrology_model (image_Img, MetrologyHandle)</l>
+<l>get_metrology_object_measures (contour_measure_Contour, MetrologyHandle, 'all', 'all', Row, Column)</l>
+<l>get_metrology_object_result_contour (contour_Contour, MetrologyHandle, 'all', 'all', 1.5)</l>
+<l>get_metrology_object_result (MetrologyHandle, 'all', 'all', 'result_type', 'all_param', Parameter)</l>
+<l>clear_metrology_model (MetrologyHandle)</l>
+<c></c>
+<l>number_of_lines_Int := |Index|</l>
+<c></c>
+<l>j:=0</l>
+<l>for i:=0 to 4*ArrayCount-1 by 4</l>
+<l>    x_begin_RealArray[j]:=Parameter[i]</l>
+<l>    y_begin_RealArray[j]:=Parameter[i+1]</l>
+<l>    x_end_RealArray[j]:=Parameter[i+2]</l>
+<l>    y_end_RealArray[j]:=Parameter[i+3]</l>
+<l>    j:=j+1</l>
+<l>endfor</l>
+<c></c>
+<l>distance_pp (y_begin_RealArray, x_begin_RealArray, y_end_RealArray, x_end_RealArray, line_length_RealArray)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ArrayCount"/>
+<parameter id="SegmentContours_MaxLineDist1_Real"/>
+<parameter id="SegmentContours_MaxLineDist2_Real"/>
+<parameter id="SegmentContours_SmoothCont_Int"/>
+<parameter id="SelectContours_MaxLength_Real"/>
+<parameter id="SelectContours_MinLength_Real"/>
+<parameter id="UnionContours_MaxAngle_Real"/>
+<parameter id="UnionContours_MaxDistAbs_Real"/>
+<parameter id="UnionContours_MaxDistRel_Real"/>
+<parameter id="UnionContours_MaxShift_Real"/>
+<parameter id="contour_Contour"/>
+<parameter id="contour_measure_Contour"/>
+<parameter id="image_Img"/>
+<parameter id="line_length_RealArray"/>
+<parameter id="measure_length1_Enum"/>
+<parameter id="measure_length2_MInt"/>
+<parameter id="measure_sigma_MReal"/>
+<parameter id="measure_threshold_MInt"/>
+<parameter id="number_of_lines_Int"/>
+<parameter id="object_to_measure_Region"/>
+<parameter id="x_begin_RealArray"/>
+<parameter id="x_end_RealArray"/>
+<parameter id="y_begin_RealArray"/>
+<parameter id="y_end_RealArray"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
