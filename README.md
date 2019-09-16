@@ -5,14 +5,14 @@
 see documentation [here](Manual_HALCON_Script.pdf)
 
 ## The list of the tools you can find here:
-### Filters:
+## Filters:
 
-## Thresholding:
-DynamicThresold
-LocalThreshold
-RegionFeatures
-SegmentMSER
-WatershedThreshold
+### Thresholding:
+- DynamicThresold
+- LocalThreshold
+- RegionFeatures
+- SegmentMSER
+- WatershedThreshold
 
 ## Edges:
 Frei
