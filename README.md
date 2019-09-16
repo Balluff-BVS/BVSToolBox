@@ -14,106 +14,104 @@ see documentation [here](Manual_HALCON_Script.pdf)
 - SegmentMSER
 - WatershedThreshold
 
-## Edges:
-Frei
-Kirsch
-Laplace
-LaplaceOfGausian
-Prewitt
-Roberts
-Robinson
-Sobel
-Edges Image
+### Edges:
+- Frei
+- Kirsch
+- Laplace
+- LaplaceOfGausian
+- Prewitt
+- Roberts
+- Robinson
+- Sobel
+- Edges Image
 
-## Image Enhancement
-CoherenceEnhancingDiff
-Emphasize
-EquHistoImage
-Illuminate
-MeanCurvatureFlow
-ScaleImageMax
-ShockFilter
-PixelModification
+### Image Enhancement
+- CoherenceEnhancingDiff
+- Emphasize
+- EquHistoImage
+- Illuminate
+- MeanCurvatureFlow
+- ScaleImageMax
+- ShockFilter
+- PixelModification
 
-## Inpaiting 
-HarmonicInterpolation
-InpaitingAnsio
-InpaitingCed
-InpaitingCt
-InpaitingMcf
-InpaitingTexture
+### Inpaiting 
+- HarmonicInterpolation
+- InpaitingAnsio
+- InpaitingCed
+- InpaitingCt
+- InpaitingMcf
+- InpaitingTexture
 
-## Lines
-BandpassImage
-LinesFacet
-LinesGauss
+### Lines
+- BandpassImage
+- LinesFacet
+- LinesGauss
 
-## Noise
-AddNoiceWhite
-GaussDistribution
-SpDistribution
+### Noise
+- AddNoiceWhite
+- GaussDistribution
+- SpDistribution
 
-## Points
-CornerResponse
-DotsImage
-PointsFoetster
-PointsHarris
-PointsLepetit
-PointsSojka
+### Points
+- CornerResponse
+- DotsImage
+- PointsFoetster
+- PointsHarris
+- PointsLepetit
+- PointsSojka
 
-## Smooting
-BilateralFilter
-BinomialFilter
-DeviationImage
-Diffusion
-Eliminate
-Fillinterlace
-GuidedFilter
-Mean
-Median
-Rank
-SigmalImage
-SmootImage
-TrimmedMean
+### Smooting
+- BilateralFilter
+- BinomialFilter
+- DeviationImage
+- Diffusion
+- Eliminate
+- Fillinterlace
+- GuidedFilter
+- Mean
+- Median
+- Rank
+- SigmalImage
+- SmootImage
+- TrimmedMean
 
-## Texture
-DeviationImage
-EntropyImage
-TextureLaws
+### Texture
+- DeviationImage
+- EntropyImage
+- TextureLaws
 
-## Others
-WienerFilter
-RFTBandpassFilter
+### Others
+- WienerFilter
+- RFTBandpassFilter
 
 ## Tools:
-##Measurement:
-MeasureCircle
-MeasureLine
-MeasureEllipse
-MeasureRectangle
+### Measurement:
+- MeasureCircle
+- MeasureLine
+- MeasureEllipse
+- MeasureRectangle
 
-## Matching:
-ShapeMatching
+### Matching:
+- ShapeMatching
 
-## OCR
-OCR DotPrint
+### OCR
+- OCR DotPrint
 
-## Indentification 
-Barcode reader
+### Indentification 
+- Barcode reader
 
-## Robot Guiding
-Universa_Robots
+### Robot Guiding
+- Universa_Robots
 
-## Other tools:
-Bead Inspection
-DXF - reading and saving dxf files
+### Other tools:
+- Bead Inspection
+- DXF - reading and saving dxf files
 
-
-
-## Other:
-Save_variables_to_the_file
-Save_Images_Smart_Camera
-Save_Images_SVC
+### Other:
+- Save_variables_to_the_file
+- Save_Images_Smart_Camera
+- Save_Images_SVC
 
 
 
