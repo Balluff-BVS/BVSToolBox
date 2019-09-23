@@ -4,7 +4,7 @@
 - OCR_v2_svc.hdev - designed for SVC Controller
 
 
-### NOTE: Please import the file plic.occ to the images folder before uploading the tool to the BVS Cockpit!
+#### NOTE: Please import the file plic.occ to the images folder before uploading the tool to the BVS Cockpit!
 
 
 
