@@ -55,3 +55,11 @@ Output
 A collection of regions.
 
 Each of them may be used in further image processing ex. shape measurement.
+
+
+Version update
+--------
+
+*Version 1.0.1:*
+>Bug fixed while setting too huge or too low values for mask kernels
+>Added an additional Image output, which allows the usage of this tool with default BVS Cockpit tools
