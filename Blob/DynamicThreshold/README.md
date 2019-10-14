@@ -1,4 +1,4 @@
-# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/halconscripts/raw/master/Blob/DynamicThreshold/dynamic_threshold.zip" data-icon="octicon-cloud-download">Download</a></p>
+# <p align="right"><a class="github-button" aria-label="Download ntkme/github-buttons on GitHub" href="https://github.com/Balluff-BVS/BVSToolBox/blob/master/Blob/DynamicThreshold/dynamic_threshold.hdev" data-icon="octicon-cloud-download">Download</a></p>
 
 DYNAMIC THRESHOLD
 ===========
