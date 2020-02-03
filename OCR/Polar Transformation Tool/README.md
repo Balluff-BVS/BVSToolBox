@@ -1,4 +1,4 @@
-#OCR Polar Transformation Tool
+# OCR Polar Transformation Tool
 
 This tool alowes to unbend the screwed OCR text
 
