@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="13.0.3">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Polar Transformation'</l>
+<c></c>
+<l>CenterRow_Real := 100</l>
+<l>CenterColumn_Real := 100</l>
+<c></c>
+<l>AngleStart_Real := 0</l>
+<l>AngleEnd_Real := 360</l>
+<c></c>
+<l>RadiusStart_Real := 100</l>
+<l>RadiusEnd_Real := 300</l>
+<c></c>
+<l>TransformedImageWidth_Int := 2400</l>
+<l>TransformedImageHeight_Int := 100</l>
+<c></c>
+<l>Interpolation_Enum_Values := ['bilinear', 'nearest_neighbor']</l>
+<l>Interpolation_Enum := 'nearest_neighbor'</l>
+<c></c>
+<l>Rotation_Int := 180</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="TransformedImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="CenterRow_Real" base_type="ctrl" dimension="0"/>
+<par name="CenterColumn_Real" base_type="ctrl" dimension="0"/>
+<par name="AngleStart_Real" base_type="ctrl" dimension="0"/>
+<par name="AngleEnd_Real" base_type="ctrl" dimension="0"/>
+<par name="RadiusStart_Real" base_type="ctrl" dimension="0"/>
+<par name="RadiusEnd_Real" base_type="ctrl" dimension="0"/>
+<par name="TransformedImageWidth_Int" base_type="ctrl" dimension="0"/>
+<par name="TransformedImageHeight_Int" base_type="ctrl" dimension="0"/>
+<par name="Interpolation_Enum" base_type="ctrl" dimension="0"/>
+<par name="Rotation_Int" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>polar_trans_image_ext (InputImage_Img, PolarTrans, CenterRow_Real, CenterColumn_Real, rad(AngleStart_Real), rad(AngleEnd_Real), RadiusStart_Real, RadiusEnd_Real, TransformedImageWidth_Int, TransformedImageHeight_Int, Interpolation_Enum[1])</l>
+<l>rotate_image (PolarTrans, TransformedImage_Img, Rotation_Int, 'constant')</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="AngleEnd_Real"/>
+<parameter id="AngleStart_Real"/>
+<parameter id="CenterColumn_Real"/>
+<parameter id="CenterRow_Real"/>
+<parameter id="InputImage_Img"/>
+<parameter id="Interpolation_Enum"/>
+<parameter id="RadiusEnd_Real"/>
+<parameter id="RadiusStart_Real"/>
+<parameter id="Rotation_Int"/>
+<parameter id="TransformedImageHeight_Int"/>
+<parameter id="TransformedImageWidth_Int"/>
+<parameter id="TransformedImage_Img"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
