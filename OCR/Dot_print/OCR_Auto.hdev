@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="13.0.3">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'OCR with Automatic Text Reader'</l>
+<c></c>
+<l>HalconCallbacks := ['LoadFont']</l>
+<c></c>
+<l>Font_Enum_Values := ['Document_0-9_NoRej', 'Document_0-9_Rej',\
+                     'Document_0-9A-Z_NoRej', 'Document_0-9A-Z_Rej',\
+                     'Document_A-Z+_NoRej', 'Document_A-Z+_Rej',\                  
+                     'Document_NoRej', 'Document_Rej',\                    
+                     'DotPrint_0-9_NoRej', 'DotPrint_0-9_Rej',\
+                     'DotPrint_0-9+_NoRej', 'DotPrint_0-9+_Rej',\
+                     'DotPrint_0-9A-Z_NoRej', 'DotPrint_0-9A-Z_Rej',\
+                     'DotPrint_A-Z+_NoRej', 'DotPrint_A-Z+_Rej',\
+                     'DotPrint_NoRej', 'DotPrint_Rej',\                    
+                     'HandWritten_0-9_NoRej', 'HandWritten_0-9_Rej',\
+                     'Industrial_0-9_NoRej', 'Industrial_0-9_Rej',\
+                     'Industrial_0-9+_NoRej', 'Industrial_0-9+_Rej',\
+                     'Industrial_0-9A-Z_NoRej', 'Industrial_0-9A-Z_Rej',\
+                     'Industrial_A-Z+_NoRej', 'Industrial_A-Z+_Rej',\
+                     'Industrial_NoRej', 'Industrial_Rej',\
+                     'OCRA_0-9_NoRej', 'OCRA_0-9_Rej',\
+                     'OCRA_0-9A-Z_NoRej', 'OCRA_0-9A-Z_Rej',\
+                     'OCRA_A-Z+_NoRej', 'OCRA_A-Z+_Rej',\
+                     'OCRA_NoRej', 'OCRA_Rej',\
+                     'OCRB_0-9_NoRej', 'OCRB_0-9_Rej',\
+                     'OCRB_0-9A-Z_NoRej', 'OCRB_0-9A-Z_Rej',\
+                     'OCRB_A-Z+_NoRej', 'OCRB_A-Z+_Rej',\
+                     'OCRB_NoRej', 'OCRB_passport_NoRej',\
+                     'OCRB_passport_Rej', 'OCRB_Rej',\
+                     'Pharma_0-9_NoRej', 'Pharma_0-9_Rej',\
+                     'Pharma_0-9+_NoRej', 'Pharma_0-9+_Rej',\
+                     'Pharma_0-9A-Z_NoRej', 'Pharma_0-9A-Z_Rej',\
+                     'Pharma_NoRej', 'Pharma_Rej',\
+                     'SEMI_NoRej', 'SEMI_Rej',\
+                     'Universal_0-9_NoRej', 'Universal_0-9_Rej',\
+                     'Universal_0-9+_NoRej', 'Universal_0-9+_Rej',\
+                     'Universal_0-9A-Z_NoRej', 'Universal_0-9A-Z_Rej',\
+                     'Universal_0-9A-Z+_NoRej', 'Universal_0-9A-Z+_Rej',\
+                     'Universal_A-Z+_NoRej', 'Universal_A-Z+_Rej',\
+                     'Universal_NoRej', 'Universal_Rej',\
+                     'TrainedNew']</l>
+<l>Font_Enum := 'Document_0-9_NoRej'</l>
+<c></c>
+<l>CharHeight_MInt_MinMax := [1, 300]</l>
+<l>CharHeight_MInt := 100</l>
+<c></c>
+<l>CharWidth_MInt_MinMax := [1, 200]</l>
+<l>CharWidth_MInt := 60</l>
+<c></c>
+<l>StrokeWidth_MReal_MinMax := [1.0, 50.0]</l>
+<l>StrokeWidth_MReal := 8.0</l>
+<c></c>
+<l>Polarity_Enum_Values := ['dark_on_light', 'light_on_dark']</l>
+<l>Polarity_Enum := 'dark_on_light'</l>
+<c></c>
+<l>MaxLineNumber_MInt_MinMax := [1, 30]</l>
+<l>MaxLineNumber_MInt := 1</l>
+<c></c>
+<l>UppercaseOnly_MBool := true</l>
+<c></c>
+<l>IsDotprint_MBool := false</l>
+<c></c>
+<l>IsImprinted_MBool := false</l>
+<c></c>
+<l>ReturnPunctuation_MBool := false</l>
+<c></c>
+<l>ReturnSeparators_MBool := false</l>
+<c></c>
+<l>BaseLineTolerance_MReal_MinMax := [0.01, 1.0]</l>
+<l>BaseLineTolerance_MReal := 0.15</l>
+<c></c>
+<l>EliminateHorizontalLines_MBool := 'false'</l>
+<c></c>
+<l>EliminateBorderBlobs_MBool := true</l>
+<c></c>
+<l>AddFragments_MBool := true</l>
+<c></c>
+<l>MinFragmentSize_MInt := [1, 100]</l>
+<l>MinFragmentSize_MInt := 1</l>
+<c></c>
+<l>UseOrientation_Mbool := false</l>
+<c></c>
+<l>UseSlant_MBool := false</l>
+<c></c>
+<l>Path_String := 'C:/Users/User/Desktop/'</l>
+<c></c>
+<l>InputAOI_Aoi_TrafoLink := 'InputImage_Img'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="InputAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="OutputCharacters_Region" base_type="iconic" dimension="0"/>
+<par name="OutputImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Font_Enum" base_type="ctrl" dimension="0"/>
+<par name="CharHeight_MInt" base_type="ctrl" dimension="0"/>
+<par name="CharWidth_MInt" base_type="ctrl" dimension="0"/>
+<par name="StrokeWidth_MReal" base_type="ctrl" dimension="0"/>
+<par name="Polarity_Enum" base_type="ctrl" dimension="0"/>
+<par name="MaxLineNumber_MInt" base_type="ctrl" dimension="0"/>
+<par name="UppercaseOnly_MBool" base_type="ctrl" dimension="0"/>
+<par name="IsDotprint_MBool" base_type="ctrl" dimension="0"/>
+<par name="IsImprinted_MBool" base_type="ctrl" dimension="0"/>
+<par name="ReturnPunctuation_MBool" base_type="ctrl" dimension="0"/>
+<par name="ReturnSeparators_MBool" base_type="ctrl" dimension="0"/>
+<par name="BaseLineTolerance_MReal" base_type="ctrl" dimension="0"/>
+<par name="EliminateHorizontalLines_MBool" base_type="ctrl" dimension="0"/>
+<par name="EliminateBorderBlobs_MBool" base_type="ctrl" dimension="0"/>
+<par name="AddFragments_MBool" base_type="ctrl" dimension="0"/>
+<par name="MinFragmentSize_MInt" base_type="ctrl" dimension="0"/>
+<par name="UseOrientation_MBool" base_type="ctrl" dimension="0"/>
+<par name="UseSlant_MBool" base_type="ctrl" dimension="0"/>
+<par name="Path_String" base_type="ctrl" dimension="0"/>
+<par name="TextModel_Tuple" base_type="ctrl" dimension="0"/>
+<par name="OCRHandle_Tuple" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Trafo" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="OutputString_String" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>set_text_model_param (TextModel_Tuple, 'manual_char_height', CharHeight_MInt)</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_char_width', CharWidth_MInt)</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_stroke_width', StrokeWidth_MReal)</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_base_line_tolerance', BaseLineTolerance_MReal)</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_polarity', Polarity_Enum[1])</l>
+<l>set_text_model_param (TextModel_Tuple, 'manual_max_line_num', MaxLineNumber_MInt)</l>
+<c></c>
+<l>if (UppercaseOnly_MBool == true)</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_uppercase_only', 'true')</l>
+<l>else</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_uppercase_only', 'false')</l>
+<l>endif</l>
+<c></c>
+<l>if (IsDotprint_MBool == true)</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_is_dotprint', 'true')</l>
+<l>else</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_is_dotprint', 'false')</l>
+<l>endif</l>
+<c></c>
+<l>if (IsImprinted_MBool == true)</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_is_imprinted', 'true')</l>
+<l>else</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_is_imprinted', 'false')</l>
+<l>endif</l>
+<c></c>
+<l>if (EliminateHorizontalLines_MBool == true)</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_eliminate_horizontal_lines', 'true')</l>
+<l>else</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_eliminate_horizontal_lines', 'false')</l>
+<l>endif</l>
+<c></c>
+<l>if (EliminateBorderBlobs_MBool == true)</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_eliminate_border_blobs', 'true')</l>
+<l>else</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_eliminate_border_blobs', 'false')</l>
+<l>endif</l>
+<c></c>
+<l>if (ReturnPunctuation_MBool == true)</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_return_punctuation', 'true')</l>
+<l>else</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_return_punctuation', 'false')</l>
+<l>endif</l>
+<c></c>
+<l>if (ReturnSeparators_MBool == true)</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_return_separators', 'true')</l>
+<l>else</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_return_separators', 'false')</l>
+<l>endif</l>
+<c></c>
+<l>if (AddFragments_MBool == true)</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_add_fragments', 'true')</l>
+<l>else</l>
+<l>    set_text_model_param (TextModel_Tuple, 'manual_add_fragments', 'false')</l>
+<l>endif</l>
+<c></c>
+<l>set_text_model_param (TextModel_Tuple, 'manual_fragment_size_min', MinFragmentSize_MInt)</l>
+<c></c>
+<l>tekst := ''</l>
+<l>gen_empty_obj (RegionUnion)</l>
+<c></c>
+<l>if (UseOrientation_MBool == false)</l>
+<l>    hom_mat2d_invert (InputImage_Img_Trafo, InputImageTrafoInverse)   </l>
+<l>    affine_trans_point_2d (InputImageTrafoInverse, [0,0], [0,1], TempRows, TempColumns)</l>
+<l>    angle_lx (TempRows[0], TempColumns[0], TempRows[1], TempColumns[1], TempAlignmentOrientation)</l>
+<l>    affine_trans_region (InputAOI_Aoi, AOItransformed, InputImageTrafoInverse, 'false')</l>
+<l>    reduce_domain (InputImage_Img, AOItransformed, InputImageReduced)</l>
+<l>    TempOrientation := 0</l>
+<l>    TempOrientation := TempOrientation + TempAlignmentOrientation</l>
+<l>    hom_mat2d_identity (MatrixIdentity)</l>
+<l>    hom_mat2d_rotate (MatrixIdentity, -TempOrientation, 0, 0, TempMatrixRotation)</l>
+<l>    get_domain (InputImageReduced, TempDomain)</l>
+<l>    dilation_circle (TempDomain, TempDomainExpanded, 25)</l>
+<l>    affine_trans_region (TempDomainExpanded, TempDomainTransformedRaw, TempMatrixRotation, 'true')</l>
+<l>    smallest_rectangle1 (TempDomainTransformedRaw, TempRow1, TempCol1, TempRow2, TempCol2)</l>
+<l>    hom_mat2d_translate (MatrixIdentity, -TempRow1, -TempCol1, TempMatrixTranslation)</l>
+<l>    hom_mat2d_compose (TempMatrixTranslation, TempMatrixRotation, TempMatrixComposite)</l>
+<l>    affine_trans_region (TempDomain, TempDomainTransformed, TempMatrixComposite, 'true')</l>
+<l>    affine_trans_image (InputImageReduced, TempImageTransformed, TempMatrixComposite, 'constant', 'true')</l>
+<l>    dilation_circle (TempDomain, TempDomainExpanded, 25)</l>
+<l>    expand_domain_gray (TempImageTransformed, TempImageTransformedExpanded, 25)</l>
+<l>    reduce_domain (TempImageTransformed, TempDomainTransformed, TempImageTransformedReduced)</l>
+<l>    crop_part (TempImageTransformedReduced, InputImageReduced, 0, 0, TempCol2 - TempCol1 + 1, TempRow2 - TempRow1 + 1)</l>
+<l>endif</l>
+<c></c>
+<l>if (UseOrientation_MBool == true)</l>
+<l>    hom_mat2d_invert (InputImage_Img_Trafo, InputImageTrafoInverse)   </l>
+<l>    affine_trans_point_2d (InputImageTrafoInverse, [0,0], [0,1], TempRows, TempColumns)</l>
+<l>    angle_lx (TempRows[0], TempColumns[0], TempRows[1], TempColumns[1], TempAlignmentOrientation)</l>
+<l>    affine_trans_region (InputAOI_Aoi, AOItransformed, InputImageTrafoInverse, 'false')</l>
+<l>    reduce_domain (InputImage_Img, AOItransformed, InputImageReduced)</l>
+<l>    TempOrientation := 0</l>
+<l>    TempOrientation := TempOrientation + TempAlignmentOrientation</l>
+<l>    TempRangeMin := -0.785398</l>
+<l>    TempRangeMax := 0.785398</l>
+<l>    text_line_orientation (InputImageReduced, InputImageReduced, CharHeight_MInt, TempOrientation + TempRangeMin, TempOrientation + TempRangeMax, TempOrientation)</l>
+<l>    hom_mat2d_identity (TempMatrixIdentity)</l>
+<l>    hom_mat2d_rotate (TempMatrixIdentity, -TempOrientation, 0, 0, TempMatrixRotation)</l>
+<l>    get_domain (InputImageReduced, TempDomain)</l>
+<l>    dilation_circle (TempDomain, TempDomainExpanded, 25)</l>
+<l>    affine_trans_region (TempDomainExpanded, TempDomainTransformedRaw, TempMatrixRotation, 'true')</l>
+<l>    smallest_rectangle1 (TempDomainTransformedRaw, TempRow1, TempCol1, TempRow2, TempCol2)</l>
+<l>    hom_mat2d_translate (TempMatrixIdentity, -TempRow1, -TempCol1, TempMatrixTranslation)</l>
+<l>    hom_mat2d_compose (TempMatrixTranslation, TempMatrixRotation, TempMatrixComposite)</l>
+<l>    affine_trans_region (TempDomain, TempDomainTransformed, TempMatrixComposite, 'true')</l>
+<l>    affine_trans_image (InputImageReduced, TempImageTransformed, TempMatrixComposite, 'constant', 'true')</l>
+<l>    dilation_circle (TempDomain, TempDomainExpanded, 25)</l>
+<l>    expand_domain_gray (TempImageTransformed, TempImageTransformedExpanded, 25)</l>
+<l>    reduce_domain (TempImageTransformed, TempDomainTransformed, TempImageTransformedReduced)</l>
+<l>    crop_part (TempImageTransformedReduced, InputImageReduced, 0, 0, TempCol2 - TempCol1 + 1, TempRow2 - TempRow1 + 1)</l>
+<l>endif</l>
+<c></c>
+<l>if (UseSlant_MBool == true)    </l>
+<l>    text_line_slant (InputImageReduced, InputImageReduced, CharHeight_MInt, -0.523599, 0.523599, TempSlant)</l>
+<l>    hom_mat2d_identity (TempMatrixIdentity)</l>
+<l>    hom_mat2d_slant (TempMatrixIdentity, -TempSlant, 'x', 0, 0, TempMatrixSlant)</l>
+<l>    get_domain (InputImageReduced, TempDomain)</l>
+<l>    dilation_circle (TempDomain, TempDomainExpanded, 25)</l>
+<l>    affine_trans_region (TempDomainExpanded, TempDomainTransformedRaw, TempMatrixSlant, 'true')</l>
+<l>    smallest_rectangle1 (TempDomainTransformedRaw, TempRow1, TempCol1, TempRow2, TempCol2)</l>
+<l>    hom_mat2d_translate (TempMatrixIdentity, -TempRow1, -TempCol1, TempMatrixTranslation)</l>
+<l>    hom_mat2d_compose (TempMatrixTranslation, TempMatrixSlant, TempMatrixComposite)</l>
+<l>    affine_trans_region (TempDomain, TempDomainTransformed, TempMatrixComposite, 'true')</l>
+<l>    affine_trans_image (InputImageReduced, TempImageTransformed, TempMatrixComposite, 'constant', 'true')</l>
+<l>    dilation_circle (TempDomain, TempDomainExpanded, 25)</l>
+<l>    expand_domain_gray (TempImageTransformed, TempImageTransformedExpanded, 25)</l>
+<l>    reduce_domain (TempImageTransformed, TempDomainTransformed, InputImageReduced)    </l>
+<l>endif</l>
+<c></c>
+<l>OutputImage_Img := InputImageReduced</l>
+<c></c>
+<l>find_text (OutputImage_Img, TextModel_Tuple, TextResult)</l>
+<l>get_text_result (TextResult, 'manual_num_lines', NumLines)</l>
+<c></c>
+<l>for LineIndex := 0 to NumLines - 1 by 1</l>
+<l>    get_text_object (Line, TextResult, ['manual_line', LineIndex])</l>
+<l>    union2 (Line, RegionUnion, RegionUnion)    </l>
+<c>    </c>
+<l>    if (Font_Enum[1] == 'Document_0-9_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Document_0-9_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Document_0-9A-Z_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Document_0-9A-Z_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Document_A-Z+_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Document_A-Z+_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Document_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Document_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'DotPrint_0-9_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'DotPrint_0-9_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'DotPrint_0-9+_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'DotPrint_0-9+_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'DotPrint_0-9A-Z_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'DotPrint_0-9A-Z_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'DotPrint_A-Z+_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'DotPrint_A-Z+_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'DotPrint_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'DotPrint_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'HandWritten_0-9_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'HandWritten_0-9_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Industrial_0-9_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Industrial_0-9_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Industrial_0-9+_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Industrial_0-9+_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Industrial_0-9A-Z_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Industrial_0-9A-Z_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Industrial_A-Z+_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Industrial_A-Z+_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Industrial_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Industrial_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRA_0-9_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRA_0-9_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRA_0-9A-Z_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRA_0-9A-Z_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRA_A-Z+_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRA_A-Z+_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRA_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRA_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRB_0-9_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRB_0-9_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRB_0-9A-Z_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRB_0-9A-Z_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRB_A-Z+_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRB_A-Z+_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRB_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRB_passport_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRB_passport_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'OCRB_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Pharma_0-9_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Pharma_0-9_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Pharma_0-9+_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Pharma_0-9+_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Pharma_0-9A-Z_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Pharma_0-9A-Z_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Pharma_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Pharma_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'SEMI_NoRej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'SEMI_Rej')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Universal_0-9_NoRej')</l>
+<l>        do_ocr_multi_class_cnn (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Universal_0-9_Rej')</l>
+<l>        do_ocr_multi_class_cnn (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Universal_0-9+_NoRej')</l>
+<l>        do_ocr_multi_class_cnn (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Universal_0-9+_Rej')</l>
+<l>        do_ocr_multi_class_cnn (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Universal_0-9A-Z_NoRej')</l>
+<l>        do_ocr_multi_class_cnn (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Universal_0-9A-Z_Rej')</l>
+<l>        do_ocr_multi_class_cnn (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Universal_0-9A-Z+_NoRej')</l>
+<l>        do_ocr_multi_class_cnn (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Universal_0-9A-Z+_Rej')</l>
+<l>        do_ocr_multi_class_cnn (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Universal_A-Z+_NoRej')</l>
+<l>        do_ocr_multi_class_cnn (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Universal_A-Z+_Rej')</l>
+<l>        do_ocr_multi_class_cnn (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Universal_NoRej')</l>
+<l>        do_ocr_multi_class_cnn (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'Universal_Rej')</l>
+<l>        do_ocr_multi_class_cnn (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    elseif (Font_Enum[1] == 'TrainedNew')</l>
+<l>        do_ocr_multi_class_mlp (Line, OutputImage_Img, OCRHandle_Tuple, Class, Confidence)</l>
+<l>    endif   </l>
+<c>    </c>
+<l>    count_obj (Line, NumberOfCharacters)</l>
+<c>    </c>
+<l>    for CharacterIndex := 1 to NumberOfCharacters by 1</l>
+<l>        select_obj (Line, Character, CharacterIndex)</l>
+<l>        tekst := tekst + Class[CharacterIndex - 1]</l>
+<l>    endfor</l>
+<l>endfor</l>
+<c></c>
+<l>OutputString_String := tekst</l>
+<l>union1 (RegionUnion, RegionUnion1)</l>
+<l>copy_obj (RegionUnion1, OutputCharacters_Region, 1, 1)</l>
+<l>clear_text_result (TextResult)</l>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="AddFragments_MBool"/>
+<parameter id="BaseLineTolerance_MReal"/>
+<parameter id="CharHeight_MInt"/>
+<parameter id="CharWidth_MInt"/>
+<parameter id="EliminateBorderBlobs_MBool"/>
+<parameter id="EliminateHorizontalLines_MBool"/>
+<parameter id="Font_Enum"/>
+<parameter id="InputAOI_Aoi"/>
+<parameter id="InputImage_Img"/>
+<parameter id="InputImage_Img_Trafo"/>
+<parameter id="IsDotprint_MBool"/>
+<parameter id="IsImprinted_MBool"/>
+<parameter id="MaxLineNumber_MInt"/>
+<parameter id="MinFragmentSize_MInt"/>
+<parameter id="OCRHandle_Tuple"/>
+<parameter id="OutputCharacters_Region"/>
+<parameter id="OutputImage_Img"/>
+<parameter id="OutputString_String"/>
+<parameter id="Path_String"/>
+<parameter id="Polarity_Enum"/>
+<parameter id="ReturnPunctuation_MBool"/>
+<parameter id="ReturnSeparators_MBool"/>
+<parameter id="StrokeWidth_MReal"/>
+<parameter id="TextModel_Tuple"/>
+<parameter id="UppercaseOnly_MBool"/>
+<parameter id="UseOrientation_MBool"/>
+<parameter id="UseSlant_MBool"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface>
+<ic>
+<par name="OCR_Serialized" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="TextModel_Tuple_" base_type="ctrl" dimension="0"/>
+<par name="OCRHandle_Tuple_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>create_text_model_reader ('manual', [], TextModel_Tuple_)</l>
+<c></c>
+<l>try</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[0], OCRHandle_Tuple_)</l>
+<l>catch (Exception)</l>
+<l>endtry</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters>
+<parameter id="OCRHandle_Tuple_"/>
+<parameter id="OCR_Serialized"/>
+<parameter id="TextModel_Tuple_"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface>
+<ic>
+<par name="TextModel_Tuple" base_type="ctrl" dimension="0"/>
+<par name="OCRHandle_Tuple" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>clear_text_model (TextModel_Tuple)</l>
+<l>clear_ocr_class_cnn (OCRHandle_Tuple)</l>
+<l>clear_ocr_class_mlp (OCRHandle_Tuple)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters>
+<parameter id="OCRHandle_Tuple"/>
+<parameter id="TextModel_Tuple"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="LoadFont">
+<interface>
+<ic>
+<par name="OCR_Serialized" base_type="ctrl" dimension="0"/>
+<par name="Font_Enum" base_type="ctrl" dimension="0"/>
+<par name="Path_String" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="OCRHandle_Tuple_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>if (Font_Enum[1] == 'Document_0-9_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[0], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Document_0-9_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[1], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Document_0-9A-Z_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[2], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Document_0-9A-Z_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[3], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Document_A-Z+_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[4], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Document_A-Z+_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[5], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Document_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[6], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Document_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[7], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'DotPrint_0-9_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[8], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'DotPrint_0-9_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[9], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'DotPrint_0-9+_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[10], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'DotPrint_0-9+_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[11], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'DotPrint_0-9A-Z_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[12], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'DotPrint_0-9A-Z_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[13], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'DotPrint_A-Z+_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[14], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'DotPrint_A-Z+_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[15], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'DotPrint_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[16], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'DotPrint_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[17], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'HandWritten_0-9_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[18], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'HandWritten_0-9_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[19], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Industrial_0-9_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[20], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Industrial_0-9_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[21], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Industrial_0-9+_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[22], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Industrial_0-9+_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[23], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Industrial_0-9A-Z_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[24], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Industrial_0-9A-Z_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[25], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Industrial_A-Z+_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[26], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Industrial_A-Z+_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[27], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Industrial_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[28], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Industrial_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[29], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRA_0-9_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[30], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRA_0-9_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[31], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRA_0-9A-Z_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[32], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRA_0-9A-Z_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[33], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRA_A-Z+_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[34], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRA_A-Z+_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[35], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRA_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[36], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRA_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[37], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRB_0-9_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[38], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRB_0-9_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[39], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRB_0-9A-Z_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[40], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRB_0-9A-Z_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[41], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRB_A-Z+_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[42], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRB_A-Z+_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[43], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRB_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[44], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRB_passport_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[45], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRB_passport_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[46], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'OCRB_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[47], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Pharma_0-9_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[48], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Pharma_0-9_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[49], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Pharma_0-9+_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[50], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Pharma_0-9+_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[51], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Pharma_0-9A-Z_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[52], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Pharma_0-9A-Z_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[53], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Pharma_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[54], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'Pharma_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[55], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'SEMI_NoRej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[56], OCRHandle_Tuple_)    </l>
+<l>elseif (Font_Enum[1] == 'SEMI_Rej')</l>
+<l>    deserialize_ocr_class_mlp (OCR_Serialized[57], OCRHandle_Tuple_)                                                                                                                                                     </l>
+<l>elseif (Font_Enum[1] == 'Universal_0-9_NoRej')</l>
+<l>    deserialize_ocr_class_cnn (OCR_Serialized[58], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Universal_0-9_Rej')</l>
+<l>    deserialize_ocr_class_cnn (OCR_Serialized[59], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Universal_0-9+_NoRej')</l>
+<l>    deserialize_ocr_class_cnn (OCR_Serialized[60], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Universal_0-9+_Rej')</l>
+<l>    deserialize_ocr_class_cnn (OCR_Serialized[61], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Universal_0-9A-Z_NoRej')</l>
+<l>    deserialize_ocr_class_cnn (OCR_Serialized[62], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Universal_0-9A-Z_Rej')</l>
+<l>    deserialize_ocr_class_cnn (OCR_Serialized[63], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Universal_0-9A-Z+_NoRej')</l>
+<l>    deserialize_ocr_class_cnn (OCR_Serialized[64], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Universal_0-9A-Z+_Rej')</l>
+<l>    deserialize_ocr_class_cnn (OCR_Serialized[65], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Universal_A-Z+_NoRej')</l>
+<l>    deserialize_ocr_class_cnn (OCR_Serialized[66], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Universal_A-Z+_Rej')</l>
+<l>    deserialize_ocr_class_cnn (OCR_Serialized[67], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Universal_NoRej')</l>
+<l>    deserialize_ocr_class_cnn (OCR_Serialized[68], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'Universal_Rej')</l>
+<l>    deserialize_ocr_class_cnn (OCR_Serialized[69], OCRHandle_Tuple_)</l>
+<l>elseif (Font_Enum[1] == 'TrainedNew')</l>
+<l>read_ocr_class_mlp (Path_String + 'newfont.omc', OCRHandle_Tuple_)</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="LoadFont">
+<parameters>
+<parameter id="Font_Enum"/>
+<parameter id="OCRHandle_Tuple_"/>
+<parameter id="OCR_Serialized"/>
+<parameter id="Path_String"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
