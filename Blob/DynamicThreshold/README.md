@@ -61,6 +61,6 @@ Version update
 --------
 
 *Version 1.0.1:*
->Bug fixed while setting too huge or too low values for mask kernels
+>Bug fixed while setting too huge or too low values for mask cernels
 
 >Added an additional Image output, which allows the usage of this tool with default BVS Cockpit tools
