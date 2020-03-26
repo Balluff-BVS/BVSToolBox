@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Deviation'</l>
+<c></c>
+<l>ArrayCount_MinMax := [1,32]</l>
+<l>ArrayCount := 1</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<ic>
+<par name="Value_RealArray" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Deviation_Real" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>tuple_deviation (Value_RealArray, Deviation_Real)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Deviation_Real"/>
+<parameter id="Value_RealArray"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
