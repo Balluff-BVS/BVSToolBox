@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="19.11.0.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Max'</l>
+<c></c>
+<l>ArrayCount_MinMax := [1,32]</l>
+<l>ArrayCount := 1</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<ic>
+<par name="Value_RealArray" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Max_Real" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>tuple_max (Value_RealArray, Max_Real)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Max_Real"/>
+<parameter id="Value_RealArray"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
