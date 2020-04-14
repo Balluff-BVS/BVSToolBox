@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Create Local Deformable Matching Model from Image'</l>
+<c></c>
+<l>HalconCallbacks := ['CreateModel', 'DeleteOneModel', 'DeleteAllModels']</l>
+<c></c>
+<l>ArrayCount := 16</l>
+<c></c>
+<l>ScaleRMin_Real := 1</l>
+<l>ScaleCMin_Real := 1</l>
+<c></c>
+<l>Optimization_Enum_Values := ['auto', 'none', 'point_reduction_high', 'point_reduction_low', 'point_reduction_medium']</l>
+<l>Optimization_Enum := 'none'</l>
+<c></c>
+<l>Metric_Enum_Values := ['ignore_global_polarity', 'ignore_local_polarity', 'ignore_part_polarity', 'use_polarity']</l>
+<l>Metric_Enum := 'use_polarity'</l>
+<c></c>
+<l>ContrastAuto_MBool := true</l>
+<l>Contrast_Int := 1</l>
+<c></c>
+<l>MinContrastAuto_MBool := true</l>
+<l>MinContrast_Int := 1</l>
+<c></c>
+<l>ModelName_String := 'Model01'</l>
+<l>ModelDirectory_String := 'C:/Users/User/Desktop/'</l>
+<c></c>
+<l>ContourVisibility_MBool := false</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="DeformableModel_Img" base_type="iconic" dimension="0"/>
+<par name="DeformableContours_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+<par name="ModelName_String" base_type="ctrl" dimension="0"/>
+<par name="ContourVisibility_MBool" base_type="ctrl" dimension="0"/>
+<par name="Row_Tuple" base_type="ctrl" dimension="0"/>
+<par name="Column_Tuple" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ModelTuple_StringArray" base_type="ctrl" dimension="0"/>
+<par name="NumberOfFiles_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>list_files (ModelDirectory_String, ['files', 'follow_links'], Files)</l>
+<l>tuple_regexp_select (Files, ['\\.(dfm)$', 'ignore_case'], Files)</l>
+<c></c>
+<l>NumberOfFiles_Int := |Files|</l>
+<c></c>
+<l>gen_empty_obj (DeformableContours_Contour)</l>
+<c></c>
+<l>get_image_size (InputImage_Img, Width, Height)</l>
+<l>gen_image_const (Image, 'byte', Width, Height)</l>
+<c></c>
+<l>file_exists (ModelDirectory_String + ModelName_String + '.dfm', FileExists)</l>
+<c></c>
+<l>if (FileExists == true)</l>
+<l>    read_deformable_model (ModelDirectory_String + ModelName_String + '.dfm', ModelID)</l>
+<c>        </c>
+<l>    get_deformable_model_contours (ModelContours, ModelID, 1)</l>
+<c> </c>
+<l>    hom_mat2d_identity (HomMat2D)</l>
+<l>    hom_mat2d_translate (HomMat2D, Row_Tuple, Column_Tuple, HomMat2D)</l>
+<l>    affine_trans_contour_xld (ModelContours, ModelContours, HomMat2D)</l>
+<c>    </c>
+<l>    paint_xld (ModelContours, Image, DeformableModel_Img, 255)</l>
+<c>    </c>
+<l>    if (ContourVisibility_MBool == true)</l>
+<l>        DeformableContours_Contour := ModelContours</l>
+<l>    else</l>
+<l>        gen_empty_obj (DeformableContours_Contour)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    clear_deformable_model (ModelID)</l>
+<l>else</l>
+<l>    gen_image_const (DeformableModel_Img, 'byte', Width, Height)</l>
+<l>endif</l>
+<c></c>
+<l>if (NumberOfFiles_Int &gt; 0)</l>
+<l>    for i := 0 to NumberOfFiles_Int - 1 by 1</l>
+<l>        file_exists (Files[i], FileExists1)</l>
+<c>        </c>
+<l>        if (FileExists1 == true)</l>
+<l>            ModelTuple_StringArray[i] := Files[i]  </l>
+<l>        else</l>
+<l>            ModelTuple_StringArray[i] := 'No model'</l>
+<l>        endif</l>
+<l>    endfor</l>
+<l>else    </l>
+<l>    tuple_gen_const (16, 'No model', ModelTuple_StringArray)</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Column_Tuple"/>
+<parameter id="ContourVisibility_MBool"/>
+<parameter id="DeformableContours_Contour"/>
+<parameter id="DeformableModel_Img"/>
+<parameter id="InputImage_Img"/>
+<parameter id="ModelDirectory_String"/>
+<parameter id="ModelName_String"/>
+<parameter id="ModelTuple_StringArray"/>
+<parameter id="NumberOfFiles_Int"/>
+<parameter id="Row_Tuple"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="CreateModel">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="InputAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="ScaleRMin_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleCMin_Real" base_type="ctrl" dimension="0"/>
+<par name="Optimization_Enum" base_type="ctrl" dimension="0"/>
+<par name="Metric_Enum" base_type="ctrl" dimension="0"/>
+<par name="Contrast_Int" base_type="ctrl" dimension="0"/>
+<par name="MinContrast_Int" base_type="ctrl" dimension="0"/>
+<par name="ContrastAuto_MBool" base_type="ctrl" dimension="0"/>
+<par name="MinContrastAuto_MBool" base_type="ctrl" dimension="0"/>
+<par name="ModelName_String" base_type="ctrl" dimension="0"/>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="InfoString_String" base_type="ctrl" dimension="0"/>
+<par name="Row_Tuple_" base_type="ctrl" dimension="0"/>
+<par name="Column_Tuple_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>list_files (ModelDirectory_String, ['files', 'follow_links'], Files)</l>
+<l>tuple_regexp_select (Files, ['\\.(dfm)$', 'ignore_case'], Files)</l>
+<l>NumberOfFiles := |Files|</l>
+<c></c>
+<l>InfoString_String := ''</l>
+<c></c>
+<l>if (NumberOfFiles &lt;= 16)</l>
+<l>    reduce_domain (InputImage_Img, InputAOI_Aoi, ImageReduced)</l>
+<l>    area_center (InputAOI_Aoi, Area, Row_Tuple_, Column_Tuple_)</l>
+<c>    </c>
+<l>    if (ContrastAuto_MBool == true)</l>
+<l>        Contrast := 'auto'</l>
+<l>    else</l>
+<l>        Contrast := Contrast_Int</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (MinContrastAuto_MBool == true)</l>
+<l>        MinContrast := 'auto'</l>
+<l>    else</l>
+<l>        MinContrast := MinContrast_Int</l>
+<l>    endif</l>
+<c>    </c>
+<l>    create_local_deformable_model (ImageReduced, 'auto', [], [], 'auto', ScaleRMin_Real, [], 'auto', ScaleCMin_Real, [], 'auto', Optimization_Enum[1], Metric_Enum[1], Contrast, MinContrast, [], [], ModelID)</l>
+<c>      </c>
+<l>    write_deformable_model (ModelID, ModelDirectory_String + ModelName_String + '.dfm')</l>
+<l>    clear_deformable_model (ModelID)</l>
+<l>else</l>
+<l>    InfoString_String := 'Too many models in directory'</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="CreateModel">
+<parameters>
+<parameter id="Column_Tuple_"/>
+<parameter id="ContrastAuto_MBool"/>
+<parameter id="Contrast_Int"/>
+<parameter id="InfoString_String"/>
+<parameter id="InputAOI_Aoi"/>
+<parameter id="InputImage_Img"/>
+<parameter id="Metric_Enum"/>
+<parameter id="MinContrastAuto_MBool"/>
+<parameter id="MinContrast_Int"/>
+<parameter id="ModelDirectory_String"/>
+<parameter id="ModelName_String"/>
+<parameter id="Optimization_Enum"/>
+<parameter id="Row_Tuple_"/>
+<parameter id="ScaleCMin_Real"/>
+<parameter id="ScaleRMin_Real"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="DeleteOneModel">
+<interface>
+<ic>
+<par name="ModelName_String" base_type="ctrl" dimension="0"/>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>try</l>
+<l>    delete_file (ModelDirectory_String + ModelName_String + '.dfm')</l>
+<l>catch (Exception)</l>
+<c></c>
+<l>endtry</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="DeleteOneModel">
+<parameters>
+<parameter id="ModelDirectory_String"/>
+<parameter id="ModelName_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="DeleteAllModels">
+<interface>
+<ic>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>list_files (ModelDirectory_String, ['files', 'follow_links'], Files)</l>
+<l>tuple_regexp_select (Files, ['\\.(dfm)$', 'ignore_case'], Files)</l>
+<l>NumberOfFiles := |Files|</l>
+<c></c>
+<l>if (NumberOfFiles &gt; 0)</l>
+<l>    for i := 0 to NumberOfFiles - 1 by 1</l>
+<l>        delete_file (Files[i])</l>
+<l>    endfor</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="DeleteAllModels">
+<parameters>
+<parameter id="ModelDirectory_String"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Use Local Deformable Matching'</l>
+<c></c>
+<l>HalconCallbacks := ['LoadModel']</l>
+<l>ArrayCount := 1</l>
+<c></c>
+<l>ModelDirectory_String := 'C:/Users/User/Desktop/'</l>
+<l>ModelName_String := 'Model01'</l>
+<c></c>
+<l>AngleStart_Real := 0</l>
+<l>AngleExtent_Real := 360</l>
+<c></c>
+<l>ScaleRMin_Real := 1</l>
+<l>ScaleRMax_Real := 1.1</l>
+<c></c>
+<l>ScaleCMin_Real := 1</l>
+<l>ScaleCMax_Real := 1.1</l>
+<c></c>
+<l>MinScore_Real := 0.4</l>
+<c></c>
+<l>NumMatches_Int := 1</l>
+<c></c>
+<l>MaxOverlap_Real := 0.5</l>
+<c></c>
+<l>Greediness_Real := 0.9</l>
+<c></c>
+<l>Smoothness_MInt_Values := [3, 999]</l>
+<l>Smoothness_MInt := 5</l>
+<c></c>
+<l>MeshVisibility_MBool := false</l>
+<c></c>
+<l>DeformedContours_Contour_Color := [0, 255, 0]</l>
+<l>Mesh_Contour_Color := [255, 255, 0]</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="LoadModel">
+<interface>
+<ic>
+<par name="ModelName_String" base_type="ctrl" dimension="0"/>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>global tuple Model</l>
+<c></c>
+<l>clear_deformable_model (Model)</l>
+<c></c>
+<l>try</l>
+<l>    read_deformable_model (ModelDirectory_String + ModelName_String + '.dfm', Model)</l>
+<l>catch (Exception)</l>
+<c></c>
+<l>endtry</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="LoadModel">
+<parameters>
+<parameter id="ModelDirectory_String"/>
+<parameter id="ModelName_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="InputAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="OutputImage_Img" base_type="iconic" dimension="0"/>
+<par name="DeformedContours_Contour" base_type="iconic" dimension="0"/>
+<par name="Mesh_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="AngleStart_Real" base_type="ctrl" dimension="0"/>
+<par name="AngleExtent_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleRMin_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleRMax_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleCMin_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleCMax_Real" base_type="ctrl" dimension="0"/>
+<par name="MinScore_Real" base_type="ctrl" dimension="0"/>
+<par name="NumMatches_Int" base_type="ctrl" dimension="0"/>
+<par name="MaxOverlap_Real" base_type="ctrl" dimension="0"/>
+<par name="Greediness_Real" base_type="ctrl" dimension="0"/>
+<par name="Smoothness_MInt" base_type="ctrl" dimension="0"/>
+<par name="MeshVisibility_MBool" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="NumberFoundObjects_Int" base_type="ctrl" dimension="0"/>
+<par name="PositionX_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionY_RealArray" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>global tuple Model</l>
+<c></c>
+<l>get_image_size (InputImage_Img, Width, Height)</l>
+<c></c>
+<l>gen_empty_obj (DeformedContours_Contour)</l>
+<l>gen_empty_obj (Mesh_Contour)</l>
+<l>gen_image_const (OutputImage_Img, 'byte', Width, Height)</l>
+<c></c>
+<l>NumberFoundObjects_Int := 0</l>
+<l>PositionX_RealArray := 0</l>
+<l>PositionY_RealArray := 0</l>
+<c></c>
+<l>reduce_domain (InputImage_Img, InputAOI_Aoi, ImageReduced)</l>
+<c></c>
+<l>AngleStart := rad(AngleStart_Real)</l>
+<l>AngleExtent := rad(AngleExtent_Real)</l>
+<c></c>
+<l>find_local_deformable_model (ImageReduced, ImageRectified, VectorField, DeformedContours_Contour, Model, AngleStart, AngleExtent, ScaleRMin_Real, ScaleRMax_Real, ScaleCMin_Real, ScaleCMax_Real, MinScore_Real, NumMatches_Int, MaxOverlap_Real, 0, Greediness_Real, ['image_rectified','vector_field','deformed_contours'], ['deformation_smoothness','expand_border','subpixel'], [Smoothness_MInt,0,0], Score, Row, Column)</l>
+<c></c>
+<l>NumberFoundObjects_Int := |Score|</l>
+<c></c>
+<l>if (|Score| &gt; 0)</l>
+<l>    copy_obj (ImageRectified, OutputImage_Img, 1, 1)</l>
+<c>    </c>
+<l>    if (MeshVisibility_MBool == true)</l>
+<l>        GenMesh (VectorField, Mesh_Contour, Smoothness_MInt / 2)</l>
+<l>    else</l>
+<l>        gen_empty_obj (Mesh_Contour)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    PositionX_RealArray := Column</l>
+<l>    PositionY_RealArray := Row</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="AngleExtent_Real"/>
+<parameter id="AngleStart_Real"/>
+<parameter id="DeformedContours_Contour"/>
+<parameter id="Greediness_Real"/>
+<parameter id="InputAOI_Aoi"/>
+<parameter id="InputImage_Img"/>
+<parameter id="MaxOverlap_Real"/>
+<parameter id="MeshVisibility_MBool"/>
+<parameter id="Mesh_Contour"/>
+<parameter id="MinScore_Real"/>
+<parameter id="NumMatches_Int"/>
+<parameter id="NumberFoundObjects_Int"/>
+<parameter id="OutputImage_Img"/>
+<parameter id="PositionX_RealArray"/>
+<parameter id="PositionY_RealArray"/>
+<parameter id="ScaleCMax_Real"/>
+<parameter id="ScaleCMin_Real"/>
+<parameter id="ScaleRMax_Real"/>
+<parameter id="ScaleRMin_Real"/>
+<parameter id="Smoothness_MInt"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface>
+<ic>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+<par name="ModelName_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>global def tuple Model</l>
+<c></c>
+<l>gen_circle_contour_xld (Circle, 200, 200, 100, 0, 6.28318, 'positive', 1)</l>
+<l>create_planar_uncalib_deformable_model_xld (Circle, 'auto', [], [], 'auto', 1, [], 'auto', 1, [], 'auto', 'auto', 'ignore_local_polarity', 5, [], [], Model)</l>
+<c></c>
+<l>file_exists (ModelDirectory_String + ModelName_String + '.dfm', FileExists)</l>
+<c></c>
+<l>if (FileExists == true)</l>
+<l>    read_deformable_model (ModelDirectory_String + ModelName_String + '.dfm', Model)</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters>
+<parameter id="ModelDirectory_String"/>
+<parameter id="ModelName_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<l>global tuple Model</l>
+<c></c>
+<l>clear_deformable_model (Model)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="GenMesh">
+<interface>
+<io>
+<par name="VectorField" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="WarpedMesh" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Step" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>gen_empty_obj (WarpedMesh)</l>
+<c></c>
+<l>count_obj (VectorField, Number)</l>
+<c></c>
+<l>for Index := 1 to Number by 1</l>
+<l>    select_obj (VectorField, ObjectSelected, Index)</l>
+<l>    vector_field_to_real (ObjectSelected, DRow, DColumn)</l>
+<l>    get_image_size (VectorField, Width, Height)</l>
+<c>    </c>
+<l>    for ContR := 0.5 to Height[0] - 1 by Step</l>
+<l>        Column := [0.5:Width[0] - 1]</l>
+<c>        </c>
+<l>        tuple_gen_const (Width[0] - 1, ContR, Row)</l>
+<l>        get_grayval_interpolated (DRow, Row, Column, 'bilinear', GrayRow)</l>
+<l>        get_grayval_interpolated (DColumn, Row, Column, 'bilinear', GrayColumn)</l>
+<l>        gen_contour_polygon_xld (Contour, GrayRow, GrayColumn)</l>
+<l>        concat_obj (WarpedMesh, Contour, WarpedMesh)</l>
+<l>    endfor</l>
+<c></c>
+<l>    for ContC := 0.5 to Width[0] - 1 by Step</l>
+<l>        Row := [0.5:Height[0] - 1]</l>
+<c>        </c>
+<l>        tuple_gen_const (Height[0] - 1, ContC, Column)</l>
+<l>        get_grayval_interpolated (DRow, Row, Column, 'bilinear', GrayRow)</l>
+<l>        get_grayval_interpolated (DColumn, Row, Column, 'bilinear', GrayColumn)</l>
+<l>        gen_contour_polygon_xld (Contour, GrayRow, GrayColumn)</l>
+<l>        concat_obj (WarpedMesh, Contour, WarpedMesh)</l>
+<l>    endfor</l>
+<l>endfor</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="GenMesh">
+<parameters>
+<parameter id="Step"/>
+<parameter id="VectorField"/>
+<parameter id="WarpedMesh"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
