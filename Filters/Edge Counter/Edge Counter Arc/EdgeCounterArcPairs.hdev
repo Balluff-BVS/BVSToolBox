@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Edge Counter Arc Pairs'</l>
+<c></c>
+<l>ArrayCount := 1</l>
+<c></c>
+<l>Crosses_Region_Color := [0, 0, 255, 255]</l>
+<l>Arc_Region_Color := [255, 0, 0, 255]</l>
+<c></c>
+<l>AmplitudeThreshold_Int := 2</l>
+<l>RoiWidthLength_Int := 5</l>
+<l>Sigma_Real := 1.0</l>
+<c></c>
+<l>Transition_Enum_Values := ['all', 'positive', 'negative']</l>
+<l>Transition_Enum := 'all'</l>
+<c></c>
+<l>Select_Enum_Values := ['all', 'first', 'last']</l>
+<l>Select_Enum := 'all'</l>
+<c></c>
+<l>ArcCenterX_Int := 100</l>
+<l>ArcCenterY_Int := 100</l>
+<l>ArcRadius_Int := 50</l>
+<l>ArcAngleStart_Int := 0</l>
+<l>ArcAngleExtent_Int := 90</l>
+<c></c>
+<l>UseCalibration_MBool := false</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Arc_Region" base_type="iconic" dimension="0"/>
+<par name="Crosses_Region" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ArcCenterX_Int" base_type="ctrl" dimension="0"/>
+<par name="ArcCenterY_Int" base_type="ctrl" dimension="0"/>
+<par name="ArcRadius_Int" base_type="ctrl" dimension="0"/>
+<par name="ArcAngleStart_Int" base_type="ctrl" dimension="0"/>
+<par name="ArcAngleExtent_Int" base_type="ctrl" dimension="0"/>
+<par name="AmplitudeThreshold_Int" base_type="ctrl" dimension="0"/>
+<par name="RoiWidthLength_Int" base_type="ctrl" dimension="0"/>
+<par name="Sigma_Real" base_type="ctrl" dimension="0"/>
+<par name="Transition_Enum" base_type="ctrl" dimension="0"/>
+<par name="Select_Enum" base_type="ctrl" dimension="0"/>
+<par name="UseCalibration_MBool" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Calib" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Trafo" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="NumberOfPairs_Int" base_type="ctrl" dimension="0"/>
+<par name="IntraDistance_RealArray" base_type="ctrl" dimension="0"/>
+<par name="InterDistance_RealArray" base_type="ctrl" dimension="0"/>
+<par name="IntraDistanceCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="InterDistanceCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="FirstPositionX_RealArray" base_type="ctrl" dimension="0"/>
+<par name="FirstPositionY_RealArray" base_type="ctrl" dimension="0"/>
+<par name="SecondPositionX_RealArray" base_type="ctrl" dimension="0"/>
+<par name="SecondPositionY_RealArray" base_type="ctrl" dimension="0"/>
+<par name="FirstPositionXCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="FirstPositionYCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="SecondPositionXCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="SecondPositionYCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>if (UseCalibration_MBool == true)</l>
+<l>    CamParam := InputImage_Img_Calib[0:7]</l>
+<l>    CamPose := InputImage_Img_Calib[8:14]</l>
+<l>endif</l>
+<c></c>
+<l>NumberOfPairs_Int := 0</l>
+<l>FirstPositionX_RealArray := 0</l>
+<l>FirstPositionY_RealArray := 0</l>
+<l>SecondPositionX_RealArray := 0</l>
+<l>SecondPositionY_RealArray := 0</l>
+<l>IntraDistance_RealArray := 0</l>
+<l>InterDistance_RealArray := 0</l>
+<c></c>
+<l>FirstPositionXCalibrated_RealArray := 0</l>
+<l>FirstPositionYCalibrated_RealArray := 0</l>
+<l>SecondPositionXCalibrated_RealArray := 0</l>
+<l>SecondPositionYCalibrated_RealArray := 0</l>
+<l>IntraDistanceCalibrated_RealArray := 0</l>
+<l>InterDistanceCalibrated_RealArray := 0</l>
+<c></c>
+<l>if (ArcAngleStart_Int &gt; 0 and ArcAngleStart_Int &lt; 180)</l>
+<l>    ArcStart := rad(ArcAngleStart_Int)</l>
+<l>elseif (ArcAngleStart_Int &gt; 180 and ArcAngleStart_Int &lt; 360)</l>
+<l>    ArcStart := 360 - ArcAngleStart_Int</l>
+<l>    ArcStart := rad(ArcStart)</l>
+<l>    ArcStart := -ArcStart</l>
+<l>elseif (ArcAngleStart_Int == 180)</l>
+<l>    ArcStart := 3.14</l>
+<l>elseif (ArcAngleStart_Int == 0)</l>
+<l>    ArcStart := 0</l>
+<l>elseif (ArcAngleStart_Int == 360)</l>
+<l>    ArcStart := 6.28</l>
+<l>endif</l>
+<c></c>
+<l>ArcExtent := rad(ArcAngleExtent_Int)</l>
+<c></c>
+<l>hom_mat2d_invert (InputImage_Img_Trafo, HomMat2DInvert)</l>
+<c></c>
+<l>gen_circle (Circle1, ArcCenterY_Int, ArcCenterX_Int, 5)</l>
+<l>affine_trans_region (Circle1, RegionAffineTrans1, HomMat2DInvert, 'nearest_neighbor')</l>
+<l>area_center (RegionAffineTrans1, Area1, ArcCenterY, ArcCenterX)</l>
+<c></c>
+<c></c>
+<l>Xo := ArcRadius_Int * cos(rad(ArcAngleStart_Int))</l>
+<l>Yo := ArcRadius_Int * sin(rad(ArcAngleStart_Int))</l>
+<c></c>
+<l>Xo := Xo + ArcCenterX_Int</l>
+<l>Yo := -Yo</l>
+<l>Yo := Yo + ArcCenterY_Int</l>
+<c></c>
+<l>gen_circle (Circle2, Yo, Xo, 5)</l>
+<l>affine_trans_region (Circle2, RegionAffineTrans2, HomMat2DInvert, 'nearest_neighbor')</l>
+<l>area_center (RegionAffineTrans2, Area2, NewRow, NewColumn)</l>
+<c></c>
+<l>angle_lx (ArcCenterY, ArcCenterX, NewRow, NewColumn, Angle2)</l>
+<l>if (Angle2 &lt; 0)</l>
+<l>    AngleT := 360 + deg(Angle2)</l>
+<l>else</l>
+<l>    AngleT := deg(Angle2)</l>
+<l>endif</l>
+<c></c>
+<l>ArcStart := rad(AngleT)</l>
+<c></c>
+<c></c>
+<l>get_image_size (InputImage_Img, Width, Height)</l>
+<c></c>
+<l>gen_circle (Circ1, ArcCenterY, ArcCenterX, ArcRadius_Int + 2)</l>
+<l>gen_circle (Circ2, ArcCenterY, ArcCenterX, ArcRadius_Int - 2)</l>
+<l>difference (Circ1, Circ2, Donut)</l>
+<c></c>
+<l>ArcAngleStartTemp := deg(ArcStart)</l>
+<c></c>
+<l>if (ArcAngleExtent_Int &gt; 0)</l>
+<l>    zakres := 360 - ArcAngleExtent_Int</l>
+<l>    for k := 1 to zakres by 1</l>
+<l>        Xo := ArcRadius_Int * cos(rad(ArcAngleStartTemp + ArcAngleExtent_Int + k))</l>
+<l>        Yo := ArcRadius_Int * sin(rad(ArcAngleStartTemp + ArcAngleExtent_Int + k))</l>
+<c>        </c>
+<l>        Xo := Xo + ArcCenterX</l>
+<l>        Yo := -Yo</l>
+<l>        Yo := Yo + ArcCenterY</l>
+<c>          </c>
+<l>        gen_circle (Circle, Yo, Xo, 4)</l>
+<l>        difference (Donut, Circle, Donut)</l>
+<l>    endfor</l>
+<l>else</l>
+<l>    zakres := 360 + ArcAngleExtent_Int</l>
+<l>    for k := 1 to zakres by 1</l>
+<l>        Xo := ArcRadius_Int * cos(rad(ArcAngleStartTemp + k))</l>
+<l>        Yo := ArcRadius_Int * sin(rad(ArcAngleStartTemp + k))</l>
+<c>        </c>
+<l>        Xo := Xo + ArcCenterX</l>
+<l>        Yo := -Yo</l>
+<l>        Yo := Yo + ArcCenterY</l>
+<c>          </c>
+<l>        gen_circle (Circle, Yo, Xo, 4)</l>
+<l>        difference (Donut, Circle, Donut)</l>
+<l>    endfor</l>
+<l>endif</l>
+<c></c>
+<l>Arc_Region := Donut</l>
+<c></c>
+<l as_id="measure1d" as_name="Measure 01" as_grp="[2,1]" as_ord="2">AmplitudeThreshold := AmplitudeThreshold_Int</l>
+<l as_id="measure1d" as_name="Measure 01" as_grp="[2,1]" as_ord="3">RoiWidthLen2 := RoiWidthLength_Int</l>
+<c></c>
+<l as_id="measure1d" as_name="Measure 01" as_grp="[2,2]" as_ord="2">ArcRow_Measure_01_0 := ArcCenterY</l>
+<l>ArcColumn_Measure_01_0 := ArcCenterX</l>
+<l>ArcRadius_Measure_01_0 := ArcRadius_Int</l>
+<l>ArcAngleStart_Measure_01_0 := ArcStart</l>
+<l>ArcAngleExtent_Measure_01_0 := ArcExtent</l>
+<c></c>
+<l>gen_measure_arc (ArcRow_Measure_01_0, ArcColumn_Measure_01_0, ArcRadius_Measure_01_0, ArcAngleStart_Measure_01_0, ArcAngleExtent_Measure_01_0, max2(1, min2(RoiWidthLen2, ArcRadius_Measure_01_0)), Width, Height, 'nearest_neighbor', MsrHandle_Measure_01_0)</l>
+<l>measure_pairs (InputImage_Img, MsrHandle_Measure_01_0, Sigma_Real, AmplitudeThreshold, Transition_Enum[1], Select_Enum[1], RowEdgeFirst, ColumnEdgeFirst, AmplitudeFirst, RowEdgeSecond, ColumnEdgeSecond, AmplitudeSecond, IntraDistance, InterDistance)</l>
+<l>gen_empty_region (Region2)</l>
+<c></c>
+<l>if(|RowEdgeFirst| &gt; 1)</l>
+<l>    NumberOfPairs_Int := |RowEdgeFirst|</l>
+<l>    FirstPositionX_RealArray := ColumnEdgeFirst</l>
+<l>    FirstPositionY_RealArray := RowEdgeFirst</l>
+<l>    SecondPositionX_RealArray := ColumnEdgeSecond</l>
+<l>    SecondPositionY_RealArray := RowEdgeSecond</l>
+<l>    IntraDistance_RealArray := IntraDistance</l>
+<l>    InterDistance_RealArray := InterDistance</l>
+<c>    </c>
+<l>    if (UseCalibration_MBool == true)</l>
+<l>        image_points_to_world_plane (CamParam, CamPose, FirstPositionY_RealArray, FirstPositionX_RealArray, 'mm', FirstPositionXCalibrated_RealArray, FirstPositionYCalibrated_RealArray)</l>
+<l>        image_points_to_world_plane (CamParam, CamPose, SecondPositionY_RealArray, SecondPositionX_RealArray, 'mm', SecondPositionXCalibrated_RealArray, SecondPositionYCalibrated_RealArray)</l>
+<c>                     </c>
+<l>        for j := 0 to |RowEdgeFirst| - 1 by 1 </l>
+<l>            distance_pp (FirstPositionYCalibrated_RealArray[j], FirstPositionXCalibrated_RealArray[j], SecondPositionYCalibrated_RealArray[j], SecondPositionXCalibrated_RealArray[j], IntraDistanceCalibrated)</l>
+<l>            IntraDistanceCalibrated_RealArray[j] := IntraDistanceCalibrated           </l>
+<l>        endfor</l>
+<c>        </c>
+<l>        for j := 0 to |RowEdgeFirst| - 2 by 1 </l>
+<l>            distance_pp (FirstPositionYCalibrated_RealArray[j + 1], FirstPositionXCalibrated_RealArray[j + 1], SecondPositionYCalibrated_RealArray[j], SecondPositionXCalibrated_RealArray[j], InterDistanceCalibrated)</l>
+<l>            InterDistanceCalibrated_RealArray[j] := InterDistanceCalibrated           </l>
+<l>        endfor</l>
+<l>    endif</l>
+<c>            </c>
+<l>    for CrossIndex := 1 to |RowEdgeFirst| by 1 </l>
+<l>        gen_rectangle2 (ROI_0, RowEdgeFirst[CrossIndex-1], ColumnEdgeFirst[CrossIndex-1], rad(45), 1, 8)</l>
+<l>        gen_rectangle2 (ROI_1, RowEdgeFirst[CrossIndex-1], ColumnEdgeFirst[CrossIndex-1], rad(-45), 1, 8)</l>
+<l>        union2 (ROI_0, ROI_1, Region1)</l>
+<l>        union2 (Region1, Region2, Region2)    </l>
+<c>        </c>
+<l>        gen_rectangle2 (ROI_0, RowEdgeSecond[CrossIndex-1], ColumnEdgeSecond[CrossIndex-1], rad(45), 1, 8)</l>
+<l>        gen_rectangle2 (ROI_1, RowEdgeSecond[CrossIndex-1], ColumnEdgeSecond[CrossIndex-1], rad(-45), 1, 8)</l>
+<l>        union2 (ROI_0, ROI_1, Region1)</l>
+<l>        union2 (Region1, Region2, Region2)  </l>
+<l>    endfor</l>
+<l>endif</l>
+<c></c>
+<l>if(|RowEdgeFirst| == 1)</l>
+<l>    NumberOfPairs_Int := |RowEdgeFirst|</l>
+<l>    FirstPositionX_RealArray := ColumnEdgeFirst</l>
+<l>    FirstPositionY_RealArray := RowEdgeFirst</l>
+<l>    SecondPositionX_RealArray := ColumnEdgeSecond</l>
+<l>    SecondPositionY_RealArray := RowEdgeSecond</l>
+<l>    IntraDistance_RealArray := IntraDistance</l>
+<c>    </c>
+<l>    if (UseCalibration_MBool == true)</l>
+<l>        image_points_to_world_plane (CamParam, CamPose, FirstPositionY_RealArray, FirstPositionX_RealArray, 'mm', FirstPositionXCalibrated_RealArray, FirstPositionYCalibrated_RealArray)</l>
+<l>        image_points_to_world_plane (CamParam, CamPose, SecondPositionY_RealArray, SecondPositionX_RealArray, 'mm', SecondPositionXCalibrated_RealArray, SecondPositionYCalibrated_RealArray)</l>
+<c>                     </c>
+<l>        for j := 0 to |RowEdgeFirst| - 1 by 1 </l>
+<l>            distance_pp (FirstPositionYCalibrated_RealArray[j], FirstPositionXCalibrated_RealArray[j], SecondPositionYCalibrated_RealArray[j], SecondPositionXCalibrated_RealArray[j], IntraDistanceCalibrated)</l>
+<l>            IntraDistanceCalibrated_RealArray[j] := IntraDistanceCalibrated           </l>
+<l>        endfor</l>
+<l>    endif</l>
+<c>            </c>
+<l>    for CrossIndex := 1 to |RowEdgeFirst| by 1 </l>
+<l>        gen_rectangle2 (ROI_0, RowEdgeFirst[CrossIndex-1], ColumnEdgeFirst[CrossIndex-1], rad(45), 1, 8)</l>
+<l>        gen_rectangle2 (ROI_1, RowEdgeFirst[CrossIndex-1], ColumnEdgeFirst[CrossIndex-1], rad(-45), 1, 8)</l>
+<l>        union2 (ROI_0, ROI_1, Region1)</l>
+<l>        union2 (Region1, Region2, Region2)    </l>
+<c>        </c>
+<l>        gen_rectangle2 (ROI_0, RowEdgeSecond[CrossIndex-1], ColumnEdgeSecond[CrossIndex-1], rad(45), 1, 8)</l>
+<l>        gen_rectangle2 (ROI_1, RowEdgeSecond[CrossIndex-1], ColumnEdgeSecond[CrossIndex-1], rad(-45), 1, 8)</l>
+<l>        union2 (ROI_0, ROI_1, Region1)</l>
+<l>        union2 (Region1, Region2, Region2)  </l>
+<l>    endfor</l>
+<l>endif</l>
+<c></c>
+<l>Crosses_Region := Region2</l>
+<c></c>
+<l>close_measure (MsrHandle_Measure_01_0)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="AmplitudeThreshold_Int"/>
+<parameter id="ArcAngleExtent_Int"/>
+<parameter id="ArcAngleStart_Int"/>
+<parameter id="ArcCenterX_Int"/>
+<parameter id="ArcCenterY_Int"/>
+<parameter id="ArcRadius_Int"/>
+<parameter id="Arc_Region"/>
+<parameter id="Crosses_Region"/>
+<parameter id="FirstPositionXCalibrated_RealArray"/>
+<parameter id="FirstPositionX_RealArray"/>
+<parameter id="FirstPositionYCalibrated_RealArray"/>
+<parameter id="FirstPositionY_RealArray"/>
+<parameter id="InputImage_Img"/>
+<parameter id="InputImage_Img_Calib"/>
+<parameter id="InputImage_Img_Trafo"/>
+<parameter id="InterDistanceCalibrated_RealArray"/>
+<parameter id="InterDistance_RealArray"/>
+<parameter id="IntraDistanceCalibrated_RealArray"/>
+<parameter id="IntraDistance_RealArray"/>
+<parameter id="NumberOfPairs_Int"/>
+<parameter id="RoiWidthLength_Int"/>
+<parameter id="SecondPositionXCalibrated_RealArray"/>
+<parameter id="SecondPositionX_RealArray"/>
+<parameter id="SecondPositionYCalibrated_RealArray"/>
+<parameter id="SecondPositionY_RealArray"/>
+<parameter id="Select_Enum"/>
+<parameter id="Sigma_Real"/>
+<parameter id="Transition_Enum"/>
+<parameter id="UseCalibration_MBool"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
