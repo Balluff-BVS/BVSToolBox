@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="19.11.0.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Photometricstereo'</l>
+<c></c>
+<l>Tilt1_Int := 270</l>
+<l>Tilt2_Int := 180</l>
+<l>Tilt3_Int := 90</l>
+<l>Tilt4_Int := 0</l>
+<c></c>
+<l>Slant1_Int := 45</l>
+<l>Slant2_Int := 45</l>
+<l>Slant3_Int := 45</l>
+<l>Slant4_Int := 45</l>
+<c></c>
+<l>Sigma_Int := 5</l>
+<l>Multiply_Real := 7000</l>
+<l>Add_Int := 100</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage1_Img" base_type="iconic" dimension="0"/>
+<par name="InputImage2_Img" base_type="iconic" dimension="0"/>
+<par name="InputImage3_Img" base_type="iconic" dimension="0"/>
+<par name="InputImage4_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="OutputImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Tilt1_Int" base_type="ctrl" dimension="0"/>
+<par name="Tilt2_Int" base_type="ctrl" dimension="0"/>
+<par name="Tilt3_Int" base_type="ctrl" dimension="0"/>
+<par name="Tilt4_Int" base_type="ctrl" dimension="0"/>
+<par name="Slant1_Int" base_type="ctrl" dimension="0"/>
+<par name="Slant2_Int" base_type="ctrl" dimension="0"/>
+<par name="Slant3_Int" base_type="ctrl" dimension="0"/>
+<par name="Slant4_Int" base_type="ctrl" dimension="0"/>
+<par name="Sigma_Int" base_type="ctrl" dimension="0"/>
+<par name="Multiply_Real" base_type="ctrl" dimension="0"/>
+<par name="Add_Int" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>concat_obj (InputImage1_Img, InputImage2_Img, ObjectsConcat)</l>
+<l>concat_obj (ObjectsConcat, InputImage3_Img, ObjectsConcat)</l>
+<l>concat_obj (ObjectsConcat, InputImage4_Img, ObjectsConcat)</l>
+<c></c>
+<l>Tilts := [Tilt1_Int, Tilt2_Int, Tilt3_Int, Tilt4_Int]</l>
+<l>Slants := [Slant1_Int, Slant2_Int, Slant3_Int, Slant4_Int]</l>
+<c></c>
+<l>photometric_stereo (ObjectsConcat, HeightField, Gradient, Albedo, Slants, Tilts, 'gradient', 'poisson', [], [])</l>
+<l>derivate_vector_field (Gradient, Result, Sigma_Int, 'mean_curvature')</l>
+<c></c>
+<l>scale_image (Result, ImageScaled, Multiply_Real, Add_Int)</l>
+<l>convert_image_type (ImageScaled, OutputImage_Img, 'byte')</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Add_Int"/>
+<parameter id="InputImage1_Img"/>
+<parameter id="InputImage2_Img"/>
+<parameter id="InputImage3_Img"/>
+<parameter id="InputImage4_Img"/>
+<parameter id="Multiply_Real"/>
+<parameter id="OutputImage_Img"/>
+<parameter id="Sigma_Int"/>
+<parameter id="Slant1_Int"/>
+<parameter id="Slant2_Int"/>
+<parameter id="Slant3_Int"/>
+<parameter id="Slant4_Int"/>
+<parameter id="Tilt1_Int"/>
+<parameter id="Tilt2_Int"/>
+<parameter id="Tilt3_Int"/>
+<parameter id="Tilt4_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
