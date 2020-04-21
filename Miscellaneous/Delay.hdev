@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Delay'</l>
+<c></c>
+<l>Delay_Real := 200</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<ic>
+<par name="Delay_Real" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>Temp := Delay_Real / 1000</l>
+<c></c>
+<l>wait_seconds (Temp)</l>
+<c>    </c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Delay_Real"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
