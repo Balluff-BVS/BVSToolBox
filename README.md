@@ -5,15 +5,23 @@
 see documentation [here](Manual_HALCON_Script.pdf)
 
 ## The list of the tools you can find here:
-## Filters:
 
-### Thresholding:
+## Bead Inspection
+
+## Blob analysis:
 - DynamicThresold
 - LocalThreshold
 - RegionFeatures
 - SegmentMSER
 - WatershedThreshold
 
+## Indentification 
+- Barcode reader
+
+## Color
+- Color transformation
+
+## Filters:
 ### Edges:
 - Frei
 - Kirsch
@@ -85,33 +93,45 @@ see documentation [here](Manual_HALCON_Script.pdf)
 - WienerFilter
 - RFTBandpassFilter
 
-## Tools:
-### Measurement:
+## Edge Counter
+- Edge Counter Line
+- Edge Counter Line Pairs
+- Edge Counter Arc
+- Edge Counter Arc Pairs
+
+## Measurements
 - MeasureCircle
 - MeasureLine
 - MeasureEllipse
 - MeasureRectangle
 
-### Matching:
+## Matching:
 - ShapeMatching
+- Local Deformable Matching
+- Uncalibrated Perspective Deformable Matching
 
-### OCR
-- OCR DotPrint
+## OCR
+- OCR with Automatic segmentation
+- OCR with Manual segmentation
+- Train new fonts
+- Polar transformation
 
-### Indentification 
-- Barcode reader
+## Photometricstereo
 
-### Robot Guiding
-- Universa_Robots
+## Robot Guiding:
+- Universal Robots
 
-### Other tools:
-- Bead Inspection
-- DXF - reading and saving dxf files
+## Statistic operations:
+- Deviation
+- Sum
+- Mean
+- Median
+- Min
+- Max
 
-### Other:
-- Save_variables_to_the_file
-- Save_Images_Smart_Camera
-- Save_Images_SVC
-
-
+## Other:
+- Saving variables to the file
+- Saving Images on Smart Camera or Smart Vision Controller
+- Delay
+- Imprint text into image
 
