@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="19.11.0.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'TransformFromRGB'</l>
+<c></c>
+<l>ColorSpace_Enum_Values := ['yiq', 'yuv', 'argyb', 'ciexyz', 'hls', 'hsi', 'hsv', 'ihs', 'cielab', 'cielchab', 'cieluv', 'cielchuv', 'i1i2i3', 'ciexyz2', 'ciexyz3', 'ciexyz4', 'lms']</l>
+<l>ColorSpace_Enum := 'hsv'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="OutputImage1_Img" base_type="iconic" dimension="0"/>
+<par name="OutputImage2_Img" base_type="iconic" dimension="0"/>
+<par name="OutputImage3_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ColorSpace_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>decompose3 (InputImage_Img, Red, Green, Blue)</l>
+<l>trans_from_rgb (Red, Green, Blue, OutputImage1_Img, OutputImage2_Img, OutputImage3_Img, ColorSpace_Enum[1])</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ColorSpace_Enum"/>
+<parameter id="InputImage_Img"/>
+<parameter id="OutputImage1_Img"/>
+<parameter id="OutputImage2_Img"/>
+<parameter id="OutputImage3_Img"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
