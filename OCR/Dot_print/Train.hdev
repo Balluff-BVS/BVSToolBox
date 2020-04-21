@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'New Font Training'</l>
+<c></c>
+<l>HalconCallbacks := ['TeachChar', 'GenerateClassifier', 'DeleteFont']</l>
+<c></c>
+<l>Segmentation_Enum_Values := ['threshold', 'regions']</l>
+<l>Segmentation_Enum := 'threshold'</l>
+<c></c>
+<l>ThresholdMin_Int := 200</l>
+<l>ThresholdMax_Int := 255</l>
+<c></c>
+<l>AreaMin_Int := 1</l>
+<l>AreaMax_Int := 1000000</l>
+<c></c>
+<l>HeightMin_Int := 1</l>
+<l>HeightMax_Int := 1000000</l>
+<c></c>
+<l>WidthMin_Int := 1</l>
+<l>WidthMax_Int := 1000000</l>
+<c></c>
+<l>RowMin_Int := 1</l>
+<l>RowMax_Int := 1000000</l>
+<c></c>
+<l>ColumnMin_Int := 1</l>
+<l>ColumnMax_Int := 1000000</l>
+<c></c>
+<l>UseDilatation_Enum_Values := ['None', 'Dilatation', 'Closing']</l>
+<l>UseDilatation_Enum := 'None'</l>
+<l>DilateWidth_Int := 5</l>
+<l>DilateHeight_Int := 5</l>
+<l>Dilate45_Int := 1</l>
+<l>Dilate135_Int := 1</l>
+<c></c>
+<l>Path_String := 'C:/Users/User/Desktop/'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="InputAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="OutputCharacter_Region" base_type="iconic" dimension="0"/>
+<par name="TrainedCharacters_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Segmentation_Enum" base_type="ctrl" dimension="0"/>
+<par name="ThresholdMin_Int" base_type="ctrl" dimension="0"/>
+<par name="ThresholdMax_Int" base_type="ctrl" dimension="0"/>
+<par name="AreaMin_Int" base_type="ctrl" dimension="0"/>
+<par name="AreaMax_Int" base_type="ctrl" dimension="0"/>
+<par name="HeightMin_Int" base_type="ctrl" dimension="0"/>
+<par name="HeightMax_Int" base_type="ctrl" dimension="0"/>
+<par name="WidthMin_Int" base_type="ctrl" dimension="0"/>
+<par name="WidthMax_Int" base_type="ctrl" dimension="0"/>
+<par name="RowMin_Int" base_type="ctrl" dimension="0"/>
+<par name="RowMax_Int" base_type="ctrl" dimension="0"/>
+<par name="ColumnMin_Int" base_type="ctrl" dimension="0"/>
+<par name="ColumnMax_Int" base_type="ctrl" dimension="0"/>
+<par name="UseDilatation_Enum" base_type="ctrl" dimension="0"/>
+<par name="DilateWidth_Int" base_type="ctrl" dimension="0"/>
+<par name="DilateHeight_Int" base_type="ctrl" dimension="0"/>
+<par name="Dilate45_Int" base_type="ctrl" dimension="0"/>
+<par name="Dilate135_Int" base_type="ctrl" dimension="0"/>
+<par name="Path_String" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="TrainedCharactersString_String" base_type="ctrl" dimension="0"/>
+<par name="NumberSegmented_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>reduce_domain (InputImage_Img, InputAOI_Aoi, ImageReduced)</l>
+<c></c>
+<l>if (Segmentation_Enum[1] == 'threshold')</l>
+<l>    threshold (ImageReduced, Regions, ThresholdMin_Int, ThresholdMax_Int)</l>
+<l>    connection (Regions, ConnectedRegions)</l>
+<l>    select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', AreaMin_Int, AreaMax_Int)</l>
+<l>    select_shape (SelectedRegions, SelectedRegions2, 'height', 'and', HeightMin_Int, HeightMax_Int)</l>
+<l>    select_shape (SelectedRegions2, SelectedRegions3, 'width', 'and', WidthMin_Int, WidthMax_Int)</l>
+<l>    select_shape (SelectedRegions3, SelectedRegions4, 'row', 'and', RowMin_Int, RowMax_Int)</l>
+<l>    select_shape (SelectedRegions4, SelectedRegions5, 'column', 'and', ColumnMin_Int, ColumnMax_Int)</l>
+<c>    </c>
+<l>    if (UseDilatation_Enum[1] == 'Closing')</l>
+<l>        union1 (SelectedRegions5, RegionUnion)        </l>
+<l>        closing_rectangle1 (RegionUnion, RegionClosing, 1, DilateHeight_Int)</l>
+<l>        closing_rectangle1 (RegionClosing, RegionClosing2, DilateWidth_Int, 1)</l>
+<l>        gen_rectangle2 (Rectangle, 10, 10, rad(45), Dilate45_Int, 0)</l>
+<l>        closing (RegionClosing2, Rectangle, RegionClosing3)</l>
+<l>        gen_rectangle2 (Rectangle, 10, 10, rad(135), Dilate135_Int, 0)</l>
+<l>        closing (RegionClosing3, Rectangle, RegionClosing4)</l>
+<l>        connection (RegionClosing4, ConnectedRegions1)</l>
+<l>    elseif (UseDilatation_Enum[1] == 'Dilatation')</l>
+<l>        union1 (SelectedRegions5, RegionUnion)       </l>
+<l>        dilation_rectangle1 (RegionUnion, RegionDilation, 1, DilateHeight_Int)</l>
+<l>        dilation_rectangle1 (RegionDilation, RegionDilation1, DilateWidth_Int, 1)</l>
+<l>        connection (RegionDilation1, ConnectedRegions1)</l>
+<l>    elseif (UseDilatation_Enum[1] == 'None')</l>
+<l>        ConnectedRegions1 := SelectedRegions5</l>
+<l>    endif</l>
+<c>    </c>
+<l>    union1 (ConnectedRegions1, OutputCharacter_Region)</l>
+<l>elseif (Segmentation_Enum[1] == 'regions')</l>
+<l>*     OutputCharacter_Region := InputRegion_Region</l>
+<l>endif</l>
+<c></c>
+<l>connection (OutputCharacter_Region, ConnectedRegions2)</l>
+<l>sort_region (ConnectedRegions2, SortedRegions, 'character', 'true', 'row')</l>
+<l>count_obj (SortedRegions, NumberSegmented)</l>
+<c></c>
+<l>NumberSegmented_Int := NumberSegmented</l>
+<c></c>
+<l>TrainFile := Path_String + 'training.trf'</l>
+<c></c>
+<l>file_exists (TrainFile, FileExists)</l>
+<c></c>
+<l>if (FileExists == true)</l>
+<l>    read_ocr_trainf_names (TrainFile, CharacterNames, CharacterCount)</l>
+<c>    </c>
+<l>    NumberCharacters := |CharacterNames|</l>
+<c>    </c>
+<l>    gen_empty_obj (ObjectsConcat)</l>
+<c>    </c>
+<l>    tekst := ''</l>
+<c>    </c>
+<l>    for i := 0 to NumberCharacters - 1 by 1</l>
+<l>        read_ocr_trainf_select (CharactersSelected, TrainFile, CharacterNames[i], FoundNames)</l>
+<l>        tile_images (CharactersSelected, TiledImage, 1, 'vertical')</l>
+<l>        concat_obj (ObjectsConcat, TiledImage, ObjectsConcat) </l>
+<l>        tekst := tekst + CharacterNames[i]</l>
+<l>    endfor</l>
+<c>    </c>
+<l>    TrainedCharactersString_String := tekst</l>
+<c>    </c>
+<l>    tile_images (ObjectsConcat, TrainedCharacters_Img, NumberCharacters, 'horizontal')</l>
+<l>else  </l>
+<l>    gen_image_const (TrainedCharacters_Img, 'byte', 500, 500)</l>
+<l>    TrainedCharactersString_String := ''</l>
+<l>endif</l>
+<c></c>
+<l>return()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="AreaMax_Int"/>
+<parameter id="AreaMin_Int"/>
+<parameter id="ColumnMax_Int"/>
+<parameter id="ColumnMin_Int"/>
+<parameter id="Dilate135_Int"/>
+<parameter id="Dilate45_Int"/>
+<parameter id="DilateHeight_Int"/>
+<parameter id="DilateWidth_Int"/>
+<parameter id="HeightMax_Int"/>
+<parameter id="HeightMin_Int"/>
+<parameter id="InputAOI_Aoi"/>
+<parameter id="InputImage_Img"/>
+<parameter id="NumberSegmented_Int"/>
+<parameter id="OutputCharacter_Region"/>
+<parameter id="Path_String"/>
+<parameter id="RowMax_Int"/>
+<parameter id="RowMin_Int"/>
+<parameter id="Segmentation_Enum"/>
+<parameter id="ThresholdMax_Int"/>
+<parameter id="ThresholdMin_Int"/>
+<parameter id="TrainedCharactersString_String"/>
+<parameter id="TrainedCharacters_Img"/>
+<parameter id="UseDilatation_Enum"/>
+<parameter id="WidthMax_Int"/>
+<parameter id="WidthMin_Int"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="TeachChar">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="InputAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="Char_String" base_type="ctrl" dimension="0"/>
+<par name="Segmentation_Enum" base_type="ctrl" dimension="0"/>
+<par name="ThresholdMin_Int" base_type="ctrl" dimension="0"/>
+<par name="ThresholdMax_Int" base_type="ctrl" dimension="0"/>
+<par name="AreaMin_Int" base_type="ctrl" dimension="0"/>
+<par name="AreaMax_Int" base_type="ctrl" dimension="0"/>
+<par name="HeightMin_Int" base_type="ctrl" dimension="0"/>
+<par name="HeightMax_Int" base_type="ctrl" dimension="0"/>
+<par name="WidthMin_Int" base_type="ctrl" dimension="0"/>
+<par name="WidthMax_Int" base_type="ctrl" dimension="0"/>
+<par name="RowMin_Int" base_type="ctrl" dimension="0"/>
+<par name="RowMax_Int" base_type="ctrl" dimension="0"/>
+<par name="ColumnMin_Int" base_type="ctrl" dimension="0"/>
+<par name="ColumnMax_Int" base_type="ctrl" dimension="0"/>
+<par name="UseDilatation_Enum" base_type="ctrl" dimension="0"/>
+<par name="DilateHeight_Int" base_type="ctrl" dimension="0"/>
+<par name="DilateWidth_Int" base_type="ctrl" dimension="0"/>
+<par name="Dilate45_Int" base_type="ctrl" dimension="0"/>
+<par name="Dilate135_Int" base_type="ctrl" dimension="0"/>
+<par name="Path_String" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="InfoString_String" base_type="ctrl" dimension="0"/>
+<par name="NumberSegmented_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>TrainFile := Path_String + 'training.trf'</l>
+<c></c>
+<l>reduce_domain (InputImage_Img, InputAOI_Aoi, ImageReduced)</l>
+<c></c>
+<l>if (Segmentation_Enum[1] == 'threshold')</l>
+<l>    threshold (ImageReduced, Regions, ThresholdMin_Int, ThresholdMax_Int)</l>
+<l>    connection (Regions, ConnectedRegions)</l>
+<l>    select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', AreaMin_Int, AreaMax_Int)</l>
+<l>    select_shape (SelectedRegions, SelectedRegions2, 'height', 'and', HeightMin_Int, HeightMax_Int)</l>
+<l>    select_shape (SelectedRegions2, SelectedRegions3, 'width', 'and', WidthMin_Int, WidthMax_Int)</l>
+<l>    select_shape (SelectedRegions3, SelectedRegions4, 'row', 'and', RowMin_Int, RowMax_Int)</l>
+<l>    select_shape (SelectedRegions4, SelectedRegions5, 'column', 'and', ColumnMin_Int, ColumnMax_Int)</l>
+<c>    </c>
+<l>    if (UseDilatation_Enum[1] == 'Closing')</l>
+<l>        union1 (SelectedRegions5, RegionUnion)        </l>
+<l>        closing_rectangle1 (RegionUnion, RegionClosing, 1, DilateHeight_Int)</l>
+<l>        closing_rectangle1 (RegionClosing, RegionClosing2, DilateWidth_Int, 1)</l>
+<l>        gen_rectangle2 (Rectangle, 10, 10, rad(45), Dilate45_Int, 0)</l>
+<l>        closing (RegionClosing2, Rectangle, RegionClosing3)</l>
+<l>        gen_rectangle2 (Rectangle, 10, 10, rad(135), Dilate135_Int, 0)</l>
+<l>        closing (RegionClosing3, Rectangle, RegionClosing4)</l>
+<l>        connection (RegionClosing4, ConnectedRegions1)</l>
+<l>    elseif (UseDilatation_Enum[1] == 'Dilatation')</l>
+<l>        union1 (SelectedRegions5, RegionUnion)       </l>
+<l>        dilation_rectangle1 (RegionUnion, RegionDilation, 1, DilateHeight_Int)</l>
+<l>        dilation_rectangle1 (RegionDilation, RegionDilation1, DilateWidth_Int, 1)</l>
+<l>        connection (RegionDilation1, ConnectedRegions1)</l>
+<l>    elseif (UseDilatation_Enum[1] == 'None')</l>
+<l>        ConnectedRegions1 := SelectedRegions5</l>
+<l>    endif</l>
+<c>    </c>
+<l>    union1 (ConnectedRegions1, TrainSingle)</l>
+<l>elseif (Segmentation_Enum[1] == 'regions')</l>
+<l>*     TrainSingle := InputRegion_Region</l>
+<l>endif</l>
+<c></c>
+<l>connection (TrainSingle, ConnectedRegions2)</l>
+<l>sort_region (ConnectedRegions2, SortedRegions, 'character', 'true', 'row')</l>
+<l>count_obj (SortedRegions, NumberSegmented)</l>
+<l>tuple_strlen (Char_String, NumberChars)</l>
+<c></c>
+<l>NumberSegmented_Int := NumberSegmented</l>
+<c></c>
+<l>if (NumberChars == NumberSegmented)</l>
+<l>    for i := 0 to NumberChars - 1 by 1</l>
+<l>        select_obj (SortedRegions, ObjectSelected, i + 1)</l>
+<l>        tuple_str_bit_select (Char_String, i, Selected)</l>
+<l>        append_ocr_trainf (ObjectSelected, InputImage_Img, Selected, TrainFile)</l>
+<l>    endfor</l>
+<c>    </c>
+<l>    InfoString_String := 'Training successful'</l>
+<l>else</l>
+<l>    InfoString_String := 'Number of segmented characters not equal to number of entered characters'</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachChar">
+<parameters>
+<parameter id="AreaMax_Int"/>
+<parameter id="AreaMin_Int"/>
+<parameter id="Char_String"/>
+<parameter id="ColumnMax_Int"/>
+<parameter id="ColumnMin_Int"/>
+<parameter id="Dilate135_Int"/>
+<parameter id="Dilate45_Int"/>
+<parameter id="DilateHeight_Int"/>
+<parameter id="DilateWidth_Int"/>
+<parameter id="HeightMax_Int"/>
+<parameter id="HeightMin_Int"/>
+<parameter id="InfoString_String"/>
+<parameter id="InputAOI_Aoi"/>
+<parameter id="InputImage_Img"/>
+<parameter id="NumberSegmented_Int"/>
+<parameter id="Path_String"/>
+<parameter id="RowMax_Int"/>
+<parameter id="RowMin_Int"/>
+<parameter id="Segmentation_Enum"/>
+<parameter id="ThresholdMax_Int"/>
+<parameter id="ThresholdMin_Int"/>
+<parameter id="UseDilatation_Enum"/>
+<parameter id="WidthMax_Int"/>
+<parameter id="WidthMin_Int"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="GenerateClassifier">
+<interface>
+<ic>
+<par name="Path_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>TrainFile := Path_String + 'training.trf'</l>
+<l>FontFile := Path_String + 'newfont.omc'</l>
+<c></c>
+<l>read_ocr_trainf_names (TrainFile, CharacterNames, CharacterCount)</l>
+<l>create_ocr_class_mlp (8, 10, 'constant', 'default', CharacterNames, 20, 'none', 1, 42, OCRHandle)</l>
+<l>trainf_ocr_class_mlp (OCRHandle, TrainFile, 200, 1, 0.01, Error, ErrorLog)</l>
+<l>write_ocr_class_mlp (OCRHandle, FontFile)</l>
+<l>clear_ocr_class_mlp (OCRHandle)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="GenerateClassifier">
+<parameters>
+<parameter id="Path_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="DeleteFont">
+<interface>
+<ic>
+<par name="Path_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>TrainFile := Path_String + 'training.trf'</l>
+<l>FontFile := Path_String + 'newfont.omc'</l>
+<c></c>
+<l>delete_file (TrainFile)</l>
+<l>delete_file (FontFile)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="DeleteFont">
+<parameters>
+<parameter id="Path_String"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
