@@ -15,10 +15,10 @@ see documentation [here](Manual_HALCON_Script.pdf)
 - SegmentMSER
 - WatershedThreshold
 
-## Indentification 
+## Indentification:
 - Barcode reader
 
-## Color
+## Color:
 - Color transformation
 
 ## Filters:
@@ -33,7 +33,7 @@ see documentation [here](Manual_HALCON_Script.pdf)
 - Sobel
 - Edges Image
 
-### Image Enhancement
+### Image Enhancement:
 - CoherenceEnhancingDiff
 - Emphasize
 - EquHistoImage
@@ -43,7 +43,7 @@ see documentation [here](Manual_HALCON_Script.pdf)
 - ShockFilter
 - PixelModification
 
-### Inpaiting 
+### Inpaiting: 
 - HarmonicInterpolation
 - InpaitingAnsio
 - InpaitingCed
@@ -51,17 +51,17 @@ see documentation [here](Manual_HALCON_Script.pdf)
 - InpaitingMcf
 - InpaitingTexture
 
-### Lines
+### Lines:
 - BandpassImage
 - LinesFacet
 - LinesGauss
 
-### Noise
+### Noise:
 - AddNoiceWhite
 - GaussDistribution
 - SpDistribution
 
-### Points
+### Points:
 - CornerResponse
 - DotsImage
 - PointsFoetster
@@ -69,7 +69,7 @@ see documentation [here](Manual_HALCON_Script.pdf)
 - PointsLepetit
 - PointsSojka
 
-### Smooting
+### Smoothing:
 - BilateralFilter
 - BinomialFilter
 - DeviationImage
@@ -84,22 +84,22 @@ see documentation [here](Manual_HALCON_Script.pdf)
 - SmootImage
 - TrimmedMean
 
-### Texture
+### Texture:
 - DeviationImage
 - EntropyImage
 - TextureLaws
 
-### Others
+### Others:
 - WienerFilter
 - RFTBandpassFilter
 
-## Edge Counter
+## Edge Counter:
 - Edge Counter Line
 - Edge Counter Line Pairs
 - Edge Counter Arc
 - Edge Counter Arc Pairs
 
-## Measurements
+## Measurements:
 - MeasureCircle
 - MeasureLine
 - MeasureEllipse
@@ -110,7 +110,7 @@ see documentation [here](Manual_HALCON_Script.pdf)
 - Local Deformable Matching
 - Uncalibrated Perspective Deformable Matching
 
-## OCR
+## OCR:
 - OCR with Automatic segmentation
 - OCR with Manual segmentation
 - Train new fonts
