@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Use Uncalibrated Perspective Deformable Matching'</l>
+<c></c>
+<l>HalconCallbacks := ['LoadModel']</l>
+<l>ArrayCount := 1</l>
+<c></c>
+<l>ModelDirectory_String := 'C:/Users/User/Desktop/'</l>
+<l>ModelName_String := 'Model01'</l>
+<c></c>
+<l>AngleStart_Real := 0</l>
+<l>AngleExtent_Real := 360</l>
+<c></c>
+<l>ScaleRMin_Real := 1</l>
+<l>ScaleRMax_Real := 1.1</l>
+<c></c>
+<l>ScaleCMin_Real := 1</l>
+<l>ScaleCMax_Real := 1.1</l>
+<c></c>
+<l>MinScore_Real := 0.4</l>
+<c></c>
+<l>NumMatches_Int := 1</l>
+<c></c>
+<l>MaxOverlap_Real := 0.5</l>
+<c></c>
+<l>Greediness_Real := 0.9</l>
+<c></c>
+<l>CellSize_Real := 3.45</l>
+<l>FocalLength_Real := 16</l>
+<c></c>
+<l>Contours_Contour_Color := [0, 255, 0]</l>
+<c></c>
+<l>AxisX_Contour_Color := [0, 0, 255]</l>
+<l>AxisY_Contour_Color := [0, 255, 0]</l>
+<l>AxisZ_Contour_Color := [255, 0, 255]</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="LoadModel">
+<interface>
+<ic>
+<par name="ModelName_String" base_type="ctrl" dimension="0"/>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>global tuple Model</l>
+<c></c>
+<l>clear_deformable_model (Model)</l>
+<c></c>
+<l>try</l>
+<l>    read_deformable_model (ModelDirectory_String + ModelName_String + '.dfm', Model)</l>
+<l>catch (Exception)</l>
+<c></c>
+<l>endtry</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="LoadModel">
+<parameters>
+<parameter id="ModelDirectory_String"/>
+<parameter id="ModelName_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="InputAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Contours_Contour" base_type="iconic" dimension="0"/>
+<par name="AxisX_Contour" base_type="iconic" dimension="0"/>
+<par name="AxisY_Contour" base_type="iconic" dimension="0"/>
+<par name="AxisZ_Contour" base_type="iconic" dimension="0"/>
+<par name="OutputImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ArrayCount" base_type="ctrl" dimension="0"/>
+<par name="AngleStart_Real" base_type="ctrl" dimension="0"/>
+<par name="AngleExtent_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleRMin_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleRMax_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleCMin_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleCMax_Real" base_type="ctrl" dimension="0"/>
+<par name="MinScore_Real" base_type="ctrl" dimension="0"/>
+<par name="NumMatches_Int" base_type="ctrl" dimension="0"/>
+<par name="MaxOverlap_Real" base_type="ctrl" dimension="0"/>
+<par name="Greediness_Real" base_type="ctrl" dimension="0"/>
+<par name="CellSize_Real" base_type="ctrl" dimension="0"/>
+<par name="FocalLength_Real" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="NumberFoundObjects_Int" base_type="ctrl" dimension="0"/>
+<par name="PositionX_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionY_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionZ_RealArray" base_type="ctrl" dimension="0"/>
+<par name="RotationX_RealArray" base_type="ctrl" dimension="0"/>
+<par name="RotationY_RealArray" base_type="ctrl" dimension="0"/>
+<par name="RotationZ_RealArray" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>global tuple Model</l>
+<c></c>
+<l>gen_empty_obj (Contours_Contour)</l>
+<l>gen_empty_obj (AxisX_Contour)</l>
+<l>gen_empty_obj (AxisY_Contour)</l>
+<l>gen_empty_obj (AxisZ_Contour)</l>
+<c></c>
+<l>get_image_size (InputImage_Img, Width, Height)</l>
+<c></c>
+<l>gen_image_const (OutputImage_Img, 'byte', Width, Height)</l>
+<c></c>
+<l>NumberFoundObjects_Int := 0</l>
+<c></c>
+<l>Sx := CellSize_Real / 1000000</l>
+<l>Sy := CellSize_Real / 1000000</l>
+<l>Focus := FocalLength_Real / 1000</l>
+<c></c>
+<l>CamParam := ['area_scan_division', Focus, 0.0, Sx, Sy, Width / 2, Height / 2, Width, Height]</l>
+<c></c>
+<l>get_deformable_model_contours (ModelContours, Model, 1)</l>
+<l>get_deformable_model_origin (Model, RowRef, ColumnRef)</l>
+<l>RowRef := -RowRef</l>
+<l>ColumnRef := -ColumnRef</l>
+<c></c>
+<l>reduce_domain (InputImage_Img, InputAOI_Aoi, ImageReduced)</l>
+<c></c>
+<l>AngleStart := rad(AngleStart_Real)</l>
+<l>AngleExtent := rad(AngleExtent_Real)</l>
+<c></c>
+<l>find_planar_uncalib_deformable_model (ImageReduced, Model, AngleStart, AngleExtent, ScaleRMin_Real, ScaleRMax_Real, ScaleCMin_Real, ScaleCMax_Real, MinScore_Real, NumMatches_Int, MaxOverlap_Real, 0, Greediness_Real, [], [], HomMat2D, Score)</l>
+<c></c>
+<l>NumberFoundObjects_Int := |Score|</l>
+<c></c>
+<l>for j := 0 to |Score| - 1 by 1</l>
+<l>    tuple_select_range(HomMat2D, j * 9, (j + 1) * 9 - 1, SelectedHomMat2D)</l>
+<c>    </c>
+<l>    projective_trans_contour_xld (ModelContours, TransContours, SelectedHomMat2D)</l>
+<l>    concat_obj (Contours_Contour, TransContours, Contours_Contour)</l>
+<c>        </c>
+<l>    projective_trans_pixel (SelectedHomMat2D, [RowRef - 1, RowRef - 1, RowRef + 1, RowRef + 1], [ColumnRef - 2, ColumnRef + 1, ColumnRef + 1, ColumnRef - 1], RowTrans, ColTrans)</l>
+<l>    vector_to_pose ([-2,1,1,-1], [-1,-1,1,1], [], RowTrans, ColTrans, CamParam, 'planar_analytic', 'error', Pose, Quality)</l>
+<l>    GenAxis (AxisX, AxisY, AxisZ, CamParam, Pose, 100)</l>
+<l>    concat_obj (AxisX_Contour, AxisX, AxisX_Contour)</l>
+<l>    concat_obj (AxisY_Contour, AxisY, AxisY_Contour)</l>
+<l>    concat_obj (AxisZ_Contour, AxisZ, AxisZ_Contour)</l>
+<c>    </c>
+<l>    PositionX_RealArray[j] := (Width / 2) + Pose[0]</l>
+<l>    PositionY_RealArray[j] := (Height / 2) + Pose[1]</l>
+<l>    PositionZ_RealArray[j] := Pose[2]</l>
+<c>    </c>
+<l>    RotationX_RealArray[j] := Pose[3]</l>
+<l>    RotationY_RealArray[j] := Pose[4]</l>
+<l>    RotationZ_RealArray[j] := Pose[5]</l>
+<l>endfor</l>
+<c></c>
+<l>if (|Score| &gt; 0)</l>
+<l>    tuple_select_range(HomMat2D, 0, 8, SelectedHomMat2D)</l>
+<c></c>
+<l>    hom_mat2d_invert (SelectedHomMat2D, HomMat2DInvert)</l>
+<l>    projective_trans_image (InputImage_Img, OutputImage_Img, HomMat2DInvert, 'bilinear', 'false', 'false')</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="AngleExtent_Real"/>
+<parameter id="AngleStart_Real"/>
+<parameter id="ArrayCount"/>
+<parameter id="AxisX_Contour"/>
+<parameter id="AxisY_Contour"/>
+<parameter id="AxisZ_Contour"/>
+<parameter id="CellSize_Real"/>
+<parameter id="Contours_Contour"/>
+<parameter id="FocalLength_Real"/>
+<parameter id="Greediness_Real"/>
+<parameter id="InputAOI_Aoi"/>
+<parameter id="InputImage_Img"/>
+<parameter id="MaxOverlap_Real"/>
+<parameter id="MinScore_Real"/>
+<parameter id="NumMatches_Int"/>
+<parameter id="NumberFoundObjects_Int"/>
+<parameter id="OutputImage_Img"/>
+<parameter id="PositionX_RealArray"/>
+<parameter id="PositionY_RealArray"/>
+<parameter id="PositionZ_RealArray"/>
+<parameter id="RotationX_RealArray"/>
+<parameter id="RotationY_RealArray"/>
+<parameter id="RotationZ_RealArray"/>
+<parameter id="ScaleCMax_Real"/>
+<parameter id="ScaleCMin_Real"/>
+<parameter id="ScaleRMax_Real"/>
+<parameter id="ScaleRMin_Real"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface>
+<ic>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+<par name="ModelName_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>global def tuple Model</l>
+<c></c>
+<l>gen_circle_contour_xld (Circle, 200, 200, 100, 0, 6.28318, 'positive', 1)</l>
+<l>create_planar_uncalib_deformable_model_xld (Circle, 'auto', [], [], 'auto', 1, [], 'auto', 1, [], 'auto', 'auto', 'ignore_local_polarity', 5, [], [], Model)</l>
+<c></c>
+<l>file_exists (ModelDirectory_String + ModelName_String + '.dfm', FileExists)</l>
+<c></c>
+<l>if (FileExists == true)</l>
+<l>    read_deformable_model (ModelDirectory_String + ModelName_String + '.dfm', Model)</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters>
+<parameter id="ModelDirectory_String"/>
+<parameter id="ModelName_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<l>global tuple Model</l>
+<c></c>
+<l>clear_deformable_model (Model)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="GenAxis">
+<interface>
+<oo>
+<par name="OutContour0" base_type="iconic" dimension="0"/>
+<par name="OutContour1" base_type="iconic" dimension="0"/>
+<par name="OutContour2" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="CamParam" base_type="ctrl" dimension="0"/>
+<par name="Pose" base_type="ctrl" dimension="0"/>
+<par name="CoordAxesLength" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>if (|Pose| != 7)</l>
+<l>    return ()</l>
+<l>endif</l>
+<c></c>
+<l>GetCamParData (CamParam, 'camera_type', CameraType)</l>
+<c></c>
+<l>IsTelecentric := strstr(CameraType,'telecentric') != -1</l>
+<c></c>
+<l>if (Pose[2] == 0.0 and not IsTelecentric)</l>
+<l>    return ()</l>
+<l>endif</l>
+<c></c>
+<l>pose_to_hom_mat3d (Pose, TransWorld2Cam)</l>
+<l>affine_trans_point_3d (TransWorld2Cam, 0, 0, 0, OrigCamX, OrigCamY, OrigCamZ)</l>
+<l>project_3d_point (OrigCamX, OrigCamY, OrigCamZ, CamParam, Row0, Column0)</l>
+<l>affine_trans_point_3d (TransWorld2Cam, CoordAxesLength, 0, 0, X, Y, Z)</l>
+<l>project_3d_point (X, Y, Z, CamParam, RowAxX, ColumnAxX)</l>
+<l>affine_trans_point_3d (TransWorld2Cam, 0, CoordAxesLength, 0, X, Y, Z)</l>
+<l>project_3d_point (X, Y, Z, CamParam, RowAxY, ColumnAxY)</l>
+<l>affine_trans_point_3d (TransWorld2Cam, 0, 0, CoordAxesLength, X, Y, Z)</l>
+<l>project_3d_point (X, Y, Z, CamParam, RowAxZ, ColumnAxZ)</l>
+<c></c>
+<l>distance_pp ([Row0,Row0,Row0], [Column0,Column0,Column0], [RowAxX,RowAxY,RowAxZ], [ColumnAxX,ColumnAxY,ColumnAxZ], Distance)</l>
+<l>HeadLength := int(max([max(Distance) / 12.0,5.0]))</l>
+<c></c>
+<l>GenArrow (Arrow0, Arrow1, Arrow2, [Row0,Row0,Row0], [Column0,Column0,Column0], [RowAxX,RowAxY,RowAxZ], [ColumnAxX,ColumnAxY,ColumnAxZ], HeadLength, HeadLength)</l>
+<c></c>
+<l>OutContour0 := Arrow0</l>
+<l>OutContour1 := Arrow1</l>
+<l>OutContour2 := Arrow2</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="GenAxis">
+<parameters>
+<parameter id="CamParam"/>
+<parameter id="CoordAxesLength"/>
+<parameter id="OutContour0"/>
+<parameter id="OutContour1"/>
+<parameter id="OutContour2"/>
+<parameter id="Pose"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="GetCamParNames">
+<interface>
+<ic>
+<par name="CameraParam" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="CameraType" base_type="ctrl" dimension="0"/>
+<par name="ParamNames" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>CameraParamAreaScanDivision := ['focus','kappa','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanPolynomial := ['focus','k1','k2','k3','p1','p2','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanTelecentricDivision := ['magnification','kappa','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanTelecentricPolynomial := ['magnification','k1','k2','k3','p1','p2','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanTiltDivision := ['focus','kappa','image_plane_dist','tilt','rot','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanTiltPolynomial := ['focus','k1','k2','k3','p1','p2','image_plane_dist','tilt','rot','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanImageSideTelecentricTiltDivision := ['focus','kappa','tilt','rot','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanImageSideTelecentricTiltPolynomial := ['focus','k1','k2','k3','p1','p2','tilt','rot','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanBilateralTelecentricTiltDivision := ['magnification','kappa','tilt','rot','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanBilateralTelecentricTiltPolynomial := ['magnification','k1','k2','k3','p1','p2','tilt','rot','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanObjectSideTelecentricTiltDivision := ['magnification','kappa','image_plane_dist','tilt','rot','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanObjectSideTelecentricTiltPolynomial := ['magnification','k1','k2','k3','p1','p2','image_plane_dist','tilt','rot','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamLinesScan := ['focus','kappa','sx','sy','cx','cy','image_width','image_height','vx','vy','vz']</l>
+<l>CameraParamAreaScanTiltDivisionLegacy := ['focus','kappa','tilt','rot','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanTiltPolynomialLegacy := ['focus','k1','k2','k3','p1','p2','tilt','rot','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanTelecentricDivisionLegacy := ['focus','kappa','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanTelecentricPolynomialLegacy := ['focus','k1','k2','k3','p1','p2','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanBilateralTelecentricTiltDivisionLegacy := ['focus','kappa','tilt','rot','sx','sy','cx','cy','image_width','image_height']</l>
+<l>CameraParamAreaScanBilateralTelecentricTiltPolynomialLegacy := ['focus','k1','k2','k3','p1','p2','tilt','rot','sx','sy','cx','cy','image_width','image_height']</l>
+<c></c>
+<l>if (|CameraParam| == 1 and is_string(CameraParam[0]))</l>
+<l>    CameraType := CameraParam[0]</l>
+<c></c>
+<l>    if (CameraType == 'area_scan_division')</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanDivision]</l>
+<l>    elseif (CameraType == 'area_scan_polynomial')</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanPolynomial]</l>
+<l>    elseif (CameraType == 'area_scan_telecentric_division')</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanTelecentricDivision]</l>
+<l>    elseif (CameraType == 'area_scan_telecentric_polynomial')</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanTelecentricPolynomial]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_division')</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanTiltDivision]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_polynomial')</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanTiltPolynomial]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_image_side_telecentric_division')</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanImageSideTelecentricTiltDivision]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_image_side_telecentric_polynomial')</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanImageSideTelecentricTiltPolynomial]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_bilateral_telecentric_division')</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanBilateralTelecentricTiltDivision]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_bilateral_telecentric_polynomial')</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanBilateralTelecentricTiltPolynomial]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_object_side_telecentric_division')</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanObjectSideTelecentricTiltDivision]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_object_side_telecentric_polynomial')</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanObjectSideTelecentricTiltPolynomial]</l>
+<l>    elseif (CameraType == 'line_scan')</l>
+<l>        ParamNames := ['camera_type',CameraParamLinesScan]</l>
+<l>    else</l>
+<l>        throw ('Unknown camera type \'' + CameraType + '\' passed in CameraParam.')</l>
+<l>    endif</l>
+<l>    return ()</l>
+<l>endif</l>
+<c></c>
+<l>if (not is_string(CameraParam[0]))</l>
+<l>    switch (|CameraParam|)</l>
+<l>    case 8:</l>
+<l>        if (CameraParam[0] != 0.0)</l>
+<l>            ParamNames := CameraParamAreaScanDivision</l>
+<l>            CameraType := 'area_scan_division'</l>
+<l>        else</l>
+<l>            ParamNames := CameraParamAreaScanTelecentricDivisionLegacy</l>
+<l>            CameraType := 'area_scan_telecentric_division'</l>
+<l>        endif</l>
+<l>        break</l>
+<l>    case 10:</l>
+<l>        if (CameraParam[0] != 0.0)</l>
+<l>            ParamNames := CameraParamAreaScanTiltDivisionLegacy</l>
+<l>            CameraType := 'area_scan_tilt_division'</l>
+<l>        else</l>
+<l>            ParamNames := CameraParamAreaScanBilateralTelecentricTiltDivisionLegacy</l>
+<l>            CameraType := 'area_scan_tilt_bilateral_telecentric_division'</l>
+<l>        endif</l>
+<l>        break</l>
+<l>    case 12:</l>
+<l>        if (CameraParam[0] != 0.0)</l>
+<l>            ParamNames := CameraParamAreaScanPolynomial</l>
+<l>            CameraType := 'area_scan_polynomial'</l>
+<l>        else</l>
+<l>            ParamNames := CameraParamAreaScanTelecentricPolynomialLegacy</l>
+<l>            CameraType := 'area_scan_telecentric_polynomial'</l>
+<l>        endif</l>
+<l>        break</l>
+<l>    case 14:</l>
+<l>        if (CameraParam[0] != 0.0)</l>
+<l>            ParamNames := CameraParamAreaScanTiltPolynomialLegacy</l>
+<l>            CameraType := 'area_scan_tilt_polynomial'</l>
+<l>        else</l>
+<l>            ParamNames := CameraParamAreaScanBilateralTelecentricTiltPolynomialLegacy</l>
+<l>            CameraType := 'area_scan_tilt_bilateral_telecentric_polynomial'</l>
+<l>        endif</l>
+<l>        break</l>
+<l>    case 11:</l>
+<l>        ParamNames := CameraParamLinesScan</l>
+<l>        CameraType := 'line_scan'</l>
+<l>        break</l>
+<l>    default:</l>
+<l>        throw ('Wrong number of values in CameraParam.')</l>
+<l>    endswitch</l>
+<l>else</l>
+<l>    CameraType := CameraParam[0]</l>
+<l>    if (CameraType == 'area_scan_division')</l>
+<l>        if (|CameraParam| != 9)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanDivision]</l>
+<l>    elseif (CameraType == 'area_scan_polynomial')</l>
+<l>        if (|CameraParam| != 13)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanPolynomial]</l>
+<l>    elseif (CameraType == 'area_scan_telecentric_division')</l>
+<l>        if (|CameraParam| != 9)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanTelecentricDivision]</l>
+<l>    elseif (CameraType == 'area_scan_telecentric_polynomial')</l>
+<l>        if (|CameraParam| != 13)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanTelecentricPolynomial]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_division')</l>
+<l>        if (|CameraParam| != 12)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanTiltDivision]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_polynomial')</l>
+<l>        if (|CameraParam| != 16)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanTiltPolynomial]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_image_side_telecentric_division')</l>
+<l>        if (|CameraParam| != 11)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanImageSideTelecentricTiltDivision]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_image_side_telecentric_polynomial')</l>
+<l>        if (|CameraParam| != 15)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanImageSideTelecentricTiltPolynomial]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_bilateral_telecentric_division')</l>
+<l>        if (|CameraParam| != 11)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanBilateralTelecentricTiltDivision]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_bilateral_telecentric_polynomial')</l>
+<l>        if (|CameraParam| != 15)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanBilateralTelecentricTiltPolynomial]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_object_side_telecentric_division')</l>
+<l>        if (|CameraParam| != 12)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanObjectSideTelecentricTiltDivision]</l>
+<l>    elseif (CameraType == 'area_scan_tilt_object_side_telecentric_polynomial')</l>
+<l>        if (|CameraParam| != 16)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamAreaScanObjectSideTelecentricTiltPolynomial]</l>
+<l>    elseif (CameraType == 'line_scan')</l>
+<l>        if (|CameraParam| != 12)</l>
+<l>            throw ('Wrong number of values in CameraParam.')</l>
+<l>        endif</l>
+<l>        ParamNames := ['camera_type',CameraParamLinesScan]</l>
+<l>    else</l>
+<l>        throw ('Unknown camera type in CameraParam.')</l>
+<l>    endif</l>
+<l>endif</l>
+<l>return ()</l>
+</body>
+<docu id="GetCamParNames">
+<parameters>
+<parameter id="CameraParam"/>
+<parameter id="CameraType"/>
+<parameter id="ParamNames"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="GetCamParData">
+<interface>
+<ic>
+<par name="CameraParam" base_type="ctrl" dimension="0"/>
+<par name="ParamName" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ParamValue" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>GetCamParNames (CameraParam, ParamValue, CameraParamNames)</l>
+<c></c>
+<l>ParamValue := []</l>
+<c></c>
+<l>for Index := 0 to |ParamName| - 1 by 1</l>
+<l>    ParamNameInd := ParamName[Index]</l>
+<c></c>
+<l>    if (ParamNameInd == 'camera_type')</l>
+<l>        ParamValue := [ParamValue,ParamValue]</l>
+<l>        continue</l>
+<l>    endif</l>
+<c></c>
+<l>    I := find(CameraParamNames,ParamNameInd)</l>
+<c></c>
+<l>    if (I != -1)</l>
+<l>        ParamValue := [ParamValue,CameraParam[I]]</l>
+<l>    else</l>
+<l>        throw ('Unknown camera parameter ' + ParamNameInd)</l>
+<l>    endif</l>
+<l>endfor</l>
+<l>return ()</l>
+</body>
+<docu id="GetCamParData">
+<parameters>
+<parameter id="CameraParam"/>
+<parameter id="ParamName"/>
+<parameter id="ParamValue"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="GenArrow">
+<interface>
+<oo>
+<par name="Arrow0" base_type="iconic" dimension="0"/>
+<par name="Arrow1" base_type="iconic" dimension="0"/>
+<par name="Arrow2" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Row1" base_type="ctrl" dimension="0"/>
+<par name="Column1" base_type="ctrl" dimension="0"/>
+<par name="Row2" base_type="ctrl" dimension="0"/>
+<par name="Column2" base_type="ctrl" dimension="0"/>
+<par name="HeadLength" base_type="ctrl" dimension="0"/>
+<par name="HeadWidth" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>gen_empty_obj (Arrow0)</l>
+<c></c>
+<l>distance_pp (Row1, Column1, Row2, Column2, Length)</l>
+<c></c>
+<l>ZeroLengthIndices := find(Length,0)</l>
+<c></c>
+<l>if (ZeroLengthIndices != -1)</l>
+<l>    Length[ZeroLengthIndices] := -1</l>
+<l>endif</l>
+<c></c>
+<l>DR := 1.0 * (Row2 - Row1) / Length</l>
+<l>DC := 1.0 * (Column2 - Column1) / Length</l>
+<l>HalfHeadWidth := HeadWidth / 2.0</l>
+<c></c>
+<l>RowP1 := Row1 + (Length - HeadLength) * DR + HalfHeadWidth * DC</l>
+<l>ColP1 := Column1 + (Length - HeadLength) * DC - HalfHeadWidth * DR</l>
+<l>RowP2 := Row1 + (Length - HeadLength) * DR - HalfHeadWidth * DC</l>
+<l>ColP2 := Column1 + (Length - HeadLength) * DC + HalfHeadWidth * DR</l>
+<c></c>
+<l>for Index := 0 to |Length| - 1 by 1</l>
+<l>    if (Length[Index] == -1)</l>
+<l>        gen_contour_polygon_xld (TempArrow, Row1[Index], Column1[Index])</l>
+<l>    else</l>
+<l>        gen_contour_polygon_xld (TempArrow, [Row1[Index],Row2[Index],RowP1[Index],Row2[Index],RowP2[Index],Row2[Index]], [Column1[Index],Column2[Index],ColP1[Index],Column2[Index],ColP2[Index],Column2[Index]])</l>
+<l>    endif</l>
+<l>    if (Index == 0)</l>
+<l>        Arrow0 := TempArrow</l>
+<l>    elseif (Index == 1)</l>
+<l>        Arrow1 := TempArrow</l>
+<l>    else</l>
+<l>        Arrow2 := TempArrow</l>
+<l>    endif</l>
+<l>endfor</l>
+<l>return ()</l>
+</body>
+<docu id="GenArrow">
+<parameters>
+<parameter id="Arrow0"/>
+<parameter id="Arrow1"/>
+<parameter id="Arrow2"/>
+<parameter id="Column1"/>
+<parameter id="Column2"/>
+<parameter id="HeadLength"/>
+<parameter id="HeadWidth"/>
+<parameter id="Row1"/>
+<parameter id="Row2"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
