@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Train Sample Identifier'</l>
+<c></c>
+<l>HalconCallbacks := ['AddImage', 'TrainSaveModel']</l>
+<c></c>
+<l>ArrayCount := 5</l>
+<c></c>
+<l>Path_String := 'C:/Users/User/Desktop/'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+</interface>
+<body>
+<c></c>
+<c></c>
+<l>return()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="InputImage_Img"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface>
+<oc>
+<par name="SampleIdentifier_Tuple_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>create_sample_identifier ('add_color_info', 'true', SampleIdentifier_Tuple_)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters>
+<parameter id="SampleIdentifier_Tuple_"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="AddImage">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="SampleIdentifier_Tuple" base_type="ctrl" dimension="0"/>
+<par name="ObjectID_Int" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>set_sample_identifier_param (SampleIdentifier_Tuple, 'image_resize_value', 0.1)</l>
+<c></c>
+<l>add_sample_identifier_preparation_data (InputImage_Img, SampleIdentifier_Tuple, ObjectID_Int, [], [], ObjectSampleIdx)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="AddImage">
+<parameters>
+<parameter id="InputImage_Img"/>
+<parameter id="ObjectID_Int"/>
+<parameter id="SampleIdentifier_Tuple"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="TrainSaveModel">
+<interface>
+<ic>
+<par name="SampleIdentifier_Tuple" base_type="ctrl" dimension="0"/>
+<par name="ArrayCount" base_type="ctrl" dimension="0"/>
+<par name="ObjectName_StringArray" base_type="ctrl" dimension="0"/>
+<par name="Path_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>for i := 1 to ArrayCount by 1</l>
+<l>    set_sample_identifier_object_info (SampleIdentifier_Tuple, i, 'preparation_object_name', ObjectName_StringArray[i - 1])</l>
+<l>endfor</l>
+<c></c>
+<l>prepare_sample_identifier (SampleIdentifier_Tuple, 'true', [], [])</l>
+<l>train_sample_identifier (SampleIdentifier_Tuple, [], [])</l>
+<l>write_sample_identifier (SampleIdentifier_Tuple, Path_String + 'sample.sid')</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TrainSaveModel">
+<parameters>
+<parameter id="ArrayCount"/>
+<parameter id="ObjectName_StringArray"/>
+<parameter id="Path_String"/>
+<parameter id="SampleIdentifier_Tuple"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
