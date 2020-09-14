@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Use Texture Inspection'</l>
+<c></c>
+<l>HalconCallbacks := ['LoadModel']</l>
+<c></c>
+<l>AreaMin_MInt_MinMax := [0, 999999999]</l>
+<l>AreaMin_MInt := 50</l>
+<c></c>
+<l>AreaMax_MInt_MinMax := [0, 999999999]</l>
+<l>AreaMax_MInt := 100000000</l>
+<c></c>
+<l>Path_String := 'C:/Users/User/Desktop/'</l>
+<c></c>
+<l>DefectCandidates_Region_Color := [255, 255, 0]</l>
+<l>Defects_Region_Color := [255, 0, 0]</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="InputAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="DefectCandidates_Region" base_type="iconic" dimension="0"/>
+<par name="Defects_Region" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="InputImage_Img_Trafo" base_type="ctrl" dimension="0"/>
+<par name="TextureInspectionModel_Tuple" base_type="ctrl" dimension="0"/>
+<par name="AreaMin_MInt" base_type="ctrl" dimension="0"/>
+<par name="AreaMax_MInt" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="DefectsNumber_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>DefectsNumber_Int := 0</l>
+<c></c>
+<l>hom_mat2d_invert (InputImage_Img_Trafo, InputImageTrafoInverse)</l>
+<l>affine_trans_region (InputAOI_Aoi, TransformedAOI, InputImageTrafoInverse, 'nearest_neighbor')</l>
+<l>reduce_domain (InputImage_Img, TransformedAOI, ImageReduced)</l>
+<c></c>
+<l>apply_texture_inspection_model (ImageReduced, DefectCandidates_Region, TextureInspectionModel_Tuple, TextureInspectionResultID)</l>
+<l>connection (DefectCandidates_Region, ConnectedRegions)</l>
+<l>select_shape (ConnectedRegions, Defects_Region, 'area', 'and', AreaMin_MInt, AreaMax_MInt)</l>
+<c></c>
+<l>count_obj (Defects_Region, DefectsNumber_Int)</l>
+<c></c>
+<l>return()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="AreaMax_MInt"/>
+<parameter id="AreaMin_MInt"/>
+<parameter id="DefectCandidates_Region"/>
+<parameter id="DefectsNumber_Int"/>
+<parameter id="Defects_Region"/>
+<parameter id="InputAOI_Aoi"/>
+<parameter id="InputImage_Img"/>
+<parameter id="InputImage_Img_Trafo"/>
+<parameter id="TextureInspectionModel_Tuple"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="LoadModel">
+<interface>
+<ic>
+<par name="Path_String" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="TextureInspectionModel_Tuple_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>read_texture_inspection_model (Path_String + 'texture_model.htim', TextureInspectionModel_Tuple_)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="LoadModel">
+<parameters>
+<parameter id="Path_String"/>
+<parameter id="TextureInspectionModel_Tuple_"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

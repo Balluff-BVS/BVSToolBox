@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Teach Texture Inspection'</l>
+<c></c>
+<l>HalconCallbacks := ['AddImage', 'TrainSaveModel']</l>
+<c></c>
+<l>Path_String := 'C:/Users/User/Desktop/'</l>
+<c></c>
+<l>PatchSize_MInt_MinMax := [1, 11]</l>
+<l>PatchSize_MInt := 5</l>
+<c></c>
+<l>PatchNormalization_Enum_Values := ['none', 'weber']</l>
+<l>PatchNormalization_Enum := 'weber'</l>
+<c></c>
+<l>Sigma_MReal_MinMax := [0.0, 10.0]</l>
+<l>Sigma_MReal := 0.0</l>
+<c></c>
+<l>LevelsFrom_MInt_MinMax := [1, 5]</l>
+<l>LevelsFrom_MInt  := 2</l>
+<c></c>
+<l>LevelsTo_MInt_MinMax := [1, 5]</l>
+<l>LevelsTo_MInt := 5</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="Mask" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="InputImage_Img_Trafo" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c></c>
+<c></c>
+<l>return()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="InputImage_Img"/>
+<parameter id="InputImage_Img_Trafo"/>
+<parameter id="Mask"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface>
+<oc>
+<par name="TextureInspectionModel_Tuple_" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>create_texture_inspection_model ('basic', TextureInspectionModel_Tuple_)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters>
+<parameter id="TextureInspectionModel_Tuple_"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="AddImage">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="Mask" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="TextureInspectionModel_Tuple" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Trafo" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ImagesAdded_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>hom_mat2d_invert (InputImage_Img_Trafo, InputImageTrafoInverse)</l>
+<l>affine_trans_region (Mask, TransformedAOI, InputImageTrafoInverse, 'nearest_neighbor')</l>
+<l>reduce_domain (InputImage_Img, TransformedAOI, ImageReduced)</l>
+<c></c>
+<l>add_texture_inspection_model_image (ImageReduced, TextureInspectionModel_Tuple, ImagesAdded_Int)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="AddImage">
+<parameters>
+<parameter id="ImagesAdded_Int"/>
+<parameter id="InputImage_Img"/>
+<parameter id="InputImage_Img_Trafo"/>
+<parameter id="Mask"/>
+<parameter id="TextureInspectionModel_Tuple"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="TrainSaveModel">
+<interface>
+<ic>
+<par name="TextureInspectionModel_Tuple" base_type="ctrl" dimension="0"/>
+<par name="Path_String" base_type="ctrl" dimension="0"/>
+<par name="LevelsFrom_MInt" base_type="ctrl" dimension="0"/>
+<par name="LevelsTo_MInt" base_type="ctrl" dimension="0"/>
+<par name="PatchNormalization_Enum" base_type="ctrl" dimension="0"/>
+<par name="PatchSize_MInt" base_type="ctrl" dimension="0"/>
+<par name="Sigma_MReal" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>NumberLevels := LevelsTo_MInt - LevelsFrom_MInt</l>
+<c></c>
+<l>for i := 0 to NumberLevels by 1</l>
+<l>    Levels[i] := LevelsFrom_MInt + i</l>
+<l>endfor</l>
+<c></c>
+<l>set_texture_inspection_model_param (TextureInspectionModel_Tuple, 'levels', Levels)</l>
+<c></c>
+<l>tuple_mod (PatchSize_MInt, 2, Mod)</l>
+<c></c>
+<l>if (Mod == 1)</l>
+<l>    PatchSize := PatchSize_MInt</l>
+<l>else</l>
+<l>    PatchSize := PatchSize_MInt - 1</l>
+<l>endif</l>
+<c></c>
+<l>set_texture_inspection_model_param (TextureInspectionModel_Tuple, 'patch_size', PatchSize)</l>
+<c></c>
+<l>set_texture_inspection_model_param (TextureInspectionModel_Tuple, 'patch_normalization', PatchNormalization_Enum[1])</l>
+<c></c>
+<l>set_texture_inspection_model_param (TextureInspectionModel_Tuple, 'gmm_sigma', Sigma_MReal)</l>
+<c></c>
+<l>train_texture_inspection_model (TextureInspectionModel_Tuple)</l>
+<c></c>
+<l>write_texture_inspection_model (TextureInspectionModel_Tuple, Path_String + 'texture_model.htim')</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TrainSaveModel">
+<parameters>
+<parameter id="LevelsFrom_MInt"/>
+<parameter id="LevelsTo_MInt"/>
+<parameter id="PatchNormalization_Enum"/>
+<parameter id="PatchSize_MInt"/>
+<parameter id="Path_String"/>
+<parameter id="Sigma_MReal"/>
+<parameter id="TextureInspectionModel_Tuple"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
