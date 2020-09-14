@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Find and Filter Lines'</l>
+<c></c>
+<l>ArrayCount := 10</l>
+<l>ArrayCount_MinMax := [1,32]</l>
+<c></c>
+<l>Polarization_Enum_Values := ['dark', 'light']</l>
+<l>Polarization_Enum := 'dark'</l>
+<c></c>
+<l>MaxLineWidth_Real := 10.0</l>
+<c></c>
+<l>Contrast_Real := 50</l>
+<c></c>
+<l>Feature1_Enum_Values := ['area', 'area_points', 'row', 'column', 'row_points', 'column_points', 'row1', 'column1', 'row2', 'column2', 'circularity', 'compactness', 'contlength', 'convexity', 'ra', 'rb', 'phi', 'ra_points', 'rb_points', 'phi_points', 'anisometry', 'anisometry_points', 'bulkiness', 'struct_factor', 'outer_radius', 'max_diameter', 'orientation', 'orientation_points', 'rect2_phi', 'rect2_len1', 'rect2_len2', 'moments_m11', 'moments_m20', 'moments_m02', 'moments_m11_points', 'moments_m20_points', 'moments_m02_points']</l>
+<l>Feature1_Enum := 'area'</l>
+<c></c>
+<l>Feature1Min_MReal_MinMax := [0,9999999]</l>
+<l>Feature1Min_MReal := 0</l>
+<c></c>
+<l>Feature1Max_MReal_MinMax := [0,9999999]</l>
+<l>Feature1Max_MReal := 100000</l>
+<c></c>
+<l>Feature2_Enum_Values := ['area', 'area_points', 'row', 'column', 'row_points', 'column_points', 'row1', 'column1', 'row2', 'column2', 'circularity', 'compactness', 'contlength', 'convexity', 'ra', 'rb', 'phi', 'ra_points', 'rb_points', 'phi_points', 'anisometry', 'anisometry_points', 'bulkiness', 'struct_factor', 'outer_radius', 'max_diameter', 'orientation', 'orientation_points', 'rect2_phi', 'rect2_len1', 'rect2_len2', 'moments_m11', 'moments_m20', 'moments_m02', 'moments_m11_points', 'moments_m20_points', 'moments_m02_points']</l>
+<l>Feature2_Enum := 'circularity'</l>
+<c></c>
+<l>Feature2Min_MReal_MinMax := [0,9999999]</l>
+<l>Feature2Min_MReal := 0</l>
+<c></c>
+<l>Feature2Max_MReal_MinMax := [0,9999999]</l>
+<l>Feature2Max_MReal := 1</l>
+<c></c>
+<l>Feature3_Enum_Values := ['area', 'area_points', 'row', 'column', 'row_points', 'column_points', 'row1', 'column1', 'row2', 'column2', 'circularity', 'compactness', 'contlength', 'convexity', 'ra', 'rb', 'phi', 'ra_points', 'rb_points', 'phi_points', 'anisometry', 'anisometry_points', 'bulkiness', 'struct_factor', 'outer_radius', 'max_diameter', 'orientation', 'orientation_points', 'rect2_phi', 'rect2_len1', 'rect2_len2', 'moments_m11', 'moments_m20', 'moments_m02', 'moments_m11_points', 'moments_m20_points', 'moments_m02_points']</l>
+<l>Feature3_Enum := 'circularity'</l>
+<c></c>
+<l>Feature3Min_MReal_MinMax := [0,9999999]</l>
+<l>Feature3Min_MReal := 0</l>
+<c></c>
+<l>Feature3Max_MReal_MinMax := [0,9999999]</l>
+<l>Feature3Max_MReal := 1</l>
+<c></c>
+<l>Operation_Enum_Values := ['and', 'or']</l>
+<l>Operation_Enum := 'and'</l>
+<c></c>
+<l>SortMode_Enum_Values := ['Feature1(Small-&gt;Big)', 'Feature1(Big-&gt;Small)', 'character', 'lower_left', 'lower_right', 'upper_left', 'upper_right']</l>
+<l>SortMode_Enum := 'Feature1(Small-&gt;Big)'</l>
+<c></c>
+<l>RowCol_Enum_Values := ['column', 'row']</l>
+<l>RowCol_Enum := 'row'</l>
+<c></c>
+<l>Order_Enum_Values := ['true', 'false']</l>
+<l>Order_Enum := 'true'</l>
+<c></c>
+<l>OutputFeature1_Enum_Values := ['area', 'area_points', 'row', 'column', 'row_points', 'column_points', 'row1', 'column1', 'row2', 'column2', 'circularity', 'compactness', 'contlength', 'convexity', 'ra', 'rb', 'phi', 'ra_points', 'rb_points', 'phi_points', 'anisometry', 'anisometry_points', 'bulkiness', 'struct_factor', 'outer_radius', 'max_diameter', 'orientation', 'orientation_points', 'rect2_phi', 'rect2_len1', 'rect2_len2', 'moments_m11', 'moments_m20', 'moments_m02', 'moments_m11_points', 'moments_m20_points', 'moments_m02_points']</l>
+<l>OutputFeature1_Enum := 'circularity'</l>
+<c></c>
+<l>OutputFeature2_Enum_Values := ['area', 'area_points', 'row', 'column', 'row_points', 'column_points', 'row1', 'column1', 'row2', 'column2', 'circularity', 'compactness', 'contlength', 'convexity', 'ra', 'rb', 'phi', 'ra_points', 'rb_points', 'phi_points', 'anisometry', 'anisometry_points', 'bulkiness', 'struct_factor', 'outer_radius', 'max_diameter', 'orientation', 'orientation_points', 'rect2_phi', 'rect2_len1', 'rect2_len2', 'moments_m11', 'moments_m20', 'moments_m02', 'moments_m11_points', 'moments_m20_points', 'moments_m02_points']</l>
+<l>OutputFeature2_Enum := 'circularity'</l>
+<c></c>
+<l>SelectedRegions_Region_Color := [0,0,255]</l>
+<c></c>
+<l>Centers_Region_Color := [255,0,0]</l>
+<c></c>
+<l>UseCalibration_MBool := false</l>
+<c></c>
+<l>InputAOI_Aoi_TrafoLink := 'InputImage_Img'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="InputAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="SelectedEdges_Contour" base_type="iconic" dimension="0"/>
+<par name="Centers_Region" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ArrayCount" base_type="ctrl" dimension="0"/>
+<par name="MaxLineWidth_Real" base_type="ctrl" dimension="0"/>
+<par name="Contrast_Real" base_type="ctrl" dimension="0"/>
+<par name="Polarization_Enum" base_type="ctrl" dimension="0"/>
+<par name="Feature1_Enum" base_type="ctrl" dimension="0"/>
+<par name="Feature1Min_MReal" base_type="ctrl" dimension="0"/>
+<par name="Feature1Max_MReal" base_type="ctrl" dimension="0"/>
+<par name="Feature2_Enum" base_type="ctrl" dimension="0"/>
+<par name="Feature2Min_MReal" base_type="ctrl" dimension="0"/>
+<par name="Feature2Max_MReal" base_type="ctrl" dimension="0"/>
+<par name="Feature3_Enum" base_type="ctrl" dimension="0"/>
+<par name="Feature3Min_MReal" base_type="ctrl" dimension="0"/>
+<par name="Feature3Max_MReal" base_type="ctrl" dimension="0"/>
+<par name="Operation_Enum" base_type="ctrl" dimension="0"/>
+<par name="SortMode_Enum" base_type="ctrl" dimension="0"/>
+<par name="RowCol_Enum" base_type="ctrl" dimension="0"/>
+<par name="Order_Enum" base_type="ctrl" dimension="0"/>
+<par name="OutputFeature1_Enum" base_type="ctrl" dimension="0"/>
+<par name="OutputFeature2_Enum" base_type="ctrl" dimension="0"/>
+<par name="UseCalibration_MBool" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Calib" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Trafo" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ContoursNumber_Int" base_type="ctrl" dimension="0"/>
+<par name="Areas_RealArray" base_type="ctrl" dimension="0"/>
+<par name="Features1_RealArray" base_type="ctrl" dimension="0"/>
+<par name="Features2_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionsRow_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionsColumn_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionXCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionYCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="Features1Calibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="Features2Calibrated_RealArray" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>if (UseCalibration_MBool == true)</l>
+<l>    CamParam := InputImage_Img_Calib[0:7]</l>
+<l>    CamPose := InputImage_Img_Calib[8:14]</l>
+<l>endif</l>
+<c></c>
+<l>gen_empty_obj (SelectedEdges_Contour)</l>
+<c></c>
+<l>Features1_RealArray := 0</l>
+<l>Features2_RealArray := 0</l>
+<l>ContoursNumber_Int := 0</l>
+<l>Areas_RealArray := 0</l>
+<l>PositionsRow_RealArray := 0</l>
+<l>PositionsColumn_RealArray := 0</l>
+<l>PositionXCalibrated_RealArray := 0</l>
+<l>PositionYCalibrated_RealArray := 0</l>
+<l>Features1Calibrated_RealArray := 0</l>
+<l>Features2Calibrated_RealArray := 0</l>
+<c></c>
+<l>hom_mat2d_invert (InputImage_Img_Trafo, InputImageTrafoInverse)</l>
+<l>affine_trans_region (InputAOI_Aoi, TransformedAOI, InputImageTrafoInverse, 'nearest_neighbor')</l>
+<c></c>
+<l>reduce_domain (InputImage_Img, TransformedAOI, ImageReduced)</l>
+<c></c>
+<l>CalculateLinesParameters (MaxLineWidth_Real, Contrast_Real, Sigma, Low, High)</l>
+<l>lines_gauss (ImageReduced, Lines, Sigma, Low, High, Polarization_Enum[1], 'true', 'bar-shaped', 'true')</l>
+<c></c>
+<l>select_shape_xld (Lines, SelectedXLD, [Feature1_Enum[1], Feature2_Enum[1], Feature3_Enum[1]], Operation_Enum[1], [Feature1Min_MReal, Feature2Min_MReal, Feature3Min_MReal], [Feature1Max_MReal, Feature2Max_MReal, Feature3Max_MReal])</l>
+<c></c>
+<l>if (SortMode_Enum[1] == 'Feature1(Small-&gt;Big)')</l>
+<c></c>
+<l>    if (Feature1_Enum[1] == 'area')</l>
+<l>        area_center_xld (SelectedXLD, Value, Row, Column, PointOrder)</l>
+<l>    elseif (Feature1_Enum[1] == 'area_points')</l>
+<l>        area_center_points_xld (SelectedXLD, Value, Row, Column)</l>
+<l>    elseif (Feature1_Enum[1] == 'row')</l>
+<l>        area_center_xld (SelectedXLD, Area, Value, Column, PointOrder)</l>
+<l>    elseif (Feature1_Enum[1] == 'column')</l>
+<l>        area_center_xld (SelectedXLD, Area, Row, Value, PointOrder)</l>
+<l>    elseif (Feature1_Enum[1] == 'row_points')</l>
+<l>        area_center_points_xld (SelectedXLD, Area, Value, Column)</l>
+<l>    elseif (Feature1_Enum[1] == 'column_points')</l>
+<l>        area_center_points_xld (SelectedXLD, Area, Row, Value)</l>
+<l>*     elseif (Feature1_Enum[1] == 'width')</l>
+<l>*         height_width_ratio_xld (SelectedXLD, Height, Value, Ratio)</l>
+<l>*     elseif (Feature1_Enum[1] == 'height')</l>
+<l>*         height_width_ratio_xld (SelectedXLD, Value, Width, Ratio)</l>
+<l>*     elseif (Feature1_Enum[1] == 'ratio')</l>
+<l>*         height_width_ratio_xld (SelectedXLD, Height, Width, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'row1')</l>
+<l>        smallest_rectangle1_xld (SelectedXLD, Value, Column1, Row2, Column2)</l>
+<l>    elseif (Feature1_Enum[1] == 'column1')</l>
+<l>        smallest_rectangle1_xld (SelectedXLD, Row1, Value, Row2, Column2)</l>
+<l>    elseif (Feature1_Enum[1] == 'row2')</l>
+<l>        smallest_rectangle1_xld (SelectedXLD, Row1, Column1, Value, Column2)</l>
+<l>    elseif (Feature1_Enum[1] == 'column2')</l>
+<l>        smallest_rectangle1_xld (SelectedXLD, Row1, Column1, Row2, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'circularity')</l>
+<l>        circularity_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'compactness')</l>
+<l>        compactness_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'contlength')</l>
+<l>        length_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'convexity')</l>
+<l>        convexity_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'ra')</l>
+<l>        elliptic_axis_xld (SelectedXLD, Value, Rb, Phi)</l>
+<l>    elseif (Feature1_Enum[1] == 'rb')</l>
+<l>        elliptic_axis_xld (SelectedXLD, Ra, Value, Phi)</l>
+<l>    elseif (Feature1_Enum[1] == 'phi')</l>
+<l>        elliptic_axis_xld (SelectedXLD, Ra, Rb, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'ra_points')</l>
+<l>        elliptic_axis_points_xld (SelectedXLD, Value, Rb1, Phi1)</l>
+<l>    elseif (Feature1_Enum[1] == 'rb_points')</l>
+<l>        elliptic_axis_points_xld (SelectedXLD, Ra1, Value, Phi1)   </l>
+<l>    elseif (Feature1_Enum[1] == 'phi_points')</l>
+<l>        elliptic_axis_points_xld (SelectedXLD, Ra1, Rb1, Value)   </l>
+<l>    elseif (Feature1_Enum[1] == 'anisometry')</l>
+<l>        eccentricity_xld (SelectedXLD, Value, Bulkiness, StructureFactor)</l>
+<l>    elseif (Feature1_Enum[1] == 'bulkiness')</l>
+<l>        eccentricity_xld (SelectedXLD, Anisometry, Value, StructureFactor)</l>
+<l>    elseif (Feature1_Enum[1] == 'struct_factor')</l>
+<l>        eccentricity_xld (SelectedXLD, Anisometry, Bulkiness, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'anisometry_points')</l>
+<l>        eccentricity_points_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'outer_radius')</l>
+<l>        smallest_circle_xld (SelectedXLD, Row, Column, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'max_diameter')</l>
+<l>        diameter_xld (SelectedXLD, Row, Column, Row1, Column2, Value)   </l>
+<l>    elseif (Feature1_Enum[1] == 'orientation')</l>
+<l>        orientation_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'orientation_points')</l>
+<l>        orientation_points_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'rect2_phi')</l>
+<l>        smallest_rectangle2_xld (SelectedXLD, Row, Column, Value, Length1, Length2)</l>
+<l>    elseif (Feature1_Enum[1] == 'rect2_len1')</l>
+<l>        smallest_rectangle2_xld (SelectedXLD, Row, Column, Phi, Value, Length2)</l>
+<l>    elseif (Feature1_Enum[1] == 'rect2_len2')</l>
+<l>        smallest_rectangle2_xld (SelectedXLD, Row, Column, Phi, Length1, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'moments_m11')</l>
+<l>        moments_xld (SelectedXLD, Value, M20, M02)</l>
+<l>    elseif (Feature1_Enum[1] == 'moments_m20')</l>
+<l>        moments_xld (SelectedXLD, M11, Value, M02)</l>
+<l>    elseif (Feature1_Enum[1] == 'moments_m02')</l>
+<l>        moments_xld (SelectedXLD, M11, M20, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'moments_m11_points')</l>
+<l>        moments_points_xld (SelectedXLD, Value, M20, M02)</l>
+<l>    elseif (Feature1_Enum[1] == 'moments_m20_points')</l>
+<l>        moments_points_xld (SelectedXLD, M11, Value, M02)</l>
+<l>    elseif (Feature1_Enum[1] == 'moments_m02_points')</l>
+<l>        moments_points_xld (SelectedXLD, M11, M20, Value)</l>
+<l>    endif</l>
+<c>      </c>
+<l>    count_obj (SelectedXLD, Number)</l>
+<l>    tuple_sort_index (Value, Indices)</l>
+<l>    gen_empty_obj (NewContour)</l>
+<c>    </c>
+<l>    for Index := 0 to Number - 1 by 1</l>
+<l>        select_obj (SelectedXLD, ObjectSelected, Indices[Index] + 1)</l>
+<l>        concat_obj (NewContour, ObjectSelected, NewContour)</l>
+<l>    endfor</l>
+<c>    </c>
+<l>elseif (SortMode_Enum[1] == 'Feature1(Big-&gt;Small)')</l>
+<c></c>
+<l>    if (Feature1_Enum[1] == 'area')</l>
+<l>        area_center_xld (SelectedXLD, Value, Row, Column, PointOrder)</l>
+<l>    elseif (Feature1_Enum[1] == 'area_points')</l>
+<l>        area_center_points_xld (SelectedXLD, Value, Row, Column)</l>
+<l>    elseif (Feature1_Enum[1] == 'row')</l>
+<l>        area_center_xld (SelectedXLD, Area, Value, Column, PointOrder)</l>
+<l>    elseif (Feature1_Enum[1] == 'column')</l>
+<l>        area_center_xld (SelectedXLD, Area, Row, Value, PointOrder)</l>
+<l>    elseif (Feature1_Enum[1] == 'row_points')</l>
+<l>        area_center_points_xld (SelectedXLD, Area, Value, Column)</l>
+<l>    elseif (Feature1_Enum[1] == 'column_points')</l>
+<l>        area_center_points_xld (SelectedXLD, Area, Row, Value)</l>
+<l>*     elseif (Feature1_Enum[1] == 'width')</l>
+<l>*         height_width_ratio_xld (SelectedXLD, Height, Value, Ratio)</l>
+<l>*     elseif (Feature1_Enum[1] == 'height')</l>
+<l>*         height_width_ratio_xld (SelectedXLD, Value, Width, Ratio)</l>
+<l>*     elseif (Feature1_Enum[1] == 'ratio')</l>
+<l>*         height_width_ratio_xld (SelectedXLD, Height, Width, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'row1')</l>
+<l>        smallest_rectangle1_xld (SelectedXLD, Value, Column1, Row2, Column2)</l>
+<l>    elseif (Feature1_Enum[1] == 'column1')</l>
+<l>        smallest_rectangle1_xld (SelectedXLD, Row1, Value, Row2, Column2)</l>
+<l>    elseif (Feature1_Enum[1] == 'row2')</l>
+<l>        smallest_rectangle1_xld (SelectedXLD, Row1, Column1, Value, Column2)</l>
+<l>    elseif (Feature1_Enum[1] == 'column2')</l>
+<l>        smallest_rectangle1_xld (SelectedXLD, Row1, Column1, Row2, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'circularity')</l>
+<l>        circularity_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'compactness')</l>
+<l>        compactness_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'contlength')</l>
+<l>        length_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'convexity')</l>
+<l>        convexity_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'ra')</l>
+<l>        elliptic_axis_xld (SelectedXLD, Value, Rb, Phi)</l>
+<l>    elseif (Feature1_Enum[1] == 'rb')</l>
+<l>        elliptic_axis_xld (SelectedXLD, Ra, Value, Phi)</l>
+<l>    elseif (Feature1_Enum[1] == 'phi')</l>
+<l>        elliptic_axis_xld (SelectedXLD, Ra, Rb, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'ra_points')</l>
+<l>        elliptic_axis_points_xld (SelectedXLD, Value, Rb1, Phi1)</l>
+<l>    elseif (Feature1_Enum[1] == 'rb_points')</l>
+<l>        elliptic_axis_points_xld (SelectedXLD, Ra1, Value, Phi1)   </l>
+<l>    elseif (Feature1_Enum[1] == 'phi_points')</l>
+<l>        elliptic_axis_points_xld (SelectedXLD, Ra1, Rb1, Value)   </l>
+<l>    elseif (Feature1_Enum[1] == 'anisometry')</l>
+<l>        eccentricity_xld (SelectedXLD, Value, Bulkiness, StructureFactor)</l>
+<l>    elseif (Feature1_Enum[1] == 'bulkiness')</l>
+<l>        eccentricity_xld (SelectedXLD, Anisometry, Value, StructureFactor)</l>
+<l>    elseif (Feature1_Enum[1] == 'struct_factor')</l>
+<l>        eccentricity_xld (SelectedXLD, Anisometry, Bulkiness, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'anisometry_points')</l>
+<l>        eccentricity_points_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'outer_radius')</l>
+<l>        smallest_circle_xld (SelectedXLD, Row, Column, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'max_diameter')</l>
+<l>        diameter_xld (SelectedXLD, Row, Column, Row1, Column2, Value)   </l>
+<l>    elseif (Feature1_Enum[1] == 'orientation')</l>
+<l>        orientation_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'orientation_points')</l>
+<l>        orientation_points_xld (SelectedXLD, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'rect2_phi')</l>
+<l>        smallest_rectangle2_xld (SelectedXLD, Row, Column, Value, Length1, Length2)</l>
+<l>    elseif (Feature1_Enum[1] == 'rect2_len1')</l>
+<l>        smallest_rectangle2_xld (SelectedXLD, Row, Column, Phi, Value, Length2)</l>
+<l>    elseif (Feature1_Enum[1] == 'rect2_len2')</l>
+<l>        smallest_rectangle2_xld (SelectedXLD, Row, Column, Phi, Length1, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'moments_m11')</l>
+<l>        moments_xld (SelectedXLD, Value, M20, M02)</l>
+<l>    elseif (Feature1_Enum[1] == 'moments_m20')</l>
+<l>        moments_xld (SelectedXLD, M11, Value, M02)</l>
+<l>    elseif (Feature1_Enum[1] == 'moments_m02')</l>
+<l>        moments_xld (SelectedXLD, M11, M20, Value)</l>
+<l>    elseif (Feature1_Enum[1] == 'moments_m11_points')</l>
+<l>        moments_points_xld (SelectedXLD, Value, M20, M02)</l>
+<l>    elseif (Feature1_Enum[1] == 'moments_m20_points')</l>
+<l>        moments_points_xld (SelectedXLD, M11, Value, M02)</l>
+<l>    elseif (Feature1_Enum[1] == 'moments_m02_points')</l>
+<l>        moments_points_xld (SelectedXLD, M11, M20, Value)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    count_obj (SelectedXLD, Number)</l>
+<l>    tuple_sort_index (Value, Indices)</l>
+<l>    tuple_inverse (Indices, Indices)</l>
+<l>    gen_empty_obj (NewContour)</l>
+<c>    </c>
+<l>    for Index := 0 to Number - 1 by 1</l>
+<l>        select_obj (SelectedXLD, ObjectSelected, Indices[Index] + 1)</l>
+<l>        concat_obj (NewContour, ObjectSelected, NewContour)</l>
+<l>    endfor</l>
+<l>else            </l>
+<l>    sort_contours_xld (Lines, NewContour, SortMode_Enum[1], Order_Enum[1], RowCol_Enum[1])</l>
+<l>endif</l>
+<c></c>
+<l>copy_obj (NewContour, SelectedEdges_Contour, 1, -1)</l>
+<c></c>
+<l>count_obj (SelectedEdges_Contour, ContoursNumber_Int)</l>
+<l>area_center_points_xld (SelectedEdges_Contour, Areas_RealArray, PositionsRow_RealArray, PositionsColumn_RealArray)</l>
+<c></c>
+<l>if (UseCalibration_MBool == true)</l>
+<l>    image_points_to_world_plane (CamParam, CamPose, PositionsRow_RealArray, PositionsColumn_RealArray, 'mm', PositionXCalibrated_RealArray, PositionYCalibrated_RealArray)</l>
+<l>    contour_to_world_plane_xld (SelectedEdges_Contour, ContoursTrans, CamParam, CamPose, 'mm')</l>
+<c></c>
+<l>    if (OutputFeature1_Enum[1] == 'area')</l>
+<l>        area_center_xld (ContoursTrans, Features1Calibrated_RealArray, Row, Column, PointOrder)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'area_points')</l>
+<l>        area_center_points_xld (ContoursTrans, Features1Calibrated_RealArray, Row, Column)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'row')</l>
+<l>        area_center_xld (ContoursTrans, Area, Features1Calibrated_RealArray, Column, PointOrder)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'column')</l>
+<l>        area_center_xld (ContoursTrans, Area, Row, Features1Calibrated_RealArray, PointOrder)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'row_points')</l>
+<l>        area_center_points_xld (ContoursTrans, Area, Features1Calibrated_RealArray, Column)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'column_points')</l>
+<l>        area_center_points_xld (ContoursTrans, Area, Row, Features1Calibrated_RealArray)</l>
+<l>*     elseif (OutputFeature1_Enum[1] == 'width')</l>
+<l>*         height_width_ratio_xld (ContoursTrans, Height, Features1Calibrated_RealArray, Ratio)</l>
+<l>*     elseif (OutputFeature1_Enum[1] == 'height')</l>
+<l>*         height_width_ratio_xld (ContoursTrans, Features1Calibrated_RealArray, Width, Ratio)</l>
+<l>*     elseif (OutputFeature1_Enum[1] == 'ratio')</l>
+<l>*         height_width_ratio_xld (ContoursTrans, Height, Width, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'row1')</l>
+<l>        smallest_rectangle1_xld (ContoursTrans, Features1Calibrated_RealArray, Column1, Row2, Column2)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'column1')</l>
+<l>        smallest_rectangle1_xld (ContoursTrans, Row1, Features1Calibrated_RealArray, Row2, Column2)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'row2')</l>
+<l>        smallest_rectangle1_xld (ContoursTrans, Row1, Column1, Features1Calibrated_RealArray, Column2)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'column2')</l>
+<l>        smallest_rectangle1_xld (ContoursTrans, Row1, Column1, Row2, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'circularity')</l>
+<l>        circularity_xld (ContoursTrans, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'compactness')</l>
+<l>        compactness_xld (ContoursTrans, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'contlength')</l>
+<l>        length_xld (ContoursTrans, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'convexity')</l>
+<l>        convexity_xld (ContoursTrans, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'ra')</l>
+<l>        elliptic_axis_xld (ContoursTrans, Features1Calibrated_RealArray, Rb, Phi)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'rb')</l>
+<l>        elliptic_axis_xld (ContoursTrans, Ra, Features1Calibrated_RealArray, Phi)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'phi')</l>
+<l>        elliptic_axis_xld (ContoursTrans, Ra, Rb, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'ra_points')</l>
+<l>        elliptic_axis_points_xld (ContoursTrans, Features1Calibrated_RealArray, Rb1, Phi1)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'rb_points')</l>
+<l>        elliptic_axis_points_xld (ContoursTrans, Ra1, Features1Calibrated_RealArray, Phi1)   </l>
+<l>    elseif (OutputFeature1_Enum[1] == 'phi_points')</l>
+<l>        elliptic_axis_points_xld (ContoursTrans, Ra1, Rb1, Features1Calibrated_RealArray)   </l>
+<l>    elseif (OutputFeature1_Enum[1] == 'anisometry')</l>
+<l>        eccentricity_xld (ContoursTrans, Features1Calibrated_RealArray, Bulkiness, StructureFactor)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'bulkiness')</l>
+<l>        eccentricity_xld (ContoursTrans, Anisometry, Features1Calibrated_RealArray, StructureFactor)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'struct_factor')</l>
+<l>        eccentricity_xld (ContoursTrans, Anisometry, Bulkiness, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'anisometry_points')</l>
+<l>        eccentricity_points_xld (ContoursTrans, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'outer_radius')</l>
+<l>        smallest_circle_xld (ContoursTrans, Row, Column, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'max_diameter')</l>
+<l>        diameter_xld (ContoursTrans, Row, Column, Row1, Column2, Features1Calibrated_RealArray)   </l>
+<l>    elseif (OutputFeature1_Enum[1] == 'orientation')</l>
+<l>        orientation_xld (ContoursTrans, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'orientation_points')</l>
+<l>        orientation_points_xld (ContoursTrans, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'rect2_phi')</l>
+<l>        smallest_rectangle2_xld (ContoursTrans, Row, Column, Features1Calibrated_RealArray, Length1, Length2)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'rect2_len1')</l>
+<l>        smallest_rectangle2_xld (ContoursTrans, Row, Column, Phi, Features1Calibrated_RealArray, Length2)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'rect2_len2')</l>
+<l>        smallest_rectangle2_xld (ContoursTrans, Row, Column, Phi, Length1, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'moments_m11')</l>
+<l>        moments_xld (ContoursTrans, Features1Calibrated_RealArray, M20, M02)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'moments_m20')</l>
+<l>        moments_xld (ContoursTrans, M11, Features1Calibrated_RealArray, M02)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'moments_m02')</l>
+<l>        moments_xld (ContoursTrans, M11, M20, Features1Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'moments_m11_points')</l>
+<l>        moments_points_xld (ContoursTrans, Features1Calibrated_RealArray, M20, M02)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'moments_m20_points')</l>
+<l>        moments_points_xld (ContoursTrans, M11, Features1Calibrated_RealArray, M02)</l>
+<l>    elseif (OutputFeature1_Enum[1] == 'moments_m02_points')</l>
+<l>        moments_points_xld (ContoursTrans, M11, M20, Features1Calibrated_RealArray)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (OutputFeature2_Enum[1] == 'area')</l>
+<l>        area_center_xld (ContoursTrans, Features2Calibrated_RealArray, Row, Column, PointOrder)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'area_points')</l>
+<l>        area_center_points_xld (ContoursTrans, Features2Calibrated_RealArray, Row, Column)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'row')</l>
+<l>        area_center_xld (ContoursTrans, Area, Features2Calibrated_RealArray, Column, PointOrder)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'column')</l>
+<l>        area_center_xld (ContoursTrans, Area, Row, Features2Calibrated_RealArray, PointOrder)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'row_points')</l>
+<l>        area_center_points_xld (ContoursTrans, Area, Features2Calibrated_RealArray, Column)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'column_points')</l>
+<l>        area_center_points_xld (ContoursTrans, Area, Row, Features2Calibrated_RealArray)</l>
+<l>*     elseif (OutputFeature2_Enum[1] == 'width')</l>
+<l>*         height_width_ratio_xld (ContoursTrans, Height, Features2Calibrated_RealArray, Ratio)</l>
+<l>*     elseif (OutputFeature2_Enum[1] == 'height')</l>
+<l>*         height_width_ratio_xld (ContoursTrans, Features2Calibrated_RealArray, Width, Ratio)</l>
+<l>*     elseif (OutputFeature2_Enum[1] == 'ratio')</l>
+<l>*         height_width_ratio_xld (ContoursTrans, Height, Width, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'row1')</l>
+<l>        smallest_rectangle1_xld (ContoursTrans, Features2Calibrated_RealArray, Column1, Row2, Column2)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'column1')</l>
+<l>        smallest_rectangle1_xld (ContoursTrans, Row1, Features2Calibrated_RealArray, Row2, Column2)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'row2')</l>
+<l>        smallest_rectangle1_xld (ContoursTrans, Row1, Column1, Features2Calibrated_RealArray, Column2)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'column2')</l>
+<l>        smallest_rectangle1_xld (ContoursTrans, Row1, Column1, Row2, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'circularity')</l>
+<l>        circularity_xld (ContoursTrans, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'compactness')</l>
+<l>        compactness_xld (ContoursTrans, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'contlength')</l>
+<l>        length_xld (ContoursTrans, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'convexity')</l>
+<l>        convexity_xld (ContoursTrans, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'ra')</l>
+<l>        elliptic_axis_xld (ContoursTrans, Features2Calibrated_RealArray, Rb, Phi)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'rb')</l>
+<l>        elliptic_axis_xld (ContoursTrans, Ra, Features2Calibrated_RealArray, Phi)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'phi')</l>
+<l>        elliptic_axis_xld (ContoursTrans, Ra, Rb, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'ra_points')</l>
+<l>        elliptic_axis_points_xld (ContoursTrans, Features2Calibrated_RealArray, Rb1, Phi1)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'rb_points')</l>
+<l>        elliptic_axis_points_xld (ContoursTrans, Ra1, Features2Calibrated_RealArray, Phi1)   </l>
+<l>    elseif (OutputFeature2_Enum[1] == 'phi_points')</l>
+<l>        elliptic_axis_points_xld (ContoursTrans, Ra1, Rb1, Features2Calibrated_RealArray)   </l>
+<l>    elseif (OutputFeature2_Enum[1] == 'anisometry')</l>
+<l>        eccentricity_xld (ContoursTrans, Features2Calibrated_RealArray, Bulkiness, StructureFactor)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'bulkiness')</l>
+<l>        eccentricity_xld (ContoursTrans, Anisometry, Features2Calibrated_RealArray, StructureFactor)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'struct_factor')</l>
+<l>        eccentricity_xld (ContoursTrans, Anisometry, Bulkiness, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'anisometry_points')</l>
+<l>        eccentricity_points_xld (ContoursTrans, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'outer_radius')</l>
+<l>        smallest_circle_xld (ContoursTrans, Row, Column, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'max_diameter')</l>
+<l>        diameter_xld (ContoursTrans, Row, Column, Row1, Column2, Features2Calibrated_RealArray)   </l>
+<l>    elseif (OutputFeature2_Enum[1] == 'orientation')</l>
+<l>        orientation_xld (ContoursTrans, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'orientation_points')</l>
+<l>        orientation_points_xld (ContoursTrans, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'rect2_phi')</l>
+<l>        smallest_rectangle2_xld (ContoursTrans, Row, Column, Features2Calibrated_RealArray, Length1, Length2)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'rect2_len1')</l>
+<l>        smallest_rectangle2_xld (ContoursTrans, Row, Column, Phi, Features2Calibrated_RealArray, Length2)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'rect2_len2')</l>
+<l>        smallest_rectangle2_xld (ContoursTrans, Row, Column, Phi, Length1, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'moments_m11')</l>
+<l>        moments_xld (ContoursTrans, Features2Calibrated_RealArray, M20, M02)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'moments_m20')</l>
+<l>        moments_xld (ContoursTrans, M11, Features2Calibrated_RealArray, M02)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'moments_m02')</l>
+<l>        moments_xld (ContoursTrans, M11, M20, Features2Calibrated_RealArray)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'moments_m11_points')</l>
+<l>        moments_points_xld (ContoursTrans, Features2Calibrated_RealArray, M20, M02)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'moments_m20_points')</l>
+<l>        moments_points_xld (ContoursTrans, M11, Features2Calibrated_RealArray, M02)</l>
+<l>    elseif (OutputFeature2_Enum[1] == 'moments_m02_points')</l>
+<l>        moments_points_xld (ContoursTrans, M11, M20, Features2Calibrated_RealArray)</l>
+<l>    endif</l>
+<l>endif</l>
+<c></c>
+<l>if (OutputFeature1_Enum[1] == 'area')</l>
+<l>    area_center_xld (SelectedEdges_Contour, Features1_RealArray, Row, Column, PointOrder)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'area_points')</l>
+<l>    area_center_points_xld (SelectedEdges_Contour, Features1_RealArray, Row, Column)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'row')</l>
+<l>    area_center_xld (SelectedEdges_Contour, Area, Features1_RealArray, Column, PointOrder)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'column')</l>
+<l>    area_center_xld (SelectedEdges_Contour, Area, Row, Features1_RealArray, PointOrder)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'row_points')</l>
+<l>    area_center_points_xld (SelectedEdges_Contour, Area, Features1_RealArray, Column)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'column_points')</l>
+<l>    area_center_points_xld (SelectedEdges_Contour, Area, Row, Features1_RealArray)</l>
+<l>* elseif (OutputFeature1_Enum[1] == 'width')</l>
+<l>*     height_width_ratio_xld (SelectedEdges_Contour, Height, Features1_RealArray, Ratio)</l>
+<l>* elseif (OutputFeature1_Enum[1] == 'height')</l>
+<l>*     height_width_ratio_xld (SelectedEdges_Contour, Features1_RealArray, Width, Ratio)</l>
+<l>* elseif (OutputFeature1_Enum[1] == 'ratio')</l>
+<l>*     height_width_ratio_xld (SelectedEdges_Contour, Height, Width, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'row1')</l>
+<l>    smallest_rectangle1_xld (SelectedEdges_Contour, Features1_RealArray, Column1, Row2, Column2)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'column1')</l>
+<l>    smallest_rectangle1_xld (SelectedEdges_Contour, Row1, Features1_RealArray, Row2, Column2)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'row2')</l>
+<l>    smallest_rectangle1_xld (SelectedEdges_Contour, Row1, Column1, Features1_RealArray, Column2)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'column2')</l>
+<l>    smallest_rectangle1_xld (SelectedEdges_Contour, Row1, Column1, Row2, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'circularity')</l>
+<l>    circularity_xld (SelectedEdges_Contour, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'compactness')</l>
+<l>    compactness_xld (SelectedEdges_Contour, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'contlength')</l>
+<l>    length_xld (SelectedEdges_Contour, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'convexity')</l>
+<l>    convexity_xld (SelectedEdges_Contour, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'ra')</l>
+<l>    elliptic_axis_xld (SelectedEdges_Contour, Features1_RealArray, Rb, Phi)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'rb')</l>
+<l>    elliptic_axis_xld (SelectedEdges_Contour, Ra, Features1_RealArray, Phi)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'phi')</l>
+<l>    elliptic_axis_xld (SelectedEdges_Contour, Ra, Rb, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'ra_points')</l>
+<l>    elliptic_axis_points_xld (SelectedEdges_Contour, Features1_RealArray, Rb1, Phi1)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'rb_points')</l>
+<l>    elliptic_axis_points_xld (SelectedEdges_Contour, Ra1, Features1_RealArray, Phi1)   </l>
+<l>elseif (OutputFeature1_Enum[1] == 'phi_points')</l>
+<l>    elliptic_axis_points_xld (SelectedEdges_Contour, Ra1, Rb1, Features1_RealArray)   </l>
+<l>elseif (OutputFeature1_Enum[1] == 'anisometry')</l>
+<l>    eccentricity_xld (SelectedEdges_Contour, Features1_RealArray, Bulkiness, StructureFactor)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'bulkiness')</l>
+<l>    eccentricity_xld (SelectedEdges_Contour, Anisometry, Features1_RealArray, StructureFactor)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'struct_factor')</l>
+<l>    eccentricity_xld (SelectedEdges_Contour, Anisometry, Bulkiness, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'anisometry_points')</l>
+<l>    eccentricity_points_xld (SelectedEdges_Contour, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'outer_radius')</l>
+<l>    smallest_circle_xld (SelectedEdges_Contour, Row, Column, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'max_diameter')</l>
+<l>    diameter_xld (SelectedEdges_Contour, Row, Column, Row1, Column2, Features1_RealArray)   </l>
+<l>elseif (OutputFeature1_Enum[1] == 'orientation')</l>
+<l>    orientation_xld (SelectedEdges_Contour, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'orientation_points')</l>
+<l>    orientation_points_xld (SelectedEdges_Contour, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'rect2_phi')</l>
+<l>    smallest_rectangle2_xld (SelectedEdges_Contour, Row, Column, Features1_RealArray, Length1, Length2)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'rect2_len1')</l>
+<l>    smallest_rectangle2_xld (SelectedEdges_Contour, Row, Column, Phi, Features1_RealArray, Length2)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'rect2_len2')</l>
+<l>    smallest_rectangle2_xld (SelectedEdges_Contour, Row, Column, Phi, Length1, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'moments_m11')</l>
+<l>    moments_xld (SelectedEdges_Contour, Features1_RealArray, M20, M02)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'moments_m20')</l>
+<l>    moments_xld (SelectedEdges_Contour, M11, Features1_RealArray, M02)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'moments_m02')</l>
+<l>    moments_xld (SelectedEdges_Contour, M11, M20, Features1_RealArray)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'moments_m11_points')</l>
+<l>    moments_points_xld (SelectedEdges_Contour, Features1_RealArray, M20, M02)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'moments_m20_points')</l>
+<l>    moments_points_xld (SelectedEdges_Contour, M11, Features1_RealArray, M02)</l>
+<l>elseif (OutputFeature1_Enum[1] == 'moments_m02_points')</l>
+<l>    moments_points_xld (SelectedEdges_Contour, M11, M20, Features1_RealArray)</l>
+<l>endif</l>
+<c></c>
+<l>if (OutputFeature2_Enum[1] == 'area')</l>
+<l>    area_center_xld (SelectedEdges_Contour, Features2_RealArray, Row, Column, PointOrder)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'area_points')</l>
+<l>    area_center_points_xld (SelectedEdges_Contour, Features2_RealArray, Row, Column)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'row')</l>
+<l>    area_center_xld (SelectedEdges_Contour, Area, Features2_RealArray, Column, PointOrder)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'column')</l>
+<l>    area_center_xld (SelectedEdges_Contour, Area, Row, Features2_RealArray, PointOrder)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'row_points')</l>
+<l>    area_center_points_xld (SelectedEdges_Contour, Area, Features2_RealArray, Column)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'column_points')</l>
+<l>    area_center_points_xld (SelectedEdges_Contour, Area, Row, Features2_RealArray)</l>
+<l>* elseif (OutputFeature2_Enum[1] == 'width')</l>
+<l>*     height_width_ratio_xld (SelectedEdges_Contour, Height, Features2_RealArray, Ratio)</l>
+<l>* elseif (OutputFeature2_Enum[1] == 'height')</l>
+<l>*     height_width_ratio_xld (SelectedEdges_Contour, Features2_RealArray, Width, Ratio)</l>
+<l>* elseif (OutputFeature2_Enum[1] == 'ratio')</l>
+<l>*     height_width_ratio_xld (SelectedEdges_Contour, Height, Width, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'row1')</l>
+<l>    smallest_rectangle1_xld (SelectedEdges_Contour, Features2_RealArray, Column1, Row2, Column2)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'column1')</l>
+<l>    smallest_rectangle1_xld (SelectedEdges_Contour, Row1, Features2_RealArray, Row2, Column2)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'row2')</l>
+<l>    smallest_rectangle1_xld (SelectedEdges_Contour, Row1, Column1, Features2_RealArray, Column2)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'column2')</l>
+<l>    smallest_rectangle1_xld (SelectedEdges_Contour, Row1, Column1, Row2, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'circularity')</l>
+<l>    circularity_xld (SelectedEdges_Contour, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'compactness')</l>
+<l>    compactness_xld (SelectedEdges_Contour, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'contlength')</l>
+<l>    length_xld (SelectedEdges_Contour, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'convexity')</l>
+<l>    convexity_xld (SelectedEdges_Contour, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'ra')</l>
+<l>    elliptic_axis_xld (SelectedEdges_Contour, Features2_RealArray, Rb, Phi)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'rb')</l>
+<l>    elliptic_axis_xld (SelectedEdges_Contour, Ra, Features2_RealArray, Phi)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'phi')</l>
+<l>    elliptic_axis_xld (SelectedEdges_Contour, Ra, Rb, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'ra_points')</l>
+<l>    elliptic_axis_points_xld (SelectedEdges_Contour, Features2_RealArray, Rb1, Phi1)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'rb_points')</l>
+<l>    elliptic_axis_points_xld (SelectedEdges_Contour, Ra1, Features2_RealArray, Phi1)   </l>
+<l>elseif (OutputFeature2_Enum[1] == 'phi_points')</l>
+<l>    elliptic_axis_points_xld (SelectedEdges_Contour, Ra1, Rb1, Features2_RealArray)   </l>
+<l>elseif (OutputFeature2_Enum[1] == 'anisometry')</l>
+<l>    eccentricity_xld (SelectedEdges_Contour, Features2_RealArray, Bulkiness, StructureFactor)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'bulkiness')</l>
+<l>    eccentricity_xld (SelectedEdges_Contour, Anisometry, Features2_RealArray, StructureFactor)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'struct_factor')</l>
+<l>    eccentricity_xld (SelectedEdges_Contour, Anisometry, Bulkiness, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'anisometry_points')</l>
+<l>    eccentricity_points_xld (SelectedEdges_Contour, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'outer_radius')</l>
+<l>    smallest_circle_xld (SelectedEdges_Contour, Row, Column, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'max_diameter')</l>
+<l>    diameter_xld (SelectedEdges_Contour, Row, Column, Row1, Column2, Features2_RealArray)   </l>
+<l>elseif (OutputFeature2_Enum[1] == 'orientation')</l>
+<l>    orientation_xld (SelectedEdges_Contour, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'orientation_points')</l>
+<l>    orientation_points_xld (SelectedEdges_Contour, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'rect2_phi')</l>
+<l>    smallest_rectangle2_xld (SelectedEdges_Contour, Row, Column, Features2_RealArray, Length1, Length2)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'rect2_len1')</l>
+<l>    smallest_rectangle2_xld (SelectedEdges_Contour, Row, Column, Phi, Features2_RealArray, Length2)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'rect2_len2')</l>
+<l>    smallest_rectangle2_xld (SelectedEdges_Contour, Row, Column, Phi, Length1, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'moments_m11')</l>
+<l>    moments_xld (SelectedEdges_Contour, Features2_RealArray, M20, M02)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'moments_m20')</l>
+<l>    moments_xld (SelectedEdges_Contour, M11, Features2_RealArray, M02)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'moments_m02')</l>
+<l>    moments_xld (SelectedEdges_Contour, M11, M20, Features2_RealArray)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'moments_m11_points')</l>
+<l>    moments_points_xld (SelectedEdges_Contour, Features2_RealArray, M20, M02)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'moments_m20_points')</l>
+<l>    moments_points_xld (SelectedEdges_Contour, M11, Features2_RealArray, M02)</l>
+<l>elseif (OutputFeature2_Enum[1] == 'moments_m02_points')</l>
+<l>    moments_points_xld (SelectedEdges_Contour, M11, M20, Features2_RealArray)</l>
+<l>endif</l>
+<c></c>
+<l>gen_empty_obj (Centers_Region)</l>
+<c></c>
+<l>for Index1 := 0 to ContoursNumber_Int - 1 by 1</l>
+<l>    if (Index1 &lt; ArrayCount)</l>
+<l>        select_obj (SelectedEdges_Contour, ObjectSelected1, Index1 + 1)</l>
+<l>        area_center_points_xld (ObjectSelected1, Area, Row, Column)</l>
+<l>        gen_circle (NewRegion, Row, Column, 10)</l>
+<l>        union2 (Centers_Region, NewRegion, Centers_Region)</l>
+<l>    endif</l>
+<l>endfor</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Areas_RealArray"/>
+<parameter id="ArrayCount"/>
+<parameter id="Centers_Region"/>
+<parameter id="ContoursNumber_Int"/>
+<parameter id="Contrast_Real"/>
+<parameter id="Feature1Max_MReal"/>
+<parameter id="Feature1Min_MReal"/>
+<parameter id="Feature1_Enum"/>
+<parameter id="Feature2Max_MReal"/>
+<parameter id="Feature2Min_MReal"/>
+<parameter id="Feature2_Enum"/>
+<parameter id="Feature3Max_MReal"/>
+<parameter id="Feature3Min_MReal"/>
+<parameter id="Feature3_Enum"/>
+<parameter id="Features1Calibrated_RealArray"/>
+<parameter id="Features1_RealArray"/>
+<parameter id="Features2Calibrated_RealArray"/>
+<parameter id="Features2_RealArray"/>
+<parameter id="InputAOI_Aoi"/>
+<parameter id="InputImage_Img"/>
+<parameter id="InputImage_Img_Calib"/>
+<parameter id="InputImage_Img_Trafo"/>
+<parameter id="MaxLineWidth_Real"/>
+<parameter id="Operation_Enum"/>
+<parameter id="Order_Enum"/>
+<parameter id="OutputFeature1_Enum"/>
+<parameter id="OutputFeature2_Enum"/>
+<parameter id="Polarization_Enum"/>
+<parameter id="PositionXCalibrated_RealArray"/>
+<parameter id="PositionYCalibrated_RealArray"/>
+<parameter id="PositionsColumn_RealArray"/>
+<parameter id="PositionsRow_RealArray"/>
+<parameter id="RowCol_Enum"/>
+<parameter id="SelectedEdges_Contour"/>
+<parameter id="SortMode_Enum"/>
+<parameter id="UseCalibration_MBool"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="CalculateLinesParameters">
+<interface>
+<ic>
+<par name="MaxLineWidth" base_type="ctrl" dimension="0"/>
+<par name="Contrast" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Sigma" base_type="ctrl" dimension="0"/>
+<par name="Low" base_type="ctrl" dimension="0"/>
+<par name="High" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>if (|MaxLineWidth| != 1)</l>
+<l>    throw ('Wrong number of values of control parameter: 1')</l>
+<l>endif</l>
+<c></c>
+<l>if (not is_number(MaxLineWidth))</l>
+<l>    throw ('Wrong type of control parameter: 1')</l>
+<l>endif</l>
+<c></c>
+<l>if (MaxLineWidth &lt;= 0)</l>
+<l>    throw ('Wrong value of control parameter: 1')</l>
+<l>endif</l>
+<c></c>
+<l>if (|Contrast| != 1 and |Contrast| != 2)</l>
+<l>    throw ('Wrong number of values of control parameter: 2')</l>
+<l>endif</l>
+<c></c>
+<l>if (min(is_number(Contrast)) == 0)</l>
+<l>    throw ('Wrong type of control parameter: 2')</l>
+<l>endif</l>
+<c></c>
+<l>ContrastHigh := Contrast[0]</l>
+<c></c>
+<l>if (ContrastHigh &lt; 0)</l>
+<l>    throw ('Wrong value of control parameter: 2')</l>
+<l>endif</l>
+<c></c>
+<l>if (|Contrast| == 2)</l>
+<l>    ContrastLow := Contrast[1]</l>
+<l>else</l>
+<l>    ContrastLow := ContrastHigh / 3.0</l>
+<l>endif</l>
+<c></c>
+<l>if (ContrastLow &lt; 0)</l>
+<l>    throw ('Wrong value of control parameter: 2')</l>
+<l>endif</l>
+<c></c>
+<l>if (ContrastLow &gt; ContrastHigh)</l>
+<l>    throw ('Wrong value of control parameter: 2')</l>
+<l>endif</l>
+<c></c>
+<l>if (MaxLineWidth &lt; sqrt(3.0))</l>
+<l>    ContrastLow := ContrastLow * MaxLineWidth / sqrt(3.0)</l>
+<l>    ContrastHigh := ContrastHigh * MaxLineWidth / sqrt(3.0)</l>
+<l>    MaxLineWidth := sqrt(3.0)</l>
+<l>endif</l>
+<c></c>
+<l>HalfWidth := MaxLineWidth / 2.0</l>
+<l>Sigma := HalfWidth / sqrt(3.0)</l>
+<l>Help := -2.0 * HalfWidth / (sqrt(6.283185307178) * pow(Sigma,3.0)) * exp(-0.5 * pow(HalfWidth / Sigma,2.0))</l>
+<l>High := fabs(ContrastHigh * Help)</l>
+<l>Low := fabs(ContrastLow * Help)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="CalculateLinesParameters">
+<parameters>
+<parameter id="Contrast"/>
+<parameter id="High"/>
+<parameter id="Low"/>
+<parameter id="MaxLineWidth"/>
+<parameter id="Sigma"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
