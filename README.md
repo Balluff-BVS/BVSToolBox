@@ -9,11 +9,12 @@ see documentation [here](Manual_HALCON_Script.pdf)
 ## Bead Inspection
 
 ## Blob analysis:
-- DynamicThresold
-- LocalThreshold
-- RegionFeatures
-- SegmentMSER
-- WatershedThreshold
+- Binary Threshold
+- Dynamic Thresold
+- Hysteresis Threshold
+- Local Threshold
+- Segment MSER
+- Threshold
 
 ## Indentification:
 - Barcode reader
