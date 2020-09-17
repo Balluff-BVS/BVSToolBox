@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Check BLOB with Threshold'</l>
+<c></c>
+<l>ArrayCount := 1</l>
+<l>ArrayCount_MinMax := [1,32]</l>
+<c></c>
+<l>ThresholdMin_MInt_MinMax := [0, 255]</l>
+<l>ThresholdMin_MInt := 50</l>
+<c></c>
+<l>ThresholdMax_MInt := [0, 255]</l>
+<l>ThresholdMax_MInt := 120</l>
+<c></c>
+<l>FilterSize_MInt_MinMax := [-255, 255]</l>
+<l>FilterSize_MInt := 0</l>
+<c></c>
+<l>FillHoles_MBool := false</l>
+<c></c>
+<l>CreateMarginRegions_MBool := true</l>
+<c></c>
+<l>FeatureAreaMin_MInt := [0, 999999]</l>
+<l>FeatureAreaMin_MInt := 0</l>
+<c></c>
+<l>FeatureAreaMax_MInt := [0, 999999]</l>
+<l>FeatureAreaMax_MInt := 999999</l>
+<c></c>
+<l>Feature1_Enum_Values := ['anisometry', 'bulkiness', 'circularity', 'column', 'compactness', 'connect_num', 'contlength', 'convexity', 'dist_deviation', 'dist_mean', 'euler_number', 'height', 'inner_height', 'inner_radius', 'inner_width', 'max_diameter', 'moments_ia', 'moments_ib', 'moments_m02', 'moments_m11', 'moments_m20', 'num_sides', 'orientation', 'outer_radius', 'phi', 'ra', 'ratio', 'rb', 'rect2_len1', 'rect2_len2', 'rect2_phi', 'rectangularity', 'roundness', 'row', 'struct_factor', 'width']</l>
+<l>Feature1_Enum := 'circularity'</l>
+<c></c>
+<l>Feature1Min_MReal_MinMax := [-999999,999999]</l>
+<l>Feature1Min_MReal := 0</l>
+<c></c>
+<l>Feature1Max_MReal_MinMax := [-999999,999999]</l>
+<l>Feature1Max_MReal := 1</l>
+<c></c>
+<l>Feature2_Enum_Values := ['anisometry', 'bulkiness', 'circularity', 'column', 'compactness', 'connect_num', 'contlength', 'convexity', 'dist_deviation', 'dist_mean', 'euler_number', 'height', 'inner_height', 'inner_radius', 'inner_width', 'max_diameter', 'moments_ia', 'moments_ib', 'moments_m02', 'moments_m11', 'moments_m20', 'num_sides', 'orientation', 'outer_radius', 'phi', 'ra', 'ratio', 'rb', 'rect2_len1', 'rect2_len2', 'rect2_phi', 'rectangularity', 'roundness', 'row', 'struct_factor', 'width']</l>
+<l>Feature2_Enum := 'circularity'</l>
+<c></c>
+<l>Feature2Min_MReal_MinMax := [-999999,999999]</l>
+<l>Feature2Min_MReal := 0</l>
+<c></c>
+<l>Feature2Max_MReal_MinMax := [-999999,999999]</l>
+<l>Feature2Max_MReal := 1</l>
+<c></c>
+<l>Operation_Enum_Values := ['and', 'or']</l>
+<l>Operation_Enum := 'and'</l>
+<c></c>
+<l>SortMode_Enum_Values := ['Area(Small-&gt;Big)', 'Area(Big-&gt;Small)', 'Feature1(Small-&gt;Big)', 'Feature1(Big-&gt;Small)', 'character', 'first_point', 'last_point', 'lower_left', 'lower_right', 'upper_left', 'upper_right']</l>
+<l>SortMode_Enum := 'Area(Small-&gt;Big)'</l>
+<c></c>
+<l>RowCol_Enum_Values := ['column', 'row']</l>
+<l>RowCol_Enum := 'row'</l>
+<c></c>
+<l>Order_Enum_Values := ['true', 'false']</l>
+<l>Order_Enum := 'true'</l>
+<c></c>
+<l>OutputFeature1_Enum_Values := ['anisometry', 'area', 'bulkiness', 'circularity', 'column', 'compactness', 'connect_num', 'contlength', 'convexity', 'dist_deviation', 'dist_mean', 'euler_number', 'height', 'inner_height', 'inner_radius', 'inner_width', 'max_diameter', 'moments_ia', 'moments_ib', 'moments_m02', 'moments_m11', 'moments_m20', 'num_sides', 'orientation', 'outer_radius', 'phi', 'ra', 'ratio', 'rb', 'rect2_len1', 'rect2_len2', 'rect2_phi', 'rectangularity', 'roundness', 'row', 'struct_factor', 'width']</l>
+<l>OutputFeature1_Enum := 'circularity'</l>
+<c></c>
+<l>OutputFeature2_Enum_Values := ['anisometry', 'area', 'bulkiness', 'circularity', 'column', 'compactness', 'connect_num', 'contlength', 'convexity', 'dist_deviation', 'dist_mean', 'euler_number', 'height', 'inner_height', 'inner_radius', 'inner_width', 'max_diameter', 'moments_ia', 'moments_ib', 'moments_m02', 'moments_m11', 'moments_m20', 'num_sides', 'orientation', 'outer_radius', 'phi', 'ra', 'ratio', 'rb', 'rect2_len1', 'rect2_len2', 'rect2_phi', 'rectangularity', 'roundness', 'row', 'struct_factor', 'width']</l>
+<l>OutputFeature2_Enum := 'circularity'</l>
+<c></c>
+<l>SelectedRegions_Region_Color := [0,0,255]</l>
+<c></c>
+<l>Centers_Region_Color := [255,0,0]</l>
+<c></c>
+<l>UseCalibration_MBool := false</l>
+<c></c>
+<l>InputAOI_Aoi_TrafoLink := 'InputImage_Img'</l>
+<c></c>
+<l>NumberElements_Int := 3</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="InputAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="SelectedRegions_Region" base_type="iconic" dimension="0"/>
+<par name="Centers_Region" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ArrayCount" base_type="ctrl" dimension="0"/>
+<par name="ThresholdMin_MInt" base_type="ctrl" dimension="0"/>
+<par name="ThresholdMax_MInt" base_type="ctrl" dimension="0"/>
+<par name="FilterSize_MInt" base_type="ctrl" dimension="0"/>
+<par name="FillHoles_MBool" base_type="ctrl" dimension="0"/>
+<par name="CreateMarginRegions_MBool" base_type="ctrl" dimension="0"/>
+<par name="FeatureAreaMin_MInt" base_type="ctrl" dimension="0"/>
+<par name="FeatureAreaMax_MInt" base_type="ctrl" dimension="0"/>
+<par name="Feature1_Enum" base_type="ctrl" dimension="0"/>
+<par name="Feature1Min_MReal" base_type="ctrl" dimension="0"/>
+<par name="Feature1Max_MReal" base_type="ctrl" dimension="0"/>
+<par name="Feature2_Enum" base_type="ctrl" dimension="0"/>
+<par name="Feature2Min_MReal" base_type="ctrl" dimension="0"/>
+<par name="Feature2Max_MReal" base_type="ctrl" dimension="0"/>
+<par name="Operation_Enum" base_type="ctrl" dimension="0"/>
+<par name="SortMode_Enum" base_type="ctrl" dimension="0"/>
+<par name="RowCol_Enum" base_type="ctrl" dimension="0"/>
+<par name="Order_Enum" base_type="ctrl" dimension="0"/>
+<par name="OutputFeature1_Enum" base_type="ctrl" dimension="0"/>
+<par name="OutputFeature2_Enum" base_type="ctrl" dimension="0"/>
+<par name="UseCalibration_MBool" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Calib" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Trafo" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="RegionsNumber_Int" base_type="ctrl" dimension="0"/>
+<par name="Areas_IntArray" base_type="ctrl" dimension="0"/>
+<par name="Features1_RealArray" base_type="ctrl" dimension="0"/>
+<par name="Features2_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionsRow_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionsColumn_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionXCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionYCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>if (UseCalibration_MBool == true)</l>
+<l>    CamParam := InputImage_Img_Calib[0:7]</l>
+<l>    CamPose := InputImage_Img_Calib[8:14]</l>
+<l>endif</l>
+<c></c>
+<l>hom_mat2d_invert (InputImage_Img_Trafo, InputImageTrafoInverse)</l>
+<l>affine_trans_region (InputAOI_Aoi, TransformedAOI, InputImageTrafoInverse, 'nearest_neighbor')</l>
+<c></c>
+<l>reduce_domain (InputImage_Img, TransformedAOI, ImageReduced)</l>
+<l>threshold (ImageReduced, Region, ThresholdMin_MInt, ThresholdMax_MInt)</l>
+<c></c>
+<l>if (FilterSize_MInt &gt; 0)</l>
+<l>    opening_circle (Region, RegionFilter, FilterSize_MInt)</l>
+<l>elseif (FilterSize_MInt &lt; 0)</l>
+<l>    closing_circle (Region, RegionFilter, abs(FilterSize_MInt))</l>
+<l>else</l>
+<l>    RegionFilter := Region</l>
+<l>endif</l>
+<c></c>
+<l>if (FillHoles_MBool == true)</l>
+<l>    fill_up (RegionFilter, RegionFillUp)</l>
+<l>else</l>
+<l>    RegionFillUp := RegionFilter</l>
+<l>endif</l>
+<c></c>
+<l>connection (RegionFillUp, ConnectedRegions)</l>
+<c></c>
+<l>if (CreateMarginRegions_MBool == false)</l>
+<l>    count_obj (ConnectedRegions, Number)</l>
+<l>    gen_empty_region (AfterMarginRegions)</l>
+<c></c>
+<l>    erosion_circle (TransformedAOI, RegionErosion, 2)</l>
+<c>    </c>
+<l>    for i := 0 to Number - 1 by 1</l>
+<l>        select_obj (ConnectedRegions, ObjectSelected, i + 1)</l>
+<l>        test_subset_region (ObjectSelected, RegionErosion, IsSubset)</l>
+<c>    </c>
+<l>        if (IsSubset == 1)</l>
+<l>            union2 (AfterMarginRegions, ObjectSelected, AfterMarginRegions)</l>
+<l>        endif</l>
+<l>    endfor</l>
+<c>    </c>
+<l>    connection (AfterMarginRegions, AfterMarginRegions)</l>
+<l>else</l>
+<l>    AfterMarginRegions := ConnectedRegions</l>
+<l>endif</l>
+<c></c>
+<l>ConnectedRegions := AfterMarginRegions</l>
+<c></c>
+<l>if (Feature1_Enum[1] == 'phi')</l>
+<l>    Phi1RadMin := rad(Feature1Min_MReal)</l>
+<l>    Phi1RadMax := rad(Feature1Max_MReal)</l>
+<c>    </c>
+<l>    if (Feature2_Enum[1] == 'phi')</l>
+<l>        Phi2RadMin := rad(Feature2Min_MReal)</l>
+<l>        Phi2RadMax := rad(Feature2Max_MReal)</l>
+<l>        select_shape (ConnectedRegions, SelectedRegions, ['area', Feature1_Enum[1], Feature2_Enum[1]], Operation_Enum[1], [FeatureAreaMin_MInt, Phi1RadMin, Phi2RadMin], [FeatureAreaMax_MInt, Phi1RadMax, Phi2RadMax])</l>
+<l>    elseif (Feature2_Enum[1] == 'orientation')</l>
+<l>        Orientation2RadMin := rad(Feature2Min_MReal)</l>
+<l>        Orientation2RadMax := rad(Feature2Max_MReal)</l>
+<l>        select_shape (ConnectedRegions, SelectedRegions, ['area', Feature1_Enum[1], Feature2_Enum[1]], Operation_Enum[1], [FeatureAreaMin_MInt, Phi1RadMin, Orientation2RadMin], [FeatureAreaMax_MInt, Phi1RadMax, Orientation2RadMax])</l>
+<l>    else        </l>
+<l>        select_shape (ConnectedRegions, SelectedRegions, ['area', Feature1_Enum[1], Feature2_Enum[1]], Operation_Enum[1], [FeatureAreaMin_MInt, Phi1RadMin, Feature2Min_MReal], [FeatureAreaMax_MInt, Phi1RadMax, Feature2Max_MReal])</l>
+<l>    endif</l>
+<l>elseif (Feature1_Enum[1] == 'orientation')</l>
+<l>    Orientation1RadMin := rad(Feature1Min_MReal)</l>
+<l>    Orientation1RadMax := rad(Feature1Max_MReal)</l>
+<c>    </c>
+<l>    if (Feature2_Enum[1] == 'phi')</l>
+<l>        Phi2RadMin := rad(Feature2Min_MReal)</l>
+<l>        Phi2RadMax := rad(Feature2Max_MReal)</l>
+<l>        select_shape (ConnectedRegions, SelectedRegions, ['area', Feature1_Enum[1], Feature2_Enum[1]], Operation_Enum[1], [FeatureAreaMin_MInt, Orientation1RadMin, Phi2RadMin], [FeatureAreaMax_MInt, Orientation1RadMax, Phi2RadMax])</l>
+<l>    elseif (Feature2_Enum[1] == 'orientation')</l>
+<l>        Orientation2RadMin := rad(Feature2Min_MReal)</l>
+<l>        Orientation2RadMax := rad(Feature2Max_MReal)</l>
+<l>        select_shape (ConnectedRegions, SelectedRegions, ['area', Feature1_Enum[1], Feature2_Enum[1]], Operation_Enum[1], [FeatureAreaMin_MInt, Orientation1RadMin, Orientation2RadMin], [FeatureAreaMax_MInt, Orientation1RadMax, Orientation2RadMax])</l>
+<l>    else      </l>
+<l>        select_shape (ConnectedRegions, SelectedRegions, ['area', Feature1_Enum[1], Feature2_Enum[1]], Operation_Enum[1], [FeatureAreaMin_MInt, Orientation1RadMin, Feature2Min_MReal], [FeatureAreaMax_MInt, Orientation1RadMax, Feature2Max_MReal])</l>
+<l>    endif</l>
+<l>elseif (Feature2_Enum[1] == 'phi')</l>
+<l>    Phi2RadMin := rad(Feature2Min_MReal)</l>
+<l>    Phi2RadMax := rad(Feature2Max_MReal)</l>
+<l>    select_shape (ConnectedRegions, SelectedRegions, ['area', Feature1_Enum[1], Feature2_Enum[1]], Operation_Enum[1], [FeatureAreaMin_MInt, Feature1Min_MReal, Phi2RadMin], [FeatureAreaMax_MInt, Feature1Max_MReal, Phi2RadMax])</l>
+<l>elseif (Feature2_Enum[1] == 'orientation')</l>
+<l>    Orientation2RadMin := rad(Feature2Min_MReal)</l>
+<l>    Orientation2RadMax := rad(Feature2Max_MReal)</l>
+<l>    select_shape (ConnectedRegions, SelectedRegions, ['area', Feature1_Enum[1], Feature2_Enum[1]], Operation_Enum[1], [FeatureAreaMin_MInt, Feature1Min_MReal, Orientation2RadMin], [FeatureAreaMax_MInt, Feature1Max_MReal, Orientation2RadMax])</l>
+<l>else</l>
+<l>    select_shape (ConnectedRegions, SelectedRegions, ['area', Feature1_Enum[1], Feature2_Enum[1]], Operation_Enum[1], [FeatureAreaMin_MInt, Feature1Min_MReal, Feature2Min_MReal], [FeatureAreaMax_MInt, Feature1Max_MReal, Feature2Max_MReal])</l>
+<l>endif</l>
+<c></c>
+<l>if (SortMode_Enum[1] == 'Area(Small-&gt;Big)')</l>
+<l>    area_center (SelectedRegions, Area, Row, Column)</l>
+<l>    count_obj (SelectedRegions, Number)</l>
+<l>    tuple_sort_index (Area, Indices)</l>
+<l>    gen_empty_obj (NewRegion)</l>
+<c>    </c>
+<l>    for Index := 0 to Number - 1 by 1</l>
+<l>        select_obj (SelectedRegions, ObjectSelected, Indices[Index] + 1)</l>
+<l>        concat_obj (NewRegion, ObjectSelected, NewRegion)</l>
+<l>    endfor</l>
+<c>    </c>
+<l>elseif (SortMode_Enum[1] == 'Area(Big-&gt;Small)')</l>
+<l>    area_center (SelectedRegions, Area, Row, Column)</l>
+<l>    count_obj (SelectedRegions, Number)</l>
+<l>    tuple_sort_index (Area, Indices)</l>
+<l>    tuple_inverse (Indices, Indices)</l>
+<l>    gen_empty_obj (NewRegion)</l>
+<c>    </c>
+<l>    for Index := 0 to Number - 1 by 1</l>
+<l>        select_obj (SelectedRegions, ObjectSelected, Indices[Index] + 1)</l>
+<l>        concat_obj (NewRegion, ObjectSelected, NewRegion)</l>
+<l>    endfor</l>
+<c>    </c>
+<l>elseif (SortMode_Enum[1] == 'Feature1(Small-&gt;Big)')</l>
+<l>    region_features (SelectedRegions, Feature1_Enum[1], Value)</l>
+<l>    count_obj (SelectedRegions, Number)</l>
+<l>    tuple_sort_index (Value, Indices)</l>
+<l>    gen_empty_obj (NewRegion)</l>
+<c>    </c>
+<l>    for Index := 0 to Number - 1 by 1</l>
+<l>        select_obj (SelectedRegions, ObjectSelected, Indices[Index] + 1)</l>
+<l>        concat_obj (NewRegion, ObjectSelected, NewRegion)</l>
+<l>    endfor</l>
+<c>    </c>
+<l>elseif (SortMode_Enum[1] == 'Feature1(Big-&gt;Small)')</l>
+<l>    region_features (SelectedRegions, Feature1_Enum[1], Value)</l>
+<l>    count_obj (SelectedRegions, Number)</l>
+<l>    tuple_sort_index (Value, Indices)</l>
+<l>    tuple_inverse (Indices, Indices)</l>
+<l>    gen_empty_obj (NewRegion)</l>
+<c>    </c>
+<l>    for Index := 0 to Number - 1 by 1</l>
+<l>        select_obj (SelectedRegions, ObjectSelected, Indices[Index] + 1)</l>
+<l>        concat_obj (NewRegion, ObjectSelected, NewRegion)</l>
+<l>    endfor</l>
+<l>else            </l>
+<l>    sort_region (SelectedRegions, NewRegion, SortMode_Enum[1], Order_Enum[1], RowCol_Enum[1])</l>
+<l>endif</l>
+<c></c>
+<l>count_obj (NewRegion, RegionsNumber_Int)</l>
+<c></c>
+<l>copy_obj (NewRegion, SelectedRegions_Region, 1, RegionsNumber_Int)</l>
+<c></c>
+<l>count_obj (SelectedRegions_Region, RegionsNumberOutput)</l>
+<l>area_center (SelectedRegions_Region, Areas_IntArray, PositionsRow_RealArray, PositionsColumn_RealArray)</l>
+<l>region_features (SelectedRegions_Region, OutputFeature1_Enum[1], Features1_RealArray)</l>
+<l>region_features (SelectedRegions_Region, OutputFeature2_Enum[1], Features2_RealArray)</l>
+<c></c>
+<l>if (UseCalibration_MBool == true)</l>
+<l>    image_points_to_world_plane (CamParam, CamPose, PositionsRow_RealArray, PositionsColumn_RealArray, 'mm', PositionXCalibrated_RealArray, PositionYCalibrated_RealArray)</l>
+<l>endif</l>
+<c></c>
+<l>if (OutputFeature1_Enum[1] == 'phi' or OutputFeature1_Enum[1] == 'orientation')</l>
+<l>    Features1_RealArray := deg(Features1_RealArray)</l>
+<l>endif</l>
+<c></c>
+<l>if (OutputFeature2_Enum[1] == 'phi' or OutputFeature2_Enum[1] == 'orientation')</l>
+<l>    Features2_RealArray := deg(Features2_RealArray)</l>
+<l>endif</l>
+<c></c>
+<l>gen_empty_obj (Centers_Region)</l>
+<c></c>
+<l>for Index1 := 0 to RegionsNumberOutput - 1 by 1</l>
+<l>    if (Index1 &lt; ArrayCount)</l>
+<l>        select_obj (SelectedRegions_Region, ObjectSelected1, Index1 + 1)</l>
+<l>        area_center (ObjectSelected1, Area, Row, Column)</l>
+<l>        gen_circle (NewRegion, Row, Column, 10)</l>
+<l>        union2 (Centers_Region, NewRegion, Centers_Region)</l>
+<l>    endif</l>
+<l>endfor</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Areas_IntArray"/>
+<parameter id="ArrayCount"/>
+<parameter id="Centers_Region"/>
+<parameter id="CreateMarginRegions_MBool"/>
+<parameter id="Feature1Max_MReal"/>
+<parameter id="Feature1Min_MReal"/>
+<parameter id="Feature1_Enum"/>
+<parameter id="Feature2Max_MReal"/>
+<parameter id="Feature2Min_MReal"/>
+<parameter id="Feature2_Enum"/>
+<parameter id="FeatureAreaMax_MInt"/>
+<parameter id="FeatureAreaMin_MInt"/>
+<parameter id="Features1_RealArray"/>
+<parameter id="Features2_RealArray"/>
+<parameter id="FillHoles_MBool"/>
+<parameter id="FilterSize_MInt"/>
+<parameter id="InputAOI_Aoi"/>
+<parameter id="InputImage_Img"/>
+<parameter id="InputImage_Img_Calib"/>
+<parameter id="InputImage_Img_Trafo"/>
+<parameter id="Operation_Enum"/>
+<parameter id="Order_Enum"/>
+<parameter id="OutputFeature1_Enum"/>
+<parameter id="OutputFeature2_Enum"/>
+<parameter id="PositionXCalibrated_RealArray"/>
+<parameter id="PositionYCalibrated_RealArray"/>
+<parameter id="PositionsColumn_RealArray"/>
+<parameter id="PositionsRow_RealArray"/>
+<parameter id="RegionsNumber_Int"/>
+<parameter id="RowCol_Enum"/>
+<parameter id="SelectedRegions_Region"/>
+<parameter id="SortMode_Enum"/>
+<parameter id="ThresholdMax_MInt"/>
+<parameter id="ThresholdMin_MInt"/>
+<parameter id="UseCalibration_MBool"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
