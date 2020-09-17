@@ -105,9 +105,11 @@ see documentation [here](Manual_HALCON_Script.pdf)
 - MeasureLine
 - MeasureEllipse
 - MeasureRectangle
+- Fit Circle
+- Fit Line
 
 ## Matching:
-- ShapeMatching
+- Scaled Shape Matching
 - Local Deformable Matching
 - Uncalibrated Perspective Deformable Matching
 
