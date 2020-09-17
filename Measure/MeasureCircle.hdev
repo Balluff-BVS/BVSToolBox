@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Measure Circle'</l>
+<c></c>
+<l>ArrayCount := 1</l>
+<c></c>
+<l>CenterX_Real := 100.0</l>
+<l>CenterY_Real := 100.0</l>
+<l>Radius_Real := 10.0</l>
+<l>ArcAngleStart_Real := 0</l>
+<l>ArcAngleEnd_Real := 90</l>
+<c></c>
+<l>MeasureLength1_Real := 20.0</l>
+<l>MeasureLength2_Real := 5.0</l>
+<c></c>
+<l>MeasureSigma_Real := 1.0</l>
+<l>MeasureThreshold_Real := 30.0</l>
+<c></c>
+<l>PointOrder_Enum_Values := ['positive', 'negative']</l>
+<l>PointOrder_Enum := 'positive'</l>
+<c></c>
+<l>NumberMeasures_MInt_MinMax := [1, 100]</l>
+<l>NumberMeasures_MInt := 3</l>
+<c></c>
+<l>MeasureSelect_Enum_Values := ['all', 'first', 'last']</l>
+<l>MeasureSelect_Enum := 'all'</l>
+<c></c>
+<l>MeasureTransition_Enum_Values := ['all', 'negative', 'positive']</l>
+<l>MeasureTransition_Enum := 'all'</l>
+<c></c>
+<l>MinScore_MReal_MinMax := [0.1, 1.0]</l>
+<l>MinScore_MReal := 0.7</l>
+<c></c>
+<l>NumberInstances_MInt_MinMax := [1, 4]</l>
+<l>NumberInstances_MInt := 1</l>
+<c></c>
+<l>DistanceThreshold_MReal_MinMax := [0.0, 5.0]</l>
+<l>DistanceThreshold_MReal := 3.5</l>
+<c></c>
+<l>UseCalibration_MBool := false</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="MeasurePoints_Region" base_type="iconic" dimension="0"/>
+<par name="Circle_Contour" base_type="iconic" dimension="0"/>
+<par name="MeasureRegions_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="CenterX_Real" base_type="ctrl" dimension="0"/>
+<par name="CenterY_Real" base_type="ctrl" dimension="0"/>
+<par name="Radius_Real" base_type="ctrl" dimension="0"/>
+<par name="ArcAngleStart_Real" base_type="ctrl" dimension="0"/>
+<par name="ArcAngleEnd_Real" base_type="ctrl" dimension="0"/>
+<par name="MeasureLength1_Real" base_type="ctrl" dimension="0"/>
+<par name="MeasureLength2_Real" base_type="ctrl" dimension="0"/>
+<par name="MeasureSigma_Real" base_type="ctrl" dimension="0"/>
+<par name="MeasureThreshold_Real" base_type="ctrl" dimension="0"/>
+<par name="PointOrder_Enum" base_type="ctrl" dimension="0"/>
+<par name="NumberMeasures_MInt" base_type="ctrl" dimension="0"/>
+<par name="MeasureSelect_Enum" base_type="ctrl" dimension="0"/>
+<par name="MeasureTransition_Enum" base_type="ctrl" dimension="0"/>
+<par name="MinScore_MReal" base_type="ctrl" dimension="0"/>
+<par name="NumberInstances_MInt" base_type="ctrl" dimension="0"/>
+<par name="DistanceThreshold_MReal" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Trafo" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Calib" base_type="ctrl" dimension="0"/>
+<par name="UseCalibration_MBool" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="MeasuredCenterX_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredCenterY_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredRadius_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredCenterXCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredCenterYCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredRadiusCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>gen_empty_region (MeasurePoints_Region)</l>
+<l>gen_empty_obj (MeasureRegions_Contour)</l>
+<l>gen_empty_obj (Circle_Contour)</l>
+<c></c>
+<l>if (UseCalibration_MBool == true)</l>
+<l>    CamParam := InputImage_Img_Calib[0:7]</l>
+<l>    CamPose := InputImage_Img_Calib[8:14]</l>
+<l>endif</l>
+<c></c>
+<l>MeasuredCenterX_RealArray := 0</l>
+<l>MeasuredCenterY_RealArray := 0</l>
+<l>MeasuredRadius_RealArray := 0</l>
+<l>MeasuredCenterXCalibrated_RealArray := 0</l>
+<l>MeasuredCenterYCalibrated_RealArray := 0</l>
+<l>MeasuredRadiusCalibrated_RealArray := 0</l>
+<c></c>
+<l>AngleStart := rad(ArcAngleStart_Real)</l>
+<l>AngleEnd := rad(ArcAngleEnd_Real)</l>
+<c></c>
+<l>hom_mat2d_invert (InputImage_Img_Trafo, HomMat2DInvert)</l>
+<c></c>
+<l>gen_circle (Circle1, CenterY_Real, CenterX_Real, 5)</l>
+<l>affine_trans_region (Circle1, RegionAffineTrans1, HomMat2DInvert, 'nearest_neighbor')</l>
+<l>area_center (RegionAffineTrans1, Area1, CenterY, CenterX)</l>
+<c></c>
+<c></c>
+<l>Xo := Radius_Real * cos(rad(ArcAngleStart_Real))</l>
+<l>Yo := Radius_Real * sin(rad(ArcAngleStart_Real))</l>
+<c></c>
+<l>Xo := Xo + CenterX_Real</l>
+<l>Yo := -Yo</l>
+<l>Yo := Yo + CenterY_Real</l>
+<c></c>
+<l>gen_circle (Circle2, Yo, Xo, 5)</l>
+<l>affine_trans_region (Circle2, RegionAffineTrans2, HomMat2DInvert, 'nearest_neighbor')</l>
+<l>area_center (RegionAffineTrans2, Area2, NewRow, NewColumn)</l>
+<c></c>
+<l>angle_lx (CenterY, CenterX, NewRow, NewColumn, Angle2)</l>
+<c></c>
+<l>if (Angle2 &lt; 0)</l>
+<l>    AngleT := 360 + deg(Angle2)</l>
+<l>else</l>
+<l>    AngleT := deg(Angle2)</l>
+<l>endif</l>
+<c></c>
+<l>ArcStart := rad(AngleT)</l>
+<c></c>
+<c></c>
+<l>Xo := Radius_Real * cos(rad(ArcAngleEnd_Real))</l>
+<l>Yo := Radius_Real * sin(rad(ArcAngleEnd_Real))</l>
+<c></c>
+<l>Xo := Xo + CenterX_Real</l>
+<l>Yo := -Yo</l>
+<l>Yo := Yo + CenterY_Real</l>
+<c></c>
+<l>gen_circle (Circle3, Yo, Xo, 5)</l>
+<l>affine_trans_region (Circle3, RegionAffineTrans3, HomMat2DInvert, 'nearest_neighbor')</l>
+<l>area_center (RegionAffineTrans3, Area3, NewRow, NewColumn)</l>
+<c></c>
+<l>angle_lx (CenterY, CenterX, NewRow, NewColumn, Angle3)</l>
+<c></c>
+<l>if (Angle3 &lt; 0)</l>
+<l>    AngleT := 360 + deg(Angle3)</l>
+<l>else</l>
+<l>    AngleT := deg(Angle3)</l>
+<l>endif</l>
+<c></c>
+<l>ArcEnd := rad(AngleT)</l>
+<c></c>
+<c></c>
+<l>get_image_size (InputImage_Img, Width, Height)</l>
+<c></c>
+<l>create_metrology_model (MetrologyHandle)</l>
+<l>set_metrology_model_image_size (MetrologyHandle, Width, Height)</l>
+<l>add_metrology_object_circle_measure (MetrologyHandle, CenterY, CenterX, Radius_Real, MeasureLength1_Real, MeasureLength2_Real, MeasureSigma_Real, MeasureThreshold_Real, ['start_phi', 'end_phi', 'point_order'], [ArcStart, ArcEnd, PointOrder_Enum[1]], Index)</l>
+<c></c>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'num_measures', NumberMeasures_MInt)</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'measure_select', MeasureSelect_Enum[1])</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'measure_transition', MeasureTransition_Enum[1])</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'min_score', MinScore_MReal)</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'num_instances', NumberInstances_MInt)</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'distance_threshold', DistanceThreshold_MReal)</l>
+<c></c>
+<l>apply_metrology_model (InputImage_Img, MetrologyHandle)</l>
+<c></c>
+<l>get_metrology_object_result (MetrologyHandle, 'all', 'all', 'result_type', 'all_param', Parameter)</l>
+<c></c>
+<l>Sequence := [0:3:|Parameter| - 1]</l>
+<l>MeasuredCenterY_RealArray := Parameter[Sequence]</l>
+<l>MeasuredCenterX_RealArray := Parameter[Sequence + 1]</l>
+<l>MeasuredRadius_RealArray := Parameter[Sequence + 2]</l>
+<c></c>
+<l>get_metrology_object_result_contour (Circle_Contour, MetrologyHandle, 'all', 'all', 1.5)</l>
+<c></c>
+<l>get_metrology_object_measures (MeasureRegions_Contour, MetrologyHandle, 'all', 'all', Row, Column)</l>
+<l>for CrossIndex := 0 to |Row| - 1 by 1</l>
+<l>    gen_rectangle2 (ROI_0, Row[CrossIndex], Column[CrossIndex], rad(45), 1, 8)</l>
+<l>    gen_rectangle2 (ROI_1, Row[CrossIndex], Column[CrossIndex], rad(-45), 1, 8)</l>
+<l>    union2 (ROI_0, ROI_1, Region1)</l>
+<l>    union2 (Region1, MeasurePoints_Region, MeasurePoints_Region)     </l>
+<l>endfor</l>
+<c></c>
+<l>if (UseCalibration_MBool == true)</l>
+<l>    set_metrology_model_param (MetrologyHandle, 'camera_param',CamParam)</l>
+<l>    set_metrology_model_param (MetrologyHandle, 'plane_pose', CamPose)</l>
+<l>    set_metrology_model_param (MetrologyHandle, 'scale', 'mm')</l>
+<l>    apply_metrology_model (InputImage_Img, MetrologyHandle)</l>
+<l>    get_metrology_object_result (MetrologyHandle, 'all', 'all', 'result_type', 'all_param', Parameter)</l>
+<c></c>
+<l>    Sequence := [0:3:|Parameter| - 1]</l>
+<l>    MeasuredCenterXCalibrated_RealArray := Parameter[Sequence]</l>
+<l>    MeasuredCenterYCalibrated_RealArray := Parameter[Sequence + 1]</l>
+<l>    MeasuredRadiusCalibrated_RealArray := Parameter[Sequence + 2]</l>
+<l>endif</l>
+<c></c>
+<l>clear_metrology_model (MetrologyHandle)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ArcAngleEnd_Real"/>
+<parameter id="ArcAngleStart_Real"/>
+<parameter id="CenterX_Real"/>
+<parameter id="CenterY_Real"/>
+<parameter id="Circle_Contour"/>
+<parameter id="DistanceThreshold_MReal"/>
+<parameter id="InputImage_Img"/>
+<parameter id="InputImage_Img_Calib"/>
+<parameter id="InputImage_Img_Trafo"/>
+<parameter id="MeasureLength1_Real"/>
+<parameter id="MeasureLength2_Real"/>
+<parameter id="MeasurePoints_Region"/>
+<parameter id="MeasureRegions_Contour"/>
+<parameter id="MeasureSelect_Enum"/>
+<parameter id="MeasureSigma_Real"/>
+<parameter id="MeasureThreshold_Real"/>
+<parameter id="MeasureTransition_Enum"/>
+<parameter id="MeasuredCenterXCalibrated_RealArray"/>
+<parameter id="MeasuredCenterX_RealArray"/>
+<parameter id="MeasuredCenterYCalibrated_RealArray"/>
+<parameter id="MeasuredCenterY_RealArray"/>
+<parameter id="MeasuredRadiusCalibrated_RealArray"/>
+<parameter id="MeasuredRadius_RealArray"/>
+<parameter id="MinScore_MReal"/>
+<parameter id="NumberInstances_MInt"/>
+<parameter id="NumberMeasures_MInt"/>
+<parameter id="PointOrder_Enum"/>
+<parameter id="Radius_Real"/>
+<parameter id="UseCalibration_MBool"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

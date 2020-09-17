@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Measure Line'</l>
+<c></c>
+<l>ArrayCount := 1</l>
+<c></c>
+<l>LineStartX_Real := 100.0</l>
+<l>LineStartY_Real := 100.0</l>
+<l>LineEndX_Real := 200.0</l>
+<l>LineEndY_Real := 200.0</l>
+<c></c>
+<l>MeasureLength1_Real := 20.0</l>
+<l>MeasureLength2_Real := 5.0</l>
+<c></c>
+<l>MeasureSigma_Real := 1.0</l>
+<l>MeasureThreshold_Real := 30.0</l>
+<c></c>
+<l>NumberMeasures_MInt_MinMax := [1, 100]</l>
+<l>NumberMeasures_MInt := 3</l>
+<c></c>
+<l>MeasureSelect_Enum_Values := ['all', 'first', 'last']</l>
+<l>MeasureSelect_Enum := 'all'</l>
+<c></c>
+<l>MeasureTransition_Enum_Values := ['all', 'negative', 'positive']</l>
+<l>MeasureTransition_Enum := 'all'</l>
+<c></c>
+<l>MinScore_MReal_MinMax := [0.1, 1.0]</l>
+<l>MinScore_MReal := 0.7</l>
+<c></c>
+<l>NumberInstances_MInt_MinMax := [1, 4]</l>
+<l>NumberInstances_MInt := 1</l>
+<c></c>
+<l>DistanceThreshold_MReal_MinMax := [0.0, 5.0]</l>
+<l>DistanceThreshold_MReal := 3.5</l>
+<c></c>
+<l>UseCalibration_MBool := false</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="MeasurePoints_Region" base_type="iconic" dimension="0"/>
+<par name="Line_Contour" base_type="iconic" dimension="0"/>
+<par name="MeasureRegions_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="LineStartX_Real" base_type="ctrl" dimension="0"/>
+<par name="LineStartY_Real" base_type="ctrl" dimension="0"/>
+<par name="LineEndX_Real" base_type="ctrl" dimension="0"/>
+<par name="LineEndY_Real" base_type="ctrl" dimension="0"/>
+<par name="MeasureLength1_Real" base_type="ctrl" dimension="0"/>
+<par name="MeasureLength2_Real" base_type="ctrl" dimension="0"/>
+<par name="MeasureSigma_Real" base_type="ctrl" dimension="0"/>
+<par name="MeasureThreshold_Real" base_type="ctrl" dimension="0"/>
+<par name="NumberMeasures_MInt" base_type="ctrl" dimension="0"/>
+<par name="MeasureSelect_Enum" base_type="ctrl" dimension="0"/>
+<par name="MeasureTransition_Enum" base_type="ctrl" dimension="0"/>
+<par name="MinScore_MReal" base_type="ctrl" dimension="0"/>
+<par name="NumberInstances_MInt" base_type="ctrl" dimension="0"/>
+<par name="DistanceThreshold_MReal" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Trafo" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Calib" base_type="ctrl" dimension="0"/>
+<par name="UseCalibration_MBool" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="MeasuredLineStartX_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredLineStartY_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredLineEndX_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredLineEndY_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredLineStartXCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredLineStartYCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredLineEndXCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredLineEndYCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>gen_empty_region (MeasurePoints_Region)</l>
+<l>gen_empty_obj (MeasureRegions_Contour)</l>
+<l>gen_empty_obj (Line_Contour)</l>
+<c></c>
+<l>if (UseCalibration_MBool == true)</l>
+<l>    CamParam := InputImage_Img_Calib[0:7]</l>
+<l>    CamPose := InputImage_Img_Calib[8:14]</l>
+<l>endif</l>
+<c></c>
+<l>MeasuredLineStartX_RealArray := 0</l>
+<l>MeasuredLineStartY_RealArray := 0</l>
+<l>MeasuredLineEndX_RealArray := 0</l>
+<l>MeasuredLineEndY_RealArray := 0</l>
+<c></c>
+<l>MeasuredLineStartXCalibrated_RealArray := 0</l>
+<l>MeasuredLineStartYCalibrated_RealArray := 0</l>
+<l>MeasuredLineEndXCalibrated_RealArray := 0</l>
+<l>MeasuredLineEndYCalibrated_RealArray := 0</l>
+<c></c>
+<l>hom_mat2d_invert (InputImage_Img_Trafo, HomMat2DInvert)</l>
+<c></c>
+<l>gen_circle (Circle1, LineStartY_Real, LineStartX_Real, 5)</l>
+<l>affine_trans_region (Circle1, RegionAffineTrans1, HomMat2DInvert, 'nearest_neighbor')</l>
+<l>area_center (RegionAffineTrans1, Area1, LineStartY, LineStartX)</l>
+<c></c>
+<l>gen_circle (Circle2, LineEndY_Real, LineEndX_Real, 5)</l>
+<l>affine_trans_region (Circle2, RegionAffineTrans2, HomMat2DInvert, 'nearest_neighbor')</l>
+<l>area_center (RegionAffineTrans2, Area2, LineEndY, LineEndX)</l>
+<c></c>
+<l>get_image_size (InputImage_Img, Width, Height)</l>
+<c></c>
+<l>create_metrology_model (MetrologyHandle)</l>
+<l>set_metrology_model_image_size (MetrologyHandle, Width, Height)</l>
+<l>add_metrology_object_line_measure (MetrologyHandle, LineStartY, LineStartX, LineEndY, LineEndX, MeasureLength1_Real, MeasureLength2_Real, MeasureSigma_Real, MeasureThreshold_Real, [], [], Index)</l>
+<c></c>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'num_measures', NumberMeasures_MInt)</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'measure_select', MeasureSelect_Enum[1])</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'measure_transition', MeasureTransition_Enum[1])</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'min_score', MinScore_MReal)</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'num_instances', NumberInstances_MInt)</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'distance_threshold', DistanceThreshold_MReal)</l>
+<c></c>
+<l>apply_metrology_model (InputImage_Img, MetrologyHandle)</l>
+<c></c>
+<l>get_metrology_object_result (MetrologyHandle, 'all', 'all', 'result_type', 'all_param', Parameter)</l>
+<c></c>
+<l>Sequence := [0:4:|Parameter| - 1]</l>
+<l>MeasuredLineStartY_RealArray := Parameter[Sequence]</l>
+<l>MeasuredLineStartX_RealArray := Parameter[Sequence + 1]</l>
+<l>MeasuredLineEndY_RealArray := Parameter[Sequence + 2]</l>
+<l>MeasuredLineEndX_RealArray := Parameter[Sequence + 3]</l>
+<c></c>
+<l>get_metrology_object_result_contour (Line_Contour, MetrologyHandle, 'all', 'all', 1.5)</l>
+<c></c>
+<l>get_metrology_object_measures (MeasureRegions_Contour, MetrologyHandle, 'all', 'all', Row, Column)</l>
+<c></c>
+<l>for CrossIndex := 0 to |Row| - 1 by 1</l>
+<l>    gen_rectangle2 (ROI_0, Row[CrossIndex], Column[CrossIndex], rad(45), 1, 8)</l>
+<l>    gen_rectangle2 (ROI_1, Row[CrossIndex], Column[CrossIndex], rad(-45), 1, 8)</l>
+<l>    union2 (ROI_0, ROI_1, Region1)</l>
+<l>    union2 (Region1, MeasurePoints_Region, MeasurePoints_Region)     </l>
+<l>endfor</l>
+<c></c>
+<l>if (UseCalibration_MBool == true)</l>
+<l>    set_metrology_model_param (MetrologyHandle, 'camera_param',CamParam)</l>
+<l>    set_metrology_model_param (MetrologyHandle, 'plane_pose', CamPose)</l>
+<l>    set_metrology_model_param (MetrologyHandle, 'scale', 'mm')</l>
+<l>    apply_metrology_model (InputImage_Img, MetrologyHandle)</l>
+<l>    get_metrology_object_result (MetrologyHandle, 'all', 'all', 'result_type', 'all_param', Parameter)</l>
+<c></c>
+<l>    Sequence := [0:4:|Parameter| - 1]</l>
+<l>    MeasuredLineStartXCalibrated_RealArray := Parameter[Sequence]</l>
+<l>    MeasuredLineStartYCalibrated_RealArray := Parameter[Sequence + 1]</l>
+<l>    MeasuredLineEndXCalibrated_RealArray := Parameter[Sequence + 2]</l>
+<l>    MeasuredLineEndYCalibrated_RealArray := Parameter[Sequence + 3]</l>
+<l>endif</l>
+<c></c>
+<l>clear_metrology_model (MetrologyHandle)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="DistanceThreshold_MReal"/>
+<parameter id="InputImage_Img"/>
+<parameter id="InputImage_Img_Calib"/>
+<parameter id="InputImage_Img_Trafo"/>
+<parameter id="LineEndX_Real"/>
+<parameter id="LineEndY_Real"/>
+<parameter id="LineStartX_Real"/>
+<parameter id="LineStartY_Real"/>
+<parameter id="Line_Contour"/>
+<parameter id="MeasureLength1_Real"/>
+<parameter id="MeasureLength2_Real"/>
+<parameter id="MeasurePoints_Region"/>
+<parameter id="MeasureRegions_Contour"/>
+<parameter id="MeasureSelect_Enum"/>
+<parameter id="MeasureSigma_Real"/>
+<parameter id="MeasureThreshold_Real"/>
+<parameter id="MeasureTransition_Enum"/>
+<parameter id="MeasuredLineEndXCalibrated_RealArray"/>
+<parameter id="MeasuredLineEndX_RealArray"/>
+<parameter id="MeasuredLineEndYCalibrated_RealArray"/>
+<parameter id="MeasuredLineEndY_RealArray"/>
+<parameter id="MeasuredLineStartXCalibrated_RealArray"/>
+<parameter id="MeasuredLineStartX_RealArray"/>
+<parameter id="MeasuredLineStartYCalibrated_RealArray"/>
+<parameter id="MeasuredLineStartY_RealArray"/>
+<parameter id="MinScore_MReal"/>
+<parameter id="NumberInstances_MInt"/>
+<parameter id="NumberMeasures_MInt"/>
+<parameter id="UseCalibration_MBool"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

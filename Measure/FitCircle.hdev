@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Measure Edges'</l>
+<c></c>
+<l>NumberLines_MInt_MinMax := [3,10000]</l>
+<l>NumberLines_MInt := 5</l>
+<c></c>
+<l>Direction_Enum_Values := ['HorizontalLeftRight', 'HorizontalRightLeft', 'VerticalUpDown', 'VerticalDownUp']</l>
+<l>Direction_Enum := 'HorizontalLeftRight'</l>
+<c></c>
+<l>AmplitudeThreshold_Int := 2</l>
+<l>RoiWidthLength_Int := 5</l>
+<l>Sigma_Real := 1.0</l>
+<c></c>
+<l>Transition_Enum_Values := ['all', 'positive', 'negative']</l>
+<l>Transition_Enum := 'all'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="InputAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Cross_Region" base_type="iconic" dimension="0"/>
+<par name="Circle_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Direction_Enum" base_type="ctrl" dimension="0"/>
+<par name="NumberLines_MInt" base_type="ctrl" dimension="0"/>
+<par name="AmplitudeThreshold_Int" base_type="ctrl" dimension="0"/>
+<par name="RoiWidthLength_Int" base_type="ctrl" dimension="0"/>
+<par name="Sigma_Real" base_type="ctrl" dimension="0"/>
+<par name="Transition_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="CenterRow_Real" base_type="ctrl" dimension="0"/>
+<par name="CenterColumn_Real" base_type="ctrl" dimension="0"/>
+<par name="Radius_Real" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>smallest_rectangle1 (InputAOI_Aoi, Row1, Column1, Row2, Column2)</l>
+<l>get_image_size (InputImage_Img, Width, Height)</l>
+<l>AmplitudeThreshold := AmplitudeThreshold_Int</l>
+<l>RoiWidthLen2 := RoiWidthLength_Int</l>
+<c></c>
+<l>if (Direction_Enum[1] == 'HorizontalLeftRight')</l>
+<l>    mult := (Row2 - Row1) / NumberLines_MInt</l>
+<c>    </c>
+<l>    MeasuredTupleRow := []</l>
+<l>    MeasuredTupleColumn := []</l>
+<c>    </c>
+<l>    for i := 0 to NumberLines_MInt by 1    </l>
+<l>        LineRowStart_Measure_01_0 := Row1 + (i * mult)</l>
+<l>        LineColumnStart_Measure_01_0 := Column1</l>
+<l>        LineRowEnd_Measure_01_0 := Row1 + (i * mult)</l>
+<l>        LineColumnEnd_Measure_01_0 := Column2</l>
+<c>        </c>
+<l>        TmpCtrl_Row := 0.5 * (LineRowStart_Measure_01_0 + LineRowEnd_Measure_01_0)</l>
+<l>        TmpCtrl_Column := 0.5 * (LineColumnStart_Measure_01_0 + LineColumnEnd_Measure_01_0)</l>
+<l>        TmpCtrl_Dr := LineRowStart_Measure_01_0 - LineRowEnd_Measure_01_0</l>
+<l>        TmpCtrl_Dc := LineColumnEnd_Measure_01_0 - LineColumnStart_Measure_01_0</l>
+<l>        TmpCtrl_Phi := atan2(TmpCtrl_Dr, TmpCtrl_Dc)</l>
+<l>        TmpCtrl_Len1 := 0.5 * sqrt(TmpCtrl_Dr * TmpCtrl_Dr + TmpCtrl_Dc * TmpCtrl_Dc)</l>
+<l>        TmpCtrl_Len2 := RoiWidthLen2</l>
+<c>        </c>
+<l>        gen_measure_rectangle2 (TmpCtrl_Row, TmpCtrl_Column, TmpCtrl_Phi, TmpCtrl_Len1, TmpCtrl_Len2, Width, Height, 'nearest_neighbor', MsrHandle_Measure_01_0)</l>
+<l>        measure_pos (InputImage_Img, MsrHandle_Measure_01_0, Sigma_Real, AmplitudeThreshold, Transition_Enum[1], 'first', Row_Measure_01_0, Column_Measure_01_0, Amplitude_Measure_01_0, Distance_Measure_01_0)</l>
+<c>        </c>
+<l>        tuple_length (Row_Measure_01_0, Length)</l>
+<c>        </c>
+<l>        if (Length != 0)</l>
+<l>            MeasuredTupleRow[i] := Row_Measure_01_0</l>
+<l>            MeasuredTupleColumn[i] := Column_Measure_01_0</l>
+<l>        else</l>
+<l>            MeasuredTupleRow[i] := 0</l>
+<l>            MeasuredTupleColumn[i] := 0</l>
+<l>        endif</l>
+<c>        </c>
+<l>        close_measure (MsrHandle_Measure_01_0)   </l>
+<l>    endfor</l>
+<c>    </c>
+<l>    MeasuredTupleRowNew := []</l>
+<l>    MeasuredTupleColumnNew := []</l>
+<c>    </c>
+<l>    j := 0</l>
+<c>    </c>
+<l>    for i := 0 to NumberLines_MInt by 1</l>
+<l>        if (MeasuredTupleRow[i] != 0)</l>
+<l>            MeasuredTupleRowNew[j] := MeasuredTupleRow[i]</l>
+<l>            MeasuredTupleColumnNew[j] := MeasuredTupleColumn[i]</l>
+<l>            j := j + 1</l>
+<l>        endif</l>
+<l>    endfor</l>
+<c>      </c>
+<l>    gen_nurbs_interp (MeasuredTupleRowNew, MeasuredTupleColumnNew, [0,0,0,0], 3, CtrlRows, CtrlCols, Knots)</l>
+<l>    gen_contour_nurbs_xld (Contour, CtrlRows, CtrlCols, Knots, 'auto', 3, 1, 5)</l>
+<l>    fit_circle_contour_xld (Contour, 'algebraic', -1, 0, 0, 3, 2, CenterRow_Real, CenterColumn_Real, Radius_Real, StartPhi, EndPhi, PointOrder)</l>
+<l>    gen_circle_contour_xld (Circle_Contour, CenterRow_Real, CenterColumn_Real, Radius_Real, 0, 6.28, 'positive', 1)</l>
+<c>    </c>
+<l>    gen_empty_region (Region2)</l>
+<c>    </c>
+<l>    for CrossIndex := 1 to |MeasuredTupleRowNew| by 1 </l>
+<l>        gen_rectangle2 (ROI_0, MeasuredTupleRowNew[CrossIndex-1], MeasuredTupleColumnNew[CrossIndex-1], rad(45), 1, 8)</l>
+<l>        gen_rectangle2 (ROI_1, MeasuredTupleRowNew[CrossIndex-1], MeasuredTupleColumnNew[CrossIndex-1], rad(-45), 1, 8)</l>
+<l>        union2 (ROI_0, ROI_1, Region1)</l>
+<l>        union2 (Region1, Region2, Region2)     </l>
+<l>    endfor</l>
+<c>    </c>
+<l>    Cross_Region := Region2</l>
+<l>endif</l>
+<c></c>
+<l>if (Direction_Enum[1] == 'HorizontalRightLeft')</l>
+<l>    mult := (Row2 - Row1) / NumberLines_MInt</l>
+<c>    </c>
+<l>    MeasuredTupleRow := []</l>
+<l>    MeasuredTupleColumn := []</l>
+<c>    </c>
+<l>    for i := 0 to NumberLines_MInt by 1    </l>
+<l>        LineRowStart_Measure_01_0 := Row1 + (i * mult)</l>
+<l>        LineColumnStart_Measure_01_0 := Column2</l>
+<l>        LineRowEnd_Measure_01_0 := Row1 + (i * mult)</l>
+<l>        LineColumnEnd_Measure_01_0 := Column1</l>
+<c>        </c>
+<l>        TmpCtrl_Row := 0.5 * (LineRowStart_Measure_01_0 + LineRowEnd_Measure_01_0)</l>
+<l>        TmpCtrl_Column := 0.5 * (LineColumnStart_Measure_01_0 + LineColumnEnd_Measure_01_0)</l>
+<l>        TmpCtrl_Dr := LineRowStart_Measure_01_0 - LineRowEnd_Measure_01_0</l>
+<l>        TmpCtrl_Dc := LineColumnEnd_Measure_01_0 - LineColumnStart_Measure_01_0</l>
+<l>        TmpCtrl_Phi := atan2(TmpCtrl_Dr, TmpCtrl_Dc)</l>
+<l>        TmpCtrl_Len1 := 0.5 * sqrt(TmpCtrl_Dr * TmpCtrl_Dr + TmpCtrl_Dc * TmpCtrl_Dc)</l>
+<l>        TmpCtrl_Len2 := RoiWidthLen2</l>
+<c>        </c>
+<l>        gen_measure_rectangle2 (TmpCtrl_Row, TmpCtrl_Column, TmpCtrl_Phi, TmpCtrl_Len1, TmpCtrl_Len2, Width, Height, 'nearest_neighbor', MsrHandle_Measure_01_0)</l>
+<l>        measure_pos (InputImage_Img, MsrHandle_Measure_01_0, Sigma_Real, AmplitudeThreshold, Transition_Enum[1], 'first', Row_Measure_01_0, Column_Measure_01_0, Amplitude_Measure_01_0, Distance_Measure_01_0)</l>
+<c>        </c>
+<l>        tuple_length (Row_Measure_01_0, Length)</l>
+<c>        </c>
+<l>        if (Length != 0)</l>
+<l>            MeasuredTupleRow[i] := Row_Measure_01_0</l>
+<l>            MeasuredTupleColumn[i] := Column_Measure_01_0</l>
+<l>        else</l>
+<l>            MeasuredTupleRow[i] := 0</l>
+<l>            MeasuredTupleColumn[i] := 0</l>
+<l>        endif</l>
+<c>        </c>
+<l>        close_measure (MsrHandle_Measure_01_0)   </l>
+<l>    endfor</l>
+<c>    </c>
+<l>    MeasuredTupleRowNew := []</l>
+<l>    MeasuredTupleColumnNew := []</l>
+<c>    </c>
+<l>    j := 0</l>
+<c>    </c>
+<l>    for i := 0 to NumberLines_MInt by 1</l>
+<l>        if (MeasuredTupleRow[i] != 0)</l>
+<l>            MeasuredTupleRowNew[j] := MeasuredTupleRow[i]</l>
+<l>            MeasuredTupleColumnNew[j] := MeasuredTupleColumn[i]</l>
+<l>            j := j + 1</l>
+<l>        endif</l>
+<l>    endfor</l>
+<c>      </c>
+<l>    gen_nurbs_interp (MeasuredTupleRowNew, MeasuredTupleColumnNew, [0,0,0,0], 3, CtrlRows, CtrlCols, Knots)</l>
+<l>    gen_contour_nurbs_xld (Contour, CtrlRows, CtrlCols, Knots, 'auto', 3, 1, 5)</l>
+<l>    fit_circle_contour_xld (Contour, 'algebraic', -1, 0, 0, 3, 2, CenterRow_Real, CenterColumn_Real, Radius_Real, StartPhi, EndPhi, PointOrder)</l>
+<l>    gen_circle_contour_xld (Circle_Contour, CenterRow_Real, CenterColumn_Real, Radius_Real, 0, 6.28, 'positive', 1)        </l>
+<c>    </c>
+<l>    gen_empty_region (Region2)</l>
+<c>    </c>
+<l>    for CrossIndex := 1 to |MeasuredTupleRowNew| by 1 </l>
+<l>        gen_rectangle2 (ROI_0, MeasuredTupleRowNew[CrossIndex-1], MeasuredTupleColumnNew[CrossIndex-1], rad(45), 1, 8)</l>
+<l>        gen_rectangle2 (ROI_1, MeasuredTupleRowNew[CrossIndex-1], MeasuredTupleColumnNew[CrossIndex-1], rad(-45), 1, 8)</l>
+<l>        union2 (ROI_0, ROI_1, Region1)</l>
+<l>        union2 (Region1, Region2, Region2)     </l>
+<l>    endfor</l>
+<c>    </c>
+<l>    Cross_Region := Region2   </l>
+<l>endif</l>
+<c></c>
+<l>if (Direction_Enum[1] == 'VerticalUpDown')</l>
+<l>    mult := (Column2 - Column1) / NumberLines_MInt</l>
+<c>    </c>
+<l>    MeasuredTupleRow := []</l>
+<l>    MeasuredTupleColumn := []</l>
+<c>    </c>
+<l>    for i := 0 to NumberLines_MInt by 1    </l>
+<l>        LineRowStart_Measure_01_0 := Row1</l>
+<l>        LineColumnStart_Measure_01_0 := Column1 + (i * mult)</l>
+<l>        LineRowEnd_Measure_01_0 := Row2</l>
+<l>        LineColumnEnd_Measure_01_0 := Column1 + (i * mult)</l>
+<c>        </c>
+<l>        TmpCtrl_Row := 0.5 * (LineRowStart_Measure_01_0 + LineRowEnd_Measure_01_0)</l>
+<l>        TmpCtrl_Column := 0.5 * (LineColumnStart_Measure_01_0 + LineColumnEnd_Measure_01_0)</l>
+<l>        TmpCtrl_Dr := LineRowStart_Measure_01_0 - LineRowEnd_Measure_01_0</l>
+<l>        TmpCtrl_Dc := LineColumnEnd_Measure_01_0 - LineColumnStart_Measure_01_0</l>
+<l>        TmpCtrl_Phi := atan2(TmpCtrl_Dr, TmpCtrl_Dc)</l>
+<l>        TmpCtrl_Len1 := 0.5 * sqrt(TmpCtrl_Dr * TmpCtrl_Dr + TmpCtrl_Dc * TmpCtrl_Dc)</l>
+<l>        TmpCtrl_Len2 := RoiWidthLen2</l>
+<c>        </c>
+<l>        gen_measure_rectangle2 (TmpCtrl_Row, TmpCtrl_Column, TmpCtrl_Phi, TmpCtrl_Len1, TmpCtrl_Len2, Width, Height, 'nearest_neighbor', MsrHandle_Measure_01_0)</l>
+<l>        measure_pos (InputImage_Img, MsrHandle_Measure_01_0, Sigma_Real, AmplitudeThreshold, Transition_Enum[1], 'first', Row_Measure_01_0, Column_Measure_01_0, Amplitude_Measure_01_0, Distance_Measure_01_0)</l>
+<c>        </c>
+<l>        tuple_length (Row_Measure_01_0, Length)</l>
+<c>        </c>
+<l>        if (Length != 0)</l>
+<l>            MeasuredTupleRow[i] := Row_Measure_01_0</l>
+<l>            MeasuredTupleColumn[i] := Column_Measure_01_0</l>
+<l>        else</l>
+<l>            MeasuredTupleRow[i] := 0</l>
+<l>            MeasuredTupleColumn[i] := 0</l>
+<l>        endif</l>
+<c>        </c>
+<l>        close_measure (MsrHandle_Measure_01_0)   </l>
+<l>    endfor</l>
+<c>    </c>
+<l>    MeasuredTupleRowNew := []</l>
+<l>    MeasuredTupleColumnNew := []</l>
+<c>    </c>
+<l>    j := 0</l>
+<c>    </c>
+<l>    for i := 0 to NumberLines_MInt by 1</l>
+<l>        if (MeasuredTupleRow[i] != 0)</l>
+<l>            MeasuredTupleRowNew[j] := MeasuredTupleRow[i]</l>
+<l>            MeasuredTupleColumnNew[j] := MeasuredTupleColumn[i]</l>
+<l>            j := j + 1</l>
+<l>        endif</l>
+<l>    endfor</l>
+<c>      </c>
+<l>    gen_nurbs_interp (MeasuredTupleRowNew, MeasuredTupleColumnNew, [0,0,0,0], 3, CtrlRows, CtrlCols, Knots)</l>
+<l>    gen_contour_nurbs_xld (Contour, CtrlRows, CtrlCols, Knots, 'auto', 3, 1, 5)</l>
+<l>    fit_circle_contour_xld (Contour, 'algebraic', -1, 0, 0, 3, 2, CenterRow_Real, CenterColumn_Real, Radius_Real, StartPhi, EndPhi, PointOrder)</l>
+<l>    gen_circle_contour_xld (Circle_Contour, CenterRow_Real, CenterColumn_Real, Radius_Real, 0, 6.28, 'positive', 1)        </l>
+<c>    </c>
+<l>    gen_empty_region (Region2)</l>
+<c>    </c>
+<l>    for CrossIndex := 1 to |MeasuredTupleRowNew| by 1 </l>
+<l>        gen_rectangle2 (ROI_0, MeasuredTupleRowNew[CrossIndex-1], MeasuredTupleColumnNew[CrossIndex-1], rad(45), 1, 8)</l>
+<l>        gen_rectangle2 (ROI_1, MeasuredTupleRowNew[CrossIndex-1], MeasuredTupleColumnNew[CrossIndex-1], rad(-45), 1, 8)</l>
+<l>        union2 (ROI_0, ROI_1, Region1)</l>
+<l>        union2 (Region1, Region2, Region2)     </l>
+<l>    endfor</l>
+<c>    </c>
+<l>    Cross_Region := Region2</l>
+<l>endif</l>
+<c></c>
+<l>if (Direction_Enum[1] == 'VerticalDownUp')</l>
+<l>    mult := (Column2 - Column1) / NumberLines_MInt</l>
+<c>    </c>
+<l>    MeasuredTupleRow := []</l>
+<l>    MeasuredTupleColumn := []</l>
+<c>    </c>
+<l>    for i := 0 to NumberLines_MInt by 1    </l>
+<l>        LineRowStart_Measure_01_0 := Row2</l>
+<l>        LineColumnStart_Measure_01_0 := Column1 + (i * mult)</l>
+<l>        LineRowEnd_Measure_01_0 := Row1</l>
+<l>        LineColumnEnd_Measure_01_0 := Column1 + (i * mult)</l>
+<c>        </c>
+<l>        TmpCtrl_Row := 0.5 * (LineRowStart_Measure_01_0 + LineRowEnd_Measure_01_0)</l>
+<l>        TmpCtrl_Column := 0.5 * (LineColumnStart_Measure_01_0 + LineColumnEnd_Measure_01_0)</l>
+<l>        TmpCtrl_Dr := LineRowStart_Measure_01_0 - LineRowEnd_Measure_01_0</l>
+<l>        TmpCtrl_Dc := LineColumnEnd_Measure_01_0 - LineColumnStart_Measure_01_0</l>
+<l>        TmpCtrl_Phi := atan2(TmpCtrl_Dr, TmpCtrl_Dc)</l>
+<l>        TmpCtrl_Len1 := 0.5 * sqrt(TmpCtrl_Dr * TmpCtrl_Dr + TmpCtrl_Dc * TmpCtrl_Dc)</l>
+<l>        TmpCtrl_Len2 := RoiWidthLen2</l>
+<c>        </c>
+<l>        gen_measure_rectangle2 (TmpCtrl_Row, TmpCtrl_Column, TmpCtrl_Phi, TmpCtrl_Len1, TmpCtrl_Len2, Width, Height, 'nearest_neighbor', MsrHandle_Measure_01_0)</l>
+<l>        measure_pos (InputImage_Img, MsrHandle_Measure_01_0, Sigma_Real, AmplitudeThreshold, Transition_Enum[1], 'first', Row_Measure_01_0, Column_Measure_01_0, Amplitude_Measure_01_0, Distance_Measure_01_0)</l>
+<c>        </c>
+<l>        tuple_length (Row_Measure_01_0, Length)</l>
+<c>        </c>
+<l>        if (Length != 0)</l>
+<l>            MeasuredTupleRow[i] := Row_Measure_01_0</l>
+<l>            MeasuredTupleColumn[i] := Column_Measure_01_0</l>
+<l>        else</l>
+<l>            MeasuredTupleRow[i] := 0</l>
+<l>            MeasuredTupleColumn[i] := 0</l>
+<l>        endif</l>
+<c>        </c>
+<l>        close_measure (MsrHandle_Measure_01_0)   </l>
+<l>    endfor</l>
+<c>    </c>
+<l>    MeasuredTupleRowNew := []</l>
+<l>    MeasuredTupleColumnNew := []</l>
+<c>    </c>
+<l>    j := 0</l>
+<c>    </c>
+<l>    for i := 0 to NumberLines_MInt by 1</l>
+<l>        if (MeasuredTupleRow[i] != 0)</l>
+<l>            MeasuredTupleRowNew[j] := MeasuredTupleRow[i]</l>
+<l>            MeasuredTupleColumnNew[j] := MeasuredTupleColumn[i]</l>
+<l>            j := j + 1</l>
+<l>        endif</l>
+<l>    endfor</l>
+<c>      </c>
+<l>    gen_nurbs_interp (MeasuredTupleRowNew, MeasuredTupleColumnNew, [0,0,0,0], 3, CtrlRows, CtrlCols, Knots)</l>
+<l>    gen_contour_nurbs_xld (Contour, CtrlRows, CtrlCols, Knots, 'auto', 3, 1, 5)</l>
+<l>    fit_circle_contour_xld (Contour, 'algebraic', -1, 0, 0, 3, 2, CenterRow_Real, CenterColumn_Real, Radius_Real, StartPhi, EndPhi, PointOrder)</l>
+<l>    gen_circle_contour_xld (Circle_Contour, CenterRow_Real, CenterColumn_Real, Radius_Real, 0, 6.28, 'positive', 1)</l>
+<c>        </c>
+<l>    gen_empty_region (Region2)</l>
+<c>    </c>
+<l>    for CrossIndex := 1 to |MeasuredTupleRowNew| by 1 </l>
+<l>        gen_rectangle2 (ROI_0, MeasuredTupleRowNew[CrossIndex-1], MeasuredTupleColumnNew[CrossIndex-1], rad(45), 1, 8)</l>
+<l>        gen_rectangle2 (ROI_1, MeasuredTupleRowNew[CrossIndex-1], MeasuredTupleColumnNew[CrossIndex-1], rad(-45), 1, 8)</l>
+<l>        union2 (ROI_0, ROI_1, Region1)</l>
+<l>        union2 (Region1, Region2, Region2)     </l>
+<l>    endfor</l>
+<c>    </c>
+<l>    Cross_Region := Region2</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="AmplitudeThreshold_Int"/>
+<parameter id="CenterColumn_Real"/>
+<parameter id="CenterRow_Real"/>
+<parameter id="Circle_Contour"/>
+<parameter id="Cross_Region"/>
+<parameter id="Direction_Enum"/>
+<parameter id="InputAOI_Aoi"/>
+<parameter id="InputImage_Img"/>
+<parameter id="NumberLines_MInt"/>
+<parameter id="Radius_Real"/>
+<parameter id="RoiWidthLength_Int"/>
+<parameter id="Sigma_Real"/>
+<parameter id="Transition_Enum"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

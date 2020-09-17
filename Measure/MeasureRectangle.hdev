@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Measure Rectangle'</l>
+<c></c>
+<l>ArrayCount := 1</l>
+<c></c>
+<l>CenterX_Real := 100.0</l>
+<l>CenterY_Real := 100.0</l>
+<l>Phi_Real := 0.0</l>
+<l>Length1_Real := 100</l>
+<l>Length2_Real := 50</l>
+<c></c>
+<l>MeasureLength1_Real := 20.0</l>
+<l>MeasureLength2_Real := 5.0</l>
+<c></c>
+<l>MeasureSigma_Real := 1.0</l>
+<l>MeasureThreshold_Real := 30.0</l>
+<c></c>
+<l>NumberMeasures_MInt_MinMax := [1, 100]</l>
+<l>NumberMeasures_MInt := 3</l>
+<c></c>
+<l>MeasureSelect_Enum_Values := ['all', 'first', 'last']</l>
+<l>MeasureSelect_Enum := 'all'</l>
+<c></c>
+<l>MeasureTransition_Enum_Values := ['all', 'negative', 'positive']</l>
+<l>MeasureTransition_Enum := 'all'</l>
+<c></c>
+<l>MinScore_MReal_MinMax := [0.1, 1.0]</l>
+<l>MinScore_MReal := 0.7</l>
+<c></c>
+<l>NumberInstances_MInt_MinMax := [1, 4]</l>
+<l>NumberInstances_MInt := 1</l>
+<c></c>
+<l>DistanceThreshold_MReal_MinMax := [0.0, 5.0]</l>
+<l>DistanceThreshold_MReal := 3.5</l>
+<c></c>
+<l>UseCalibration_MBool := false</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="MeasurePoints_Region" base_type="iconic" dimension="0"/>
+<par name="Rectangle_Contour" base_type="iconic" dimension="0"/>
+<par name="MeasureRegions_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="CenterX_Real" base_type="ctrl" dimension="0"/>
+<par name="CenterY_Real" base_type="ctrl" dimension="0"/>
+<par name="Phi_Real" base_type="ctrl" dimension="0"/>
+<par name="Length1_Real" base_type="ctrl" dimension="0"/>
+<par name="Length2_Real" base_type="ctrl" dimension="0"/>
+<par name="MeasureLength1_Real" base_type="ctrl" dimension="0"/>
+<par name="MeasureLength2_Real" base_type="ctrl" dimension="0"/>
+<par name="MeasureSigma_Real" base_type="ctrl" dimension="0"/>
+<par name="MeasureThreshold_Real" base_type="ctrl" dimension="0"/>
+<par name="NumberMeasures_MInt" base_type="ctrl" dimension="0"/>
+<par name="MeasureSelect_Enum" base_type="ctrl" dimension="0"/>
+<par name="MeasureTransition_Enum" base_type="ctrl" dimension="0"/>
+<par name="MinScore_MReal" base_type="ctrl" dimension="0"/>
+<par name="NumberInstances_MInt" base_type="ctrl" dimension="0"/>
+<par name="DistanceThreshold_MReal" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Trafo" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Calib" base_type="ctrl" dimension="0"/>
+<par name="UseCalibration_MBool" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="MeasuredCenterX_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredCenterY_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredPhi_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredLength1_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredLength2_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredCenterXCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredCenterYCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredPhiCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredLength1Calibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="MeasuredLength2Calibrated_RealArray" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>gen_empty_region (MeasurePoints_Region)</l>
+<l>gen_empty_obj (MeasureRegions_Contour)</l>
+<l>gen_empty_obj (Rectangle_Contour)</l>
+<c></c>
+<l>if (UseCalibration_MBool == true)</l>
+<l>    CamParam := InputImage_Img_Calib[0:7]</l>
+<l>    CamPose := InputImage_Img_Calib[8:14]</l>
+<l>endif</l>
+<c></c>
+<l>MeasuredCenterX_RealArray := 0</l>
+<l>MeasuredCenterY_RealArray := 0</l>
+<l>MeasuredPhi_RealArray := 0</l>
+<l>MeasuredLength1_RealArray := 0</l>
+<l>MeasuredLength2_RealArray := 0</l>
+<c></c>
+<l>MeasuredCenterXCalibrated_RealArray := 0</l>
+<l>MeasuredCenterYCalibrated_RealArray := 0</l>
+<l>MeasuredPhiCalibrated_RealArray := 0</l>
+<l>MeasuredLength1Calibrated_RealArray := 0</l>
+<l>MeasuredLength2Calibrated_RealArray := 0</l>
+<c></c>
+<l>Phi := rad(Phi_Real)</l>
+<c></c>
+<l>get_image_size (InputImage_Img, Width, Height)</l>
+<c></c>
+<l>hom_mat2d_invert (InputImage_Img_Trafo, HomMat2DInvert)</l>
+<c></c>
+<l>gen_circle (Circle1, CenterY_Real, CenterX_Real, 5)</l>
+<l>affine_trans_region (Circle1, RegionAffineTrans1, HomMat2DInvert, 'nearest_neighbor')</l>
+<l>area_center (RegionAffineTrans1, Area1, CenterY, CenterX)</l>
+<c></c>
+<c></c>
+<l>Xo := Length1_Real * cos(rad(Phi_Real))</l>
+<l>Yo := Length1_Real * sin(rad(Phi_Real))</l>
+<c></c>
+<l>Xo := Xo + CenterX_Real</l>
+<l>Yo := -Yo</l>
+<l>Yo := Yo + CenterY_Real</l>
+<c></c>
+<l>gen_circle (Circle2, Yo, Xo, 5)</l>
+<l>affine_trans_region (Circle2, RegionAffineTrans2, HomMat2DInvert, 'nearest_neighbor')</l>
+<l>area_center (RegionAffineTrans2, Area2, NewRow, NewColumn)</l>
+<c></c>
+<l>angle_lx (CenterY, CenterX, NewRow, NewColumn, Angle2)</l>
+<c></c>
+<l>if (Angle2 &lt; 0)</l>
+<l>    AngleT := 360 + deg(Angle2)</l>
+<l>else</l>
+<l>    AngleT := deg(Angle2)</l>
+<l>endif</l>
+<c></c>
+<l>Phi := rad(AngleT)</l>
+<c></c>
+<c></c>
+<l>create_metrology_model (MetrologyHandle)</l>
+<l>set_metrology_model_image_size (MetrologyHandle, Width, Height)</l>
+<l>add_metrology_object_rectangle2_measure (MetrologyHandle, CenterY, CenterX, Phi, Length1_Real, Length2_Real, MeasureLength1_Real, MeasureLength2_Real, MeasureSigma_Real, MeasureThreshold_Real, [], [], Index)</l>
+<c></c>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'num_measures', NumberMeasures_MInt)</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'measure_select', MeasureSelect_Enum[1])</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'measure_transition', MeasureTransition_Enum[1])</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'min_score', MinScore_MReal)</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'num_instances', NumberInstances_MInt)</l>
+<l>set_metrology_object_param (MetrologyHandle, 'all', 'distance_threshold', DistanceThreshold_MReal)</l>
+<c></c>
+<l>apply_metrology_model (InputImage_Img, MetrologyHandle)</l>
+<c></c>
+<l>get_metrology_object_result (MetrologyHandle, 'all', 'all', 'result_type', 'all_param', Parameter)</l>
+<c></c>
+<l>Sequence := [0:5:|Parameter| - 1]</l>
+<l>MeasuredCenterY_RealArray := Parameter[Sequence]</l>
+<l>MeasuredCenterX_RealArray := Parameter[Sequence + 1]</l>
+<l>MeasuredPhi_RealArray := Parameter[Sequence + 2]</l>
+<l>MeasuredLength1_RealArray := Parameter[Sequence + 3]</l>
+<l>MeasuredLength2_RealArray := Parameter[Sequence + 4]</l>
+<c></c>
+<l>get_metrology_object_result_contour (Rectangle_Contour, MetrologyHandle, 'all', 'all', 1.5)</l>
+<c></c>
+<l>get_metrology_object_measures (MeasureRegions_Contour, MetrologyHandle, 'all', 'all', Row, Column)</l>
+<c></c>
+<l>for CrossIndex := 0 to |Row| - 1 by 1</l>
+<l>    gen_rectangle2 (ROI_0, Row[CrossIndex], Column[CrossIndex], rad(45), 1, 8)</l>
+<l>    gen_rectangle2 (ROI_1, Row[CrossIndex], Column[CrossIndex], rad(-45), 1, 8)</l>
+<l>    union2 (ROI_0, ROI_1, Region1)</l>
+<l>    union2 (Region1, MeasurePoints_Region, MeasurePoints_Region)     </l>
+<l>endfor</l>
+<c></c>
+<l>if (UseCalibration_MBool == true)</l>
+<l>    set_metrology_model_param (MetrologyHandle, 'camera_param',CamParam)</l>
+<l>    set_metrology_model_param (MetrologyHandle, 'plane_pose', CamPose)</l>
+<l>    set_metrology_model_param (MetrologyHandle, 'scale', 'mm')</l>
+<l>    apply_metrology_model (InputImage_Img, MetrologyHandle)</l>
+<l>    get_metrology_object_result (MetrologyHandle, 'all', 'all', 'result_type', 'all_param', Parameter)</l>
+<c></c>
+<l>    Sequence := [0:5:|Parameter| - 1]</l>
+<l>    MeasuredCenterYCalibrated_RealArray := Parameter[Sequence]</l>
+<l>    MeasuredCenterXCalibrated_RealArray := Parameter[Sequence + 1]</l>
+<l>    MeasuredPhiCalibrated_RealArray := Parameter[Sequence + 2]</l>
+<l>    MeasuredLength1Calibrated_RealArray := Parameter[Sequence + 3]</l>
+<l>    MeasuredLength2Calibrated_RealArray := Parameter[Sequence + 4]</l>
+<l>endif</l>
+<c></c>
+<l>clear_metrology_model (MetrologyHandle)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="CenterX_Real"/>
+<parameter id="CenterY_Real"/>
+<parameter id="DistanceThreshold_MReal"/>
+<parameter id="InputImage_Img"/>
+<parameter id="InputImage_Img_Calib"/>
+<parameter id="InputImage_Img_Trafo"/>
+<parameter id="Length1_Real"/>
+<parameter id="Length2_Real"/>
+<parameter id="MeasureLength1_Real"/>
+<parameter id="MeasureLength2_Real"/>
+<parameter id="MeasurePoints_Region"/>
+<parameter id="MeasureRegions_Contour"/>
+<parameter id="MeasureSelect_Enum"/>
+<parameter id="MeasureSigma_Real"/>
+<parameter id="MeasureThreshold_Real"/>
+<parameter id="MeasureTransition_Enum"/>
+<parameter id="MeasuredCenterXCalibrated_RealArray"/>
+<parameter id="MeasuredCenterX_RealArray"/>
+<parameter id="MeasuredCenterYCalibrated_RealArray"/>
+<parameter id="MeasuredCenterY_RealArray"/>
+<parameter id="MeasuredLength1Calibrated_RealArray"/>
+<parameter id="MeasuredLength1_RealArray"/>
+<parameter id="MeasuredLength2Calibrated_RealArray"/>
+<parameter id="MeasuredLength2_RealArray"/>
+<parameter id="MeasuredPhiCalibrated_RealArray"/>
+<parameter id="MeasuredPhi_RealArray"/>
+<parameter id="MinScore_MReal"/>
+<parameter id="NumberInstances_MInt"/>
+<parameter id="NumberMeasures_MInt"/>
+<parameter id="Phi_Real"/>
+<parameter id="Rectangle_Contour"/>
+<parameter id="UseCalibration_MBool"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
