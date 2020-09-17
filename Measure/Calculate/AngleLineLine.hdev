@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="19.11.0.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Angle between two Lines'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<ic>
+<par name="Line1RowStart_Real" base_type="ctrl" dimension="0"/>
+<par name="Line1ColumnStart_Real" base_type="ctrl" dimension="0"/>
+<par name="Line1RowEnd_Real" base_type="ctrl" dimension="0"/>
+<par name="Line1ColumnEnd_Real" base_type="ctrl" dimension="0"/>
+<par name="Line2RowStart_Real" base_type="ctrl" dimension="0"/>
+<par name="Line2ColumnStart_Real" base_type="ctrl" dimension="0"/>
+<par name="Line2RowEnd_Real" base_type="ctrl" dimension="0"/>
+<par name="Line2ColumnEnd_Real" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Angle_Real" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>angle_ll (Line1RowStart_Real, Line1ColumnStart_Real, Line1RowEnd_Real, Line1ColumnEnd_Real, Line2RowStart_Real, Line2ColumnStart_Real, Line2RowEnd_Real, Line2ColumnEnd_Real, Angle)</l>
+<c></c>
+<l>Angle_Real := deg(Angle)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Angle_Real"/>
+<parameter id="Line1ColumnEnd_Real"/>
+<parameter id="Line1ColumnStart_Real"/>
+<parameter id="Line1RowEnd_Real"/>
+<parameter id="Line1RowStart_Real"/>
+<parameter id="Line2ColumnEnd_Real"/>
+<parameter id="Line2ColumnStart_Real"/>
+<parameter id="Line2RowEnd_Real"/>
+<parameter id="Line2RowStart_Real"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
