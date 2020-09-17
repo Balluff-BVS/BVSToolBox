@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Use Shape Model'</l>
+<c></c>
+<l>HalconCallbacks := ['LoadModel']</l>
+<l>ArrayCount := 1</l>
+<c></c>
+<l>ModelDirectory_String := 'C:/Users/User/Desktop/'</l>
+<l>ModelName_String := 'Model01'</l>
+<c></c>
+<l>AngleStart_Real := 0</l>
+<l>AngleExtent_Real := 360</l>
+<c></c>
+<l>ScaleMin_Real := 0.9</l>
+<l>ScaleMax_Real := 1.1</l>
+<c></c>
+<l>MinScore_Real := 0.5</l>
+<c></c>
+<l>NumMatches_Int := 1</l>
+<c></c>
+<l>MaxOverlap_Real := 0.5</l>
+<c></c>
+<l>Greediness_Real := 0.9</l>
+<c></c>
+<l>UseCalibration_MBool := false</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="LoadModel">
+<interface>
+<ic>
+<par name="ModelName_String" base_type="ctrl" dimension="0"/>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>global tuple Model</l>
+<c></c>
+<l>clear_shape_model (Model)</l>
+<c></c>
+<l>try</l>
+<l>    read_shape_model (ModelDirectory_String + ModelName_String + '.shm', Model)</l>
+<l>catch (Exception)</l>
+<c></c>
+<l>endtry</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="LoadModel">
+<parameters>
+<parameter id="ModelDirectory_String"/>
+<parameter id="ModelName_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+<par name="InputAOI_Aoi" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="Contours_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="AngleStart_Real" base_type="ctrl" dimension="0"/>
+<par name="AngleExtent_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleMin_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleMax_Real" base_type="ctrl" dimension="0"/>
+<par name="MinScore_Real" base_type="ctrl" dimension="0"/>
+<par name="NumMatches_Int" base_type="ctrl" dimension="0"/>
+<par name="MaxOverlap_Real" base_type="ctrl" dimension="0"/>
+<par name="Greediness_Real" base_type="ctrl" dimension="0"/>
+<par name="UseCalibration_MBool" base_type="ctrl" dimension="0"/>
+<par name="InputImage_Img_Calib" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="NumberFoundObjects_Int" base_type="ctrl" dimension="0"/>
+<par name="PositionX_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionY_RealArray" base_type="ctrl" dimension="0"/>
+<par name="Angle_RealArray" base_type="ctrl" dimension="0"/>
+<par name="Scale_RealArray" base_type="ctrl" dimension="0"/>
+<par name="Score_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionXCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="PositionYCalibrated_RealArray" base_type="ctrl" dimension="0"/>
+<par name="OutputPositioned_InputImage_VImgArray" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>global tuple Model</l>
+<c></c>
+<l>hom_mat2d_identity (AlignmentHomMat2D_00)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_01)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_02)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_03)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_04)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_05)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_06)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_07)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_08)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_09)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_10)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_11)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_12)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_13)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_14)</l>
+<l>hom_mat2d_identity (AlignmentHomMat2D_15)</l>
+<c></c>
+<l>gen_empty_obj (Contours_Contour)</l>
+<c></c>
+<l>if (UseCalibration_MBool == true)</l>
+<l>    CamParam := InputImage_Img_Calib[0:7]</l>
+<l>    CamPose := InputImage_Img_Calib[8:14]</l>
+<l>endif</l>
+<c></c>
+<l>NumberFoundObjects_Int := 0</l>
+<l>PositionX_RealArray := 0</l>
+<l>PositionY_RealArray := 0</l>
+<l>Angle_RealArray := 0</l>
+<l>Scale_RealArray := 0</l>
+<l>Score_RealArray := 0</l>
+<c></c>
+<l>PositionXCalibrated_RealArray := 0</l>
+<l>PositionYCalibrated_RealArray := 0</l>
+<c></c>
+<l>get_shape_model_contours (ModelContours, Model, 1)</l>
+<l>get_shape_model_origin (Model, RowRef, ColumnRef)</l>
+<l>set_shape_model_origin (Model, 0, 0)</l>
+<c></c>
+<l>reduce_domain (InputImage_Img, InputAOI_Aoi, ImageReduced)</l>
+<c></c>
+<l>AngleStart := rad(AngleStart_Real)</l>
+<l>AngleExtent := rad(AngleExtent_Real)</l>
+<c></c>
+<l>find_scaled_shape_model (ImageReduced, Model, AngleStart, AngleExtent, ScaleMin_Real, ScaleMax_Real, MinScore_Real, NumMatches_Int, MaxOverlap_Real, 'least_squares', 0, Greediness_Real, Row, Column, Angle, Scale, Score)</l>
+<c></c>
+<l>NumberFoundObjects_Int := |Score|</l>
+<c></c>
+<l>for i := 0 to NumberFoundObjects_Int - 1 by 1</l>
+<l>    PositionX_RealArray[i] := Column[i]</l>
+<l>    PositionY_RealArray[i] := Row[i]</l>
+<l>    Angle_RealArray[i] := deg(Angle[i])</l>
+<l>    Scale_RealArray[i] := Scale[i]</l>
+<l>    Score_RealArray[i] := Score[i]</l>
+<c>    </c>
+<l>    if (UseCalibration_MBool == true)</l>
+<l>        image_points_to_world_plane (CamParam, CamPose, Row[i], Column[i], 'mm', PositionXCalibrated, PositionYCalibrated)</l>
+<l>        PositionXCalibrated_RealArray[i] := PositionXCalibrated</l>
+<l>        PositionYCalibrated_RealArray[i] := PositionYCalibrated</l>
+<l>    endif</l>
+<c>    </c>
+<l>    hom_mat2d_identity (HomMat2D)</l>
+<l>    hom_mat2d_translate (HomMat2D, RowRef, ColumnRef, HomMat2D)</l>
+<l>    hom_mat2d_rotate (HomMat2D, Angle[i], 0, 0, HomMat2D)</l>
+<l>*     hom_mat2d_scale (HomMat2D, Scale[i], Scale[i], 0, 0, HomMat2D)</l>
+<l>    hom_mat2d_translate (HomMat2D, Row[i], Column[i], HomMat2D)</l>
+<l>    affine_trans_contour_xld (ModelContours, TransContours, HomMat2D)</l>
+<l>    concat_obj (TransContours, Contours_Contour, Contours_Contour)</l>
+<c>    </c>
+<l>    if (i == 0)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_00, -RowRef, -ColumnRef, AlignmentHomMat2D_00)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_00, Angle[i], 0, 0, AlignmentHomMat2D_00)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_00, Row[i], Column[i], AlignmentHomMat2D_00)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_00, AlignmentHomMat2D_00)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 1)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_01, -RowRef, -ColumnRef, AlignmentHomMat2D_01)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_01, Angle[i], 0, 0, AlignmentHomMat2D_01)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_01, Row[i], Column[i], AlignmentHomMat2D_01)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_01, AlignmentHomMat2D_01)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 2)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_02, -RowRef, -ColumnRef, AlignmentHomMat2D_02)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_02, Angle[i], 0, 0, AlignmentHomMat2D_02)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_02, Row[i], Column[i], AlignmentHomMat2D_02)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_02, AlignmentHomMat2D_02)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 3)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_03, -RowRef, -ColumnRef, AlignmentHomMat2D_03)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_03, Angle[i], 0, 0, AlignmentHomMat2D_03)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_03, Row[i], Column[i], AlignmentHomMat2D_03)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_03, AlignmentHomMat2D_03)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 4)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_04, -RowRef, -ColumnRef, AlignmentHomMat2D_04)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_04, Angle[i], 0, 0, AlignmentHomMat2D_04)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_04, Row[i], Column[i], AlignmentHomMat2D_04)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_04, AlignmentHomMat2D_04)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 5)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_05, -RowRef, -ColumnRef, AlignmentHomMat2D_05)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_05, Angle[i], 0, 0, AlignmentHomMat2D_05)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_05, Row[i], Column[i], AlignmentHomMat2D_05)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_05, AlignmentHomMat2D_05)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 6)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_06, -RowRef, -ColumnRef, AlignmentHomMat2D_06)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_06, Angle[i], 0, 0, AlignmentHomMat2D_06)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_06, Row[i], Column[i], AlignmentHomMat2D_06)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_06, AlignmentHomMat2D_06)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 7)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_07, -RowRef, -ColumnRef, AlignmentHomMat2D_07)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_07, Angle[i], 0, 0, AlignmentHomMat2D_07)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_07, Row[i], Column[i], AlignmentHomMat2D_07)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_07, AlignmentHomMat2D_07)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 8)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_08, -RowRef, -ColumnRef, AlignmentHomMat2D_08)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_08, Angle[i], 0, 0, AlignmentHomMat2D_08)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_08, Row[i], Column[i], AlignmentHomMat2D_08)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_08, AlignmentHomMat2D_08)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 9)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_09, -RowRef, -ColumnRef, AlignmentHomMat2D_09)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_09, Angle[i], 0, 0, AlignmentHomMat2D_09)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_09, Row[i], Column[i], AlignmentHomMat2D_09)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_09, AlignmentHomMat2D_09)</l>
+<l>    endif</l>
+<c>        </c>
+<l>    if (i == 10)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_10, -RowRef, -ColumnRef, AlignmentHomMat2D_10)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_10, Angle[i], 0, 0, AlignmentHomMat2D_10)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_10, Row[i], Column[i], AlignmentHomMat2D_10)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_10, AlignmentHomMat2D_10)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 11)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_11, -RowRef, -ColumnRef, AlignmentHomMat2D_11)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_11, Angle[i], 0, 0, AlignmentHomMat2D_11)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_11, Row[i], Column[i], AlignmentHomMat2D_11)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_11, AlignmentHomMat2D_11)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 12)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_12, -RowRef, -ColumnRef, AlignmentHomMat2D_12)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_12, Angle[i], 0, 0, AlignmentHomMat2D_12)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_12, Row[i], Column[i], AlignmentHomMat2D_12)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_12, AlignmentHomMat2D_12)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 13)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_13, -RowRef, -ColumnRef, AlignmentHomMat2D_13)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_13, Angle[i], 0, 0, AlignmentHomMat2D_13)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_13, Row[i], Column[i], AlignmentHomMat2D_13)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_13, AlignmentHomMat2D_13)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 14)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_14, -RowRef, -ColumnRef, AlignmentHomMat2D_14)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_14, Angle[i], 0, 0, AlignmentHomMat2D_14)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_14, Row[i], Column[i], AlignmentHomMat2D_14)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_14, AlignmentHomMat2D_14)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (i == 15)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_15, -RowRef, -ColumnRef, AlignmentHomMat2D_15)</l>
+<l>        hom_mat2d_rotate (AlignmentHomMat2D_15, Angle[i], 0, 0, AlignmentHomMat2D_15)</l>
+<l>        hom_mat2d_translate (AlignmentHomMat2D_15, Row[i], Column[i], AlignmentHomMat2D_15)</l>
+<l>        hom_mat2d_invert (AlignmentHomMat2D_15, AlignmentHomMat2D_15)</l>
+<l>    endif</l>
+<c>    </c>
+<l>endfor</l>
+<c></c>
+<l>OutputPositioned_InputImage_VImgArray := [AlignmentHomMat2D_00, AlignmentHomMat2D_01, AlignmentHomMat2D_02, AlignmentHomMat2D_03, AlignmentHomMat2D_04, AlignmentHomMat2D_05, AlignmentHomMat2D_06, AlignmentHomMat2D_07, AlignmentHomMat2D_08, AlignmentHomMat2D_09, AlignmentHomMat2D_10, AlignmentHomMat2D_11, AlignmentHomMat2D_12, AlignmentHomMat2D_13, AlignmentHomMat2D_14, AlignmentHomMat2D_15]</l>
+<c></c>
+<l>set_shape_model_origin (Model, RowRef, ColumnRef)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="AngleExtent_Real"/>
+<parameter id="AngleStart_Real"/>
+<parameter id="Angle_RealArray"/>
+<parameter id="Contours_Contour"/>
+<parameter id="Greediness_Real"/>
+<parameter id="InputAOI_Aoi"/>
+<parameter id="InputImage_Img"/>
+<parameter id="InputImage_Img_Calib"/>
+<parameter id="MaxOverlap_Real"/>
+<parameter id="MinScore_Real"/>
+<parameter id="NumMatches_Int"/>
+<parameter id="NumberFoundObjects_Int"/>
+<parameter id="OutputPositioned_InputImage_VImgArray"/>
+<parameter id="PositionXCalibrated_RealArray"/>
+<parameter id="PositionX_RealArray"/>
+<parameter id="PositionYCalibrated_RealArray"/>
+<parameter id="PositionY_RealArray"/>
+<parameter id="ScaleMax_Real"/>
+<parameter id="ScaleMin_Real"/>
+<parameter id="Scale_RealArray"/>
+<parameter id="Score_RealArray"/>
+<parameter id="UseCalibration_MBool"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface>
+<ic>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+<par name="ModelName_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>global def tuple Model</l>
+<c></c>
+<l>gen_circle_contour_xld (Circle, 200, 200, 100, 0, 6.28318, 'positive', 1)</l>
+<l>create_shape_model_xld (Circle, 'auto', -0.39, 0.79, 'auto', 'auto', 'ignore_local_polarity', 5, Model)</l>
+<c></c>
+<l>file_exists (ModelDirectory_String + ModelName_String + '.shm', FileExists)</l>
+<c></c>
+<l>if (FileExists == true)</l>
+<l>    read_shape_model (ModelDirectory_String + ModelName_String + '.shm', Model)</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters>
+<parameter id="ModelDirectory_String"/>
+<parameter id="ModelName_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<l>global tuple Model</l>
+<c></c>
+<l>clear_shape_model (Model)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

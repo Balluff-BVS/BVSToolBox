@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Create Shape Model from DXF'</l>
+<c></c>
+<l>HalconCallbacks := ['CreateModel', 'DeleteOneModel', 'DeleteAllModels']</l>
+<c></c>
+<l>ArrayCount := 16</l>
+<c></c>
+<l>ScaleDXF_Real := 1</l>
+<c></c>
+<l>Width_Int := 400</l>
+<l>Height_Int := 400</l>
+<c></c>
+<l>TranslateX_Real := 100</l>
+<l>TranslateY_Real := 100</l>
+<c></c>
+<l>AngleStart_Real := 0</l>
+<l>AngleExtent_Real := 360</l>
+<c></c>
+<l>ScaleMin_Real := 0.9</l>
+<l>ScaleMax_Real := 1.1</l>
+<c></c>
+<l>Optimization_Enum_Values := [ 'auto', 'no_pregeneration', 'none', 'point_reduction_high', 'point_reduction_low', 'point_reduction_medium', 'pregeneration']</l>
+<l>Optimization_Enum := 'auto'</l>
+<c></c>
+<l>Metric_Enum_Values := ['ignore_global_polarity', 'ignore_local_polarity', 'use_polarity']</l>
+<l>Metric_Enum := 'ignore_local_polarity'</l>
+<c></c>
+<l>ContrastAuto_MBool := false</l>
+<l>Contrast_Int := 1</l>
+<c></c>
+<l>MinContrastAuto_MBool := false</l>
+<l>MinContrast_Int := 1</l>
+<c></c>
+<l>ModelName_String := 'Model01'</l>
+<l>ModelDirectory_String := 'C:/Users/User/Desktop/'</l>
+<c></c>
+<l>dxfDirectory_String := 'C:/Users/User/Desktop/'</l>
+<l>dxfName_String := 'DXFmodel'</l>
+<c></c>
+<l>CreateContourVisibility_MBool := true</l>
+<c></c>
+<l>ContourVisibility_MBool := false</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ShapeModel_Img" base_type="iconic" dimension="0"/>
+<par name="ShapeContours_Contour" base_type="iconic" dimension="0"/>
+<par name="CreateContour_Contour" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ScaleDXF_Real" base_type="ctrl" dimension="0"/>
+<par name="Width_Int" base_type="ctrl" dimension="0"/>
+<par name="Height_Int" base_type="ctrl" dimension="0"/>
+<par name="TranslateX_Real" base_type="ctrl" dimension="0"/>
+<par name="TranslateY_Real" base_type="ctrl" dimension="0"/>
+<par name="CreateContourVisibility_MBool" base_type="ctrl" dimension="0"/>
+<par name="ContourVisibility_MBool" base_type="ctrl" dimension="0"/>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+<par name="ModelName_String" base_type="ctrl" dimension="0"/>
+<par name="dxfDirectory_String" base_type="ctrl" dimension="0"/>
+<par name="dxfName_String" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ModelTuple_StringArray" base_type="ctrl" dimension="0"/>
+<par name="NumberOfFiles_Int" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>list_files (ModelDirectory_String, ['files', 'follow_links'], Files)</l>
+<l>tuple_regexp_select (Files, ['\\.(shm)$', 'ignore_case'], Files)</l>
+<c></c>
+<l>NumberOfFiles_Int := |Files|</l>
+<c></c>
+<l>read_contour_xld_dxf (Contours, dxfDirectory_String + dxfName_String + '.dxf', [], [], DxfStatus)</l>
+<l>CreateModelFromDXF (Contours, Image, ScaleDXF_Real, Width_Int, Height_Int)</l>
+<l>create_shape_model (Image, 'auto', 0, 6.28, 'auto', 'auto', 'use_polarity', 'auto', 'auto', ModelIDX)</l>
+<l>get_shape_model_contours (Contours, ModelIDX, 1)</l>
+<l>clear_shape_model (ModelIDX)</l>
+<c></c>
+<l>hom_mat2d_identity (HomMat2D)</l>
+<l>hom_mat2d_translate (HomMat2D, TranslateY_Real, TranslateX_Real, HomMat2D)</l>
+<l>affine_trans_contour_xld (Contours, Contours, HomMat2D)</l>
+<c></c>
+<l>if (CreateContourVisibility_MBool == true)</l>
+<l>    CreateContour_Contour := Contours</l>
+<l>else</l>
+<l>    gen_empty_obj (CreateContour_Contour)       </l>
+<l>endif</l>
+<c></c>
+<l>gen_empty_obj (ShapeContours_Contour)       </l>
+<c></c>
+<l>get_image_size (InputImage_Img, Width, Height)</l>
+<l>gen_image_const (Image, 'byte', Width, Height)</l>
+<c></c>
+<l>file_exists (ModelDirectory_String + ModelName_String + '.shm', FileExists)</l>
+<c></c>
+<l>if (FileExists == true)</l>
+<l>    read_shape_model (ModelDirectory_String + ModelName_String + '.shm', ModelID)</l>
+<c>        </c>
+<l>    get_shape_model_contours (ModelContours, ModelID, 1)</l>
+<l>    get_shape_model_origin (ModelID, Row, Column)</l>
+<c></c>
+<l>    hom_mat2d_identity (HomMat2D)</l>
+<l>    hom_mat2d_translate (HomMat2D, Row, Column, HomMat2D)</l>
+<l>    hom_mat2d_translate (HomMat2D, Height / 2, Width / 2, HomMat2D)</l>
+<l>    affine_trans_contour_xld (ModelContours, ModelContours, HomMat2D)</l>
+<c>    </c>
+<l>    paint_xld (ModelContours, Image, ShapeModel_Img, 255)</l>
+<c>    </c>
+<l>    if (ContourVisibility_MBool == true)</l>
+<l>        ShapeContours_Contour := ModelContours</l>
+<l>    else</l>
+<l>        gen_empty_obj (ShapeContours_Contour)       </l>
+<l>    endif</l>
+<c>    </c>
+<l>    clear_shape_model (ModelID)</l>
+<l>else</l>
+<l>    gen_image_const (ShapeModel_Img, 'byte', Width, Height)</l>
+<l>endif</l>
+<c></c>
+<l>if (NumberOfFiles_Int &gt; 0)</l>
+<l>    for i := 0 to NumberOfFiles_Int - 1 by 1</l>
+<l>        file_exists (Files[i], FileExists1)</l>
+<c>        </c>
+<l>        if (FileExists1 == true)</l>
+<l>            ModelTuple_StringArray[i] := Files[i]  </l>
+<l>        else</l>
+<l>            ModelTuple_StringArray[i] := 'No model'</l>
+<l>        endif</l>
+<l>    endfor</l>
+<l>else    </l>
+<l>    tuple_gen_const (16, 'No model', ModelTuple_StringArray)</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="ContourVisibility_MBool"/>
+<parameter id="CreateContourVisibility_MBool"/>
+<parameter id="CreateContour_Contour"/>
+<parameter id="Height_Int"/>
+<parameter id="InputImage_Img"/>
+<parameter id="ModelDirectory_String"/>
+<parameter id="ModelName_String"/>
+<parameter id="ModelTuple_StringArray"/>
+<parameter id="NumberOfFiles_Int"/>
+<parameter id="ScaleDXF_Real"/>
+<parameter id="ShapeContours_Contour"/>
+<parameter id="ShapeModel_Img"/>
+<parameter id="TranslateX_Real"/>
+<parameter id="TranslateY_Real"/>
+<parameter id="Width_Int"/>
+<parameter id="dxfDirectory_String"/>
+<parameter id="dxfName_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="CreateModel">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="ScaleDXF_Real" base_type="ctrl" dimension="0"/>
+<par name="Width_Int" base_type="ctrl" dimension="0"/>
+<par name="Height_Int" base_type="ctrl" dimension="0"/>
+<par name="TranslateX_Real" base_type="ctrl" dimension="0"/>
+<par name="TranslateY_Real" base_type="ctrl" dimension="0"/>
+<par name="AngleStart_Real" base_type="ctrl" dimension="0"/>
+<par name="AngleExtent_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleMin_Real" base_type="ctrl" dimension="0"/>
+<par name="ScaleMax_Real" base_type="ctrl" dimension="0"/>
+<par name="Optimization_Enum" base_type="ctrl" dimension="0"/>
+<par name="Metric_Enum" base_type="ctrl" dimension="0"/>
+<par name="Contrast_Int" base_type="ctrl" dimension="0"/>
+<par name="ContrastAuto_MBool" base_type="ctrl" dimension="0"/>
+<par name="MinContrast_Int" base_type="ctrl" dimension="0"/>
+<par name="MinContrastAuto_MBool" base_type="ctrl" dimension="0"/>
+<par name="ModelName_String" base_type="ctrl" dimension="0"/>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+<par name="dxfDirectory_String" base_type="ctrl" dimension="0"/>
+<par name="dxfName_String" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="InfoString_String" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>list_files (ModelDirectory_String, ['files', 'follow_links'], Files)</l>
+<l>tuple_regexp_select (Files, ['\\.(shm)$', 'ignore_case'], Files)</l>
+<l>NumberOfFiles := |Files|</l>
+<c></c>
+<l>InfoString_String := ''</l>
+<c></c>
+<l>if (NumberOfFiles &lt;= 16)</l>
+<l>    AngleStart := rad(AngleStart_Real)</l>
+<l>    AngleExtent := rad(AngleExtent_Real)</l>
+<c>    </c>
+<l>    if (MinContrastAuto_MBool == true)</l>
+<l>        MinContrast := 'auto'</l>
+<l>    else</l>
+<l>        MinContrast := MinContrast_Int</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (ContrastAuto_MBool == true)</l>
+<l>        Contrast := 'auto'</l>
+<l>    else</l>
+<l>        Contrast := Contrast_Int</l>
+<l>    endif</l>
+<c>    </c>
+<l>    read_contour_xld_dxf (Contours, dxfDirectory_String + dxfName_String + '.dxf', [], [], DxfStatus)</l>
+<l>    CreateModelFromDXF (Contours, Image, ScaleDXF_Real, Width_Int, Height_Int)</l>
+<c>       </c>
+<l>    create_scaled_shape_model (Image, 'auto', AngleStart, AngleExtent, 'auto', ScaleMin_Real, ScaleMax_Real, 'auto', Optimization_Enum[1], Metric_Enum[1], Contrast, MinContrast, ModelID)</l>
+<c>    </c>
+<l>    Row := TranslateY_Real</l>
+<l>    Column := TranslateX_Real</l>
+<c>    </c>
+<l>    set_shape_model_origin (ModelID, Row, Column)   </l>
+<l>    write_shape_model (ModelID, ModelDirectory_String + ModelName_String + '.shm')</l>
+<l>    clear_shape_model (ModelID)</l>
+<l>else</l>
+<l>    InfoString_String := 'Too many models in directory'</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="CreateModel">
+<parameters>
+<parameter id="AngleExtent_Real"/>
+<parameter id="AngleStart_Real"/>
+<parameter id="ContrastAuto_MBool"/>
+<parameter id="Contrast_Int"/>
+<parameter id="Height_Int"/>
+<parameter id="InfoString_String"/>
+<parameter id="InputImage_Img"/>
+<parameter id="Metric_Enum"/>
+<parameter id="MinContrastAuto_MBool"/>
+<parameter id="MinContrast_Int"/>
+<parameter id="ModelDirectory_String"/>
+<parameter id="ModelName_String"/>
+<parameter id="Optimization_Enum"/>
+<parameter id="ScaleDXF_Real"/>
+<parameter id="ScaleMax_Real"/>
+<parameter id="ScaleMin_Real"/>
+<parameter id="TranslateX_Real"/>
+<parameter id="TranslateY_Real"/>
+<parameter id="Width_Int"/>
+<parameter id="dxfDirectory_String"/>
+<parameter id="dxfName_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="DeleteOneModel">
+<interface>
+<ic>
+<par name="ModelName_String" base_type="ctrl" dimension="0"/>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>try</l>
+<l>    delete_file (ModelDirectory_String + ModelName_String + '.shm')</l>
+<l>catch (Exception)</l>
+<c></c>
+<l>endtry</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="DeleteOneModel">
+<parameters>
+<parameter id="ModelDirectory_String"/>
+<parameter id="ModelName_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="DeleteAllModels">
+<interface>
+<ic>
+<par name="ModelDirectory_String" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>list_files (ModelDirectory_String, ['files', 'follow_links'], Files)</l>
+<l>tuple_regexp_select (Files, ['\\.(shm)$', 'ignore_case'], Files)</l>
+<l>NumberOfFiles := |Files|</l>
+<c></c>
+<l>if (NumberOfFiles &gt; 0)</l>
+<l>    for i := 0 to NumberOfFiles - 1 by 1</l>
+<l>        delete_file (Files[i])</l>
+<l>    endfor</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="DeleteAllModels">
+<parameters>
+<parameter id="ModelDirectory_String"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="CreateModelFromDXF">
+<interface>
+<io>
+<par name="Contours" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ModelImage" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Scale" base_type="ctrl" dimension="0"/>
+<par name="Width" base_type="ctrl" dimension="0"/>
+<par name="Height" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>gen_empty_obj (EmptyObject)</l>
+<c></c>
+<l>union_adjacent_contours_xld (Contours, Contours, 1, 1, 'attr_keep')</l>
+<l>difference_closed_contours_xld (Contours, EmptyObject, ContoursClassified)</l>
+<c></c>
+<l>gen_empty_obj (Boundaries)</l>
+<l>gen_empty_obj (Holes)</l>
+<c></c>
+<l>count_obj (ContoursClassified, Number)</l>
+<c></c>
+<l>for i := 1 to Number by 1</l>
+<l>    select_obj (ContoursClassified, ObjectSelected, i)</l>
+<l>    get_contour_global_attrib_xld (ObjectSelected, 'is_hole', IsHole)</l>
+<c>    </c>
+<l>    if (IsHole == 1)</l>
+<l>        concat_obj (Holes, ObjectSelected, Holes)</l>
+<l>    else</l>
+<l>        concat_obj (Boundaries, ObjectSelected, Boundaries)</l>
+<l>    endif</l>
+<l>endfor</l>
+<c></c>
+<l>hom_mat2d_identity (HomMat2DIdentity)</l>
+<l>hom_mat2d_scale (HomMat2DIdentity, Scale, Scale, 0, 0, HomMat2DScale)</l>
+<c></c>
+<l>affine_trans_contour_xld (Boundaries, BoundariesScaled, HomMat2DScale)</l>
+<l>area_center_xld (BoundariesScaled, Area, RowScaled, ColScaled, PointOrder)</l>
+<l>hom_mat2d_translate (HomMat2DScale, Height / 2 - mean(RowScaled), Width / 2 - mean(ColScaled), HomMat2D)</l>
+<l>affine_trans_contour_xld (Boundaries, BoundariesCenteredAndScaled, HomMat2D)</l>
+<l>affine_trans_contour_xld (Holes, HolesCenteredAndScaled, HomMat2D)</l>
+<c></c>
+<l>gen_image_const (ModelImage, 'byte', Width, Height)</l>
+<l>count_obj (BoundariesCenteredAndScaled, NumberBoundaries)</l>
+<c></c>
+<l>for i := 1 to NumberBoundaries by 1</l>
+<l>    select_obj (BoundariesCenteredAndScaled, ObjectSelected, i)</l>
+<l>    paint_xld (ObjectSelected, ModelImage, ModelImage, 127)</l>
+<l>endfor</l>
+<c></c>
+<l>count_obj (HolesCenteredAndScaled, NumberHoles)</l>
+<c></c>
+<l>for i := 1 to NumberHoles by 1</l>
+<l>    select_obj (HolesCenteredAndScaled, ObjectSelected, i)</l>
+<l>    paint_xld (ObjectSelected, ModelImage, ModelImage, 0)</l>
+<l>endfor</l>
+<c></c>
+<l>threshold (ModelImage, Region, 10, 255)</l>
+<l>dilation_rectangle1 (Region, RegionDilation, 3, 3)</l>
+<l>reduce_domain (ModelImage, RegionDilation, ModelImage)</l>
+<l>return ()</l>
+</body>
+<docu id="CreateModelFromDXF">
+<parameters>
+<parameter id="Contours"/>
+<parameter id="Height"/>
+<parameter id="ModelImage"/>
+<parameter id="Scale"/>
+<parameter id="Width"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
