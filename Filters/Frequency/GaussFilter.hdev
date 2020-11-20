@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Gauss Filter'</l>
+<c></c>
+<l>Sigma1_MReal_MinMax := [0, 999999]</l>
+<l>Sigma1_MReal := 1.0</l>
+<c></c>
+<l>Sigma2_MReal_MinMax := [0, 999999]</l>
+<l>Sigma2_MReal := 1.0</l>
+<c></c>
+<l>Phi_MReal_MinMax := [0.0, 180.0]</l>
+<l>Phi_MReal := 0.0</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="OutputImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Sigma1_MReal" base_type="ctrl" dimension="0"/>
+<par name="Sigma2_MReal" base_type="ctrl" dimension="0"/>
+<par name="Phi_MReal" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>get_image_size (InputImage_Img, Width, Height)</l>
+<c></c>
+<l>gen_gauss_filter (ImageGauss, Sigma1_MReal, Sigma2_MReal, rad(Phi_MReal), 'none', 'dc_edge', Width, Height)</l>
+<c></c>
+<l>fft_generic (InputImage_Img, ImageFFT, 'to_freq', -1, 'none', 'dc_edge', 'complex')</l>
+<l>convol_fft (ImageFFT, ImageGauss, ImageConvol)</l>
+<l>fft_generic (ImageConvol, OutputImage_Img, 'from_freq', 1, 'none', 'dc_edge', 'byte')</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="InputImage_Img"/>
+<parameter id="OutputImage_Img"/>
+<parameter id="Phi_MReal"/>
+<parameter id="Sigma1_MReal"/>
+<parameter id="Sigma2_MReal"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

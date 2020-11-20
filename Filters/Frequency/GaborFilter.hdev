@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Gabor Filter'</l>
+<c></c>
+<l>Angle_MReal_MinMax := [1.0, 500.0]</l>
+<l>Angle_MReal := 1.4</l>
+<c></c>
+<l>Frequency_MReal_MinMax := [0, 700]</l>
+<l>Frequency_MReal := 400</l>
+<c></c>
+<l>Bandwidth_MReal_MinMax := [0.05, 100.0]</l>
+<l>Bandwidth_MReal := 1.0</l>
+<c></c>
+<l>Orientation_MReal_MinMax := [0.0, 180.0]</l>
+<l>Orientation_MReal := 90.0</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="OutputImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Angle_MReal" base_type="ctrl" dimension="0"/>
+<par name="Frequency_MReal" base_type="ctrl" dimension="0"/>
+<par name="Bandwidth_MReal" base_type="ctrl" dimension="0"/>
+<par name="Orientation_MReal" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>get_image_size (InputImage_Img, Width, Height)</l>
+<c></c>
+<l>gen_gabor (ImageFilter, Angle_MReal, Frequency_MReal / 1000, Bandwidth_MReal, rad(Orientation_MReal), 'none', 'dc_edge', Width, Height)</l>
+<c></c>
+<l>fft_generic (InputImage_Img, ImageFFT, 'to_freq', -1, 'none', 'dc_edge', 'complex')</l>
+<l>convol_fft (ImageFFT, ImageFilter, ImageConvol)</l>
+<l>fft_generic (ImageConvol, OutputImage_Img, 'from_freq', 1, 'none', 'dc_edge', 'byte')</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Angle_MReal"/>
+<parameter id="Bandwidth_MReal"/>
+<parameter id="Frequency_MReal"/>
+<parameter id="InputImage_Img"/>
+<parameter id="Orientation_MReal"/>
+<parameter id="OutputImage_Img"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

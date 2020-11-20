@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Sinus Bandpass Filter'</l>
+<c></c>
+<l>Frequency_MReal_MinMax := [0, 999999]</l>
+<l>Frequency_MReal := 100</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="OutputImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Frequency_MReal" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>get_image_size (InputImage_Img, Width, Height)</l>
+<c></c>
+<l>gen_sin_bandpass (ImageFilter, Frequency_MReal / 1000, 'none', 'dc_edge', Width, Height)</l>
+<c></c>
+<l>fft_generic (InputImage_Img, ImageFFT, 'to_freq', -1, 'none', 'dc_edge', 'complex')</l>
+<l>convol_fft (ImageFFT, ImageFilter, ImageConvol)</l>
+<l>fft_generic (ImageConvol, OutputImage_Img, 'from_freq', 1, 'none', 'dc_edge', 'byte')</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Frequency_MReal"/>
+<parameter id="InputImage_Img"/>
+<parameter id="OutputImage_Img"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
