@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Get Info'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<ic>
+<par name="SystemInfo" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="IDprogram_Int" base_type="ctrl" dimension="0"/>
+<par name="IDresult_Int" base_type="ctrl" dimension="0"/>
+<par name="Timestamp_String" base_type="ctrl" dimension="0"/>
+<par name="Color_Int" base_type="ctrl" dimension="0"/>
+<par name="DeviceInfo_String" base_type="ctrl" dimension="0"/>
+<par name="IOinfo_String" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>IDprogram_Int := SystemInfo[0]</l>
+<l>IDresult_Int := SystemInfo[1]</l>
+<l>Timestamp_String := SystemInfo[2]</l>
+<l>Color_Int := SystemInfo[3]</l>
+<l>DeviceInfo_String := SystemInfo[4]</l>
+<l>IOinfo_String := SystemInfo[5]</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Color_Int"/>
+<parameter id="DeviceInfo_String"/>
+<parameter id="IDprogram_Int"/>
+<parameter id="IDresult_Int"/>
+<parameter id="IOinfo_String"/>
+<parameter id="SystemInfo"/>
+<parameter id="Timestamp_String"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

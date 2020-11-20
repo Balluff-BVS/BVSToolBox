@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Get Date'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<oc>
+<par name="MSecond_Int" base_type="ctrl" dimension="0"/>
+<par name="Second_Int" base_type="ctrl" dimension="0"/>
+<par name="Minute_Int" base_type="ctrl" dimension="0"/>
+<par name="Hour_Int" base_type="ctrl" dimension="0"/>
+<par name="Day_Int" base_type="ctrl" dimension="0"/>
+<par name="YDay_Int" base_type="ctrl" dimension="0"/>
+<par name="Month_Int" base_type="ctrl" dimension="0"/>
+<par name="Year_Int" base_type="ctrl" dimension="0"/>
+<par name="FullDate_String" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>get_system_time (MSecond_Int, Second_Int, Minute_Int, Hour_Int, Day_Int, YDay_Int, Month_Int, Year_Int)</l>
+<c></c>
+<l>tuple_string (Second_Int, '.0f', SecondString)</l>
+<l>tuple_string (Minute_Int, '.0f', MinuteString)</l>
+<l>tuple_string (Hour_Int, '.0f', HourString)</l>
+<l>tuple_string (Day_Int, '.0f', DayString)</l>
+<l>tuple_string (Month_Int, '.0f', MonthString)</l>
+<l>tuple_string (Year_Int, '.0f', YearString)</l>
+<c></c>
+<l>FullDate_String := YearString + '-' + MonthString + '-' + DayString + ' ' + HourString + ':' + MinuteString + ':' + SecondString</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="Day_Int"/>
+<parameter id="FullDate_String"/>
+<parameter id="Hour_Int"/>
+<parameter id="MSecond_Int"/>
+<parameter id="Minute_Int"/>
+<parameter id="Month_Int"/>
+<parameter id="Second_Int"/>
+<parameter id="YDay_Int"/>
+<parameter id="Year_Int"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
