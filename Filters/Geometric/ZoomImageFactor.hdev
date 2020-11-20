@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Zoom Image Factor'</l>
+<c></c>
+<l>ScaleWidth_MReal_MinMax := [0.001, 10.0]</l>
+<l>ScaleWidth_MReal := 0.5</l>
+<c></c>
+<l>ScaleHeight_MReal_MinMax := [0.001, 10.0]</l>
+<l>ScaleHeight_MReal := 0.5</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="OutputImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ScaleWidth_MReal" base_type="ctrl" dimension="0"/>
+<par name="ScaleHeight_MReal" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>zoom_image_factor (InputImage_Img, OutputImage_Img, ScaleWidth_MReal, ScaleHeight_MReal, 'constant')</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="InputImage_Img"/>
+<parameter id="OutputImage_Img"/>
+<parameter id="ScaleHeight_MReal"/>
+<parameter id="ScaleWidth_MReal"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

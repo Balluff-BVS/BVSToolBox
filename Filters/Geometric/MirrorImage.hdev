@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.2.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>ToolName := 'Mirror Image'</l>
+<c></c>
+<l>Mode_Enum_Values := ['row', 'column', 'diagonal']</l>
+<l>Mode_Enum := 'row'</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconRun">
+<interface>
+<io>
+<par name="InputImage_Img" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="OutputImage_Img" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Mode_Enum" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>mirror_image (InputImage_Img, OutputImage_Img, Mode_Enum[1])</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="HalconRun">
+<parameters>
+<parameter id="InputImage_Img"/>
+<parameter id="Mode_Enum"/>
+<parameter id="OutputImage_Img"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="HalconInit">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconInit">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="HalconFinalize">
+<interface/>
+<body>
+<l>return ()</l>
+</body>
+<docu id="HalconFinalize">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
